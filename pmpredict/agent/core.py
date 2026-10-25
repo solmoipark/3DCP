@@ -4,6 +4,7 @@ from __future__ import annotations
 import time
 from typing import Iterator
 
+from .i18n import T
 from .events import Done, Error, Event, TextDelta, ToolCall, ToolProgress, ToolResultEvent
 from .memory import Session, tool_result_block
 from .prompt import build_system_prompt
@@ -68,7 +69,7 @@ class Agent:
                     self._record_done(ev)
                 elif isinstance(ev, Error):
                     flush_text()
-                    blocks.append(dict(type="text", text=f"[오류] {ev.message}"))
+                    blocks.append(dict(type="text", text=f"{T('err_prefix')} {ev.message}"))
                 yield ev
         finally:
             flush_text()
@@ -97,7 +98,7 @@ class Agent:
         except Exception:  # noqa: BLE001
             s = None
         if not s:
-            s = "최근 대화 (자동 요약 불가, 마지막 6턴):\n" + "\n".join(
+            s = T("recent") + "\n" + "\n".join(
                 f"{t['role']}: " + " ".join(b.get("text", "") for b in t["content"] if b["type"] == "text")[:400] for t in self.session.turns[-6:])
         self.session.set_summary(s)
 

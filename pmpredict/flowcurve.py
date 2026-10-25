@@ -107,6 +107,12 @@ def _korean_font() -> bool:
     """Select a CJK-capable font if one is installed; return True when Korean labels are safe."""
     import matplotlib
     from matplotlib import font_manager
+    import os
+    english = os.environ.get("PMPREDICT_LANG", "ko").lower().startswith("en")
+    if english:                                     # English interface: English labels, default (Latin) font
+        matplotlib.rcParams["font.family"] = ["DejaVu Sans"]
+        matplotlib.rcParams["axes.unicode_minus"] = False
+        return False
     names = {f.name for f in font_manager.fontManager.ttflist}
     for cand in ("Malgun Gothic", "NanumGothic", "Noto Sans CJK KR", "Noto Sans KR", "AppleGothic", "Gulim", "Batang"):
         if cand in names:

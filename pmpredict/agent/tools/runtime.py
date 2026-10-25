@@ -40,7 +40,11 @@ class Runtime:
 
     @property
     def print_db_path(self) -> Path:
-        return Path(os.environ.get("PMPREDICT_PRINT_DB") or (Path(self.cfg.db_path).parent / "print_process.db"))
+        env = os.environ.get("PMPREDICT_PRINT_DB")
+        if env:
+            return Path(env)
+        bundled = Path(self.cfg.data_dir) / "print_process.db"          # shipped in data/ (repository and student bundle)
+        return bundled if bundled.exists() else Path(self.cfg.db_path).parent / "print_process.db"
 
     @property
     def master_db_path(self) -> Path:

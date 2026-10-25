@@ -25,7 +25,16 @@ log = logging.getLogger(__name__)
 
 
 def _codex() -> str | None:
-    return shutil.which("codex") or shutil.which("codex.cmd")
+    """`codex` on PATH (npm i -g @openai/codex), else the CLI bundled with the Codex desktop app on Windows."""
+    found = shutil.which("codex") or shutil.which("codex.cmd")
+    if found:
+        return found
+    local = os.environ.get("LOCALAPPDATA")
+    if local:
+        cands = sorted((Path(local) / "OpenAI" / "Codex" / "bin").glob("*/codex.exe"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if cands:
+            return str(cands[0])
+    return None
 
 
 class CodexProvider(Provider):
@@ -45,16 +54,29 @@ class CodexProvider(Provider):
     def _cmd(self, session_id: str, prompt: str, provider_session_id: str | None) -> list[str]:
         exe = _codex()
         py = sys.executable.replace("\\", "/")
+        # Codex starts MCP servers with a clean environment: every PMPREDICT_* setting of this process (home, language,
+        # database paths, secrets file) must be passed explicitly or the tools would run against the defaults.
+        env_items = {"PMPREDICT_SESSION": session_id}
+        env_items.update({k: v for k, v in os.environ.items() if k.startswith("PMPREDICT_") and k != "PMPREDICT_SESSION" and v})
+        env_toml = ", ".join(f'{k}="{v.replace(chr(92), "/")}"' for k, v in env_items.items())
         cfg = [f'mcp_servers.pmpredict.command="{py}"', 'mcp_servers.pmpredict.args=["-m","pmpredict.agent.mcp_server"]',
-               f'mcp_servers.pmpredict.env={{PMPREDICT_SESSION="{session_id}"}}', 'mcp_servers.pmpredict.required=true']
-        base = [exe, "exec"]
-        if provider_session_id:
-            base += ["resume", provider_session_id]
-        base += ["--json", "--skip-git-repo-check", "--sandbox", "read-only"]
+               f"mcp_servers.pmpredict.env={{{env_toml}}}", 'mcp_servers.pmpredict.required=true',
+               # codex-cli >= 0.16x asks for approval before every MCP tool call unless the server pre-approves its tools;
+               # with approval_policy "never" (exec default) the call would fail instead. Our tools are read-only / file-writing
+               # inside artifacts/, so approve them all.
+               'mcp_servers.pmpredict.default_tools_approval_mode="approve"']
+        if self.model:
+            cfg.append(f'model="{self.model}"')
+        # `-c` overrides are accepted before the subcommand by every codex version; `--sandbox`/`-m` are `exec`-only options
+        # and `codex exec resume` rejects them, so the resumed turn carries only the config overrides and the thread id.
+        base = [exe]
         for c in cfg:
             base += ["-c", c]
-        if self.model:
-            base += ["-m", self.model]
+        base += ["exec"]
+        if provider_session_id:
+            base += ["resume", "--json", "--skip-git-repo-check", provider_session_id]
+        else:
+            base += ["--json", "--skip-git-repo-check", "--sandbox", "read-only"]
         return base + [prompt]
 
     def iter_turn(self, *, system, messages, tools: list[ToolSpec], execute: Callable[[ToolCall], ToolResult], provider_session_id=None,
@@ -71,7 +93,10 @@ class CodexProvider(Provider):
         env["PMPREDICT_SESSION"] = session_id
         env["PYTHONIOENCODING"] = "utf-8"
         try:
-            proc = subprocess.Popen(cmd, cwd=str(cwd), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8", env=env)
+            # stdin must be closed: `codex exec` reads extra prompt text from a non-TTY stdin and blocks forever on an open
+            # pipe (seen under Streamlit, where the server's stdin is a pipe held by the launcher).
+            proc = subprocess.Popen(cmd, cwd=str(cwd), stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                    text=True, encoding="utf-8", env=env)
         except OSError as e:
             yield Error(message=redact(f"codex 실행 실패: {e}"), recoverable=False)
             return

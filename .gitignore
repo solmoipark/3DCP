@@ -39,3 +39,22 @@ artifacts/reports/agent/
 
 # third-party slide decks / PDFs kept locally only (copyright)
 artifacts/reports/external/*.pdf
+
+# local API keys (student bundle)
+secrets.json
+
+# paper build artefacts (one folder per manuscript version under paper/)
+paper/*/main.aux
+paper/*/main.bbl
+paper/*/main.blg
+paper/*/main.fdb_latexmk
+paper/*/main.fls
+paper/*/main.log
+paper/*/main.out
+paper/*/main.spl
+paper/*/build.log
+paper/*/regen_figs*.log
+paper/*/_*.png
+paper/*/gen/*.done
+paper/eval/home_*/
+artifacts/reports/paper_figs/

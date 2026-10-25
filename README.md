@@ -55,8 +55,22 @@ sidebar toggle "직접 실행 (기존 폼)".
 | `codex` | `npm i -g @openai/codex` and `codex login` (ChatGPT subscription) | tools are served over MCP (`pmpredict agent-mcp`) to `codex exec --json` |
 | `fake` | nothing | scripted provider for tests and UI smoke runs |
 
-Keys are read from the environment or from `C:\Users\User\pastemortar_extraction_package_v1.2.2\config.json`
-(`PMPREDICT_SECRETS_FILE` to change) and never printed, logged or stored in the repository.
+Keys are read from the environment, then from `secrets.json` in the repository root (template `secrets.example.json`,
+git-ignored), then from the PI's pastemortar `config.json` (`PMPREDICT_SECRETS_FILE` overrides) and are never printed,
+logged or stored in the repository. `PMPREDICT_LANG=en` switches the agent's answers and the chat UI to English (default
+Korean). The Codex path pre-approves the package's MCP tools (`default_tools_approval_mode="approve"`), which codex-cli
+>= 0.16x requires for non-interactive runs; `-c` overrides precede `exec` so that resumed threads (multi-turn sessions)
+accept them, and every `PMPREDICT_*` variable is forwarded to the MCP server because Codex starts it with a clean
+environment. `PMPREDICT_CODEX_MODEL` selects among the models a ChatGPT account offers (e.g. gpt-6-astra, gpt-6-sol, gpt-6-luna).
+
+**Agent benchmark** (`paper/eval/tasks.yaml`, 33 tasks): `python scripts/agent_eval.py run --provider codex [--model gpt-6-sol --tag codex_sol]`
+then `python scripts/agent_eval.py score` → `paper/eval/results/summary.md` (tool selection, parameter checks, ground truth,
+numeric fidelity with a chance-match control, latency). The manuscript in `paper/` is built with
+`python scripts/paper_render.py --provider codex && cd paper && latexmk -pdf main.tex`.
+
+**Student bundle**: `python scripts/build_student_bundle.py` zips the tracked files plus `data/print_process.db`, the
+`*.bat` launchers (`setup.bat`, `codex_login.bat`, `check_backend.bat`, `start_app.bat`), `STUDENT_README.md` and
+`docs/AGENT_GUIDE_EN.md` into a self-contained `pmpredict/` folder (~130 MB) for a PC without this repository.
 
 **Tools** (`pmpredict/agent/tools/`, one registry projected to Anthropic / OpenAI / MCP schemas): `list_models`,
 `describe_vocabulary`, `build_mix_spec`, `predict_properties`, `flow_curve`, `structuration_curve`, `retrieve_literature`,

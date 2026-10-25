@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import date
 
+from .i18n import GUARDRAILS_EN, ROLE_EN, lang
 from .tools.memory_tools import read_notes
 from .tools.normalise import CURING_PRESETS, KOR_TARGET, classes_of
 from .tools.runtime import Runtime
@@ -27,12 +28,16 @@ def model_table(rt: Runtime) -> str:
     man = rt.assets.manifest["models"]
     rows = []
     for k, m in sorted(man.items(), key=lambda kv: (kv[1]["target"], kv[1].get("variant") != "general")):
-        rows.append(f"{k} | {KOR_TARGET.get(m['target'], m['target'])} | {m.get('unit')} | n={m.get('n_train')} ({m.get('n_papers')}편) | "
+        tname = m["target"] if lang() == "en" else KOR_TARGET.get(m["target"], m["target"])
+        npap = f"{m.get('n_papers')} papers" if lang() == "en" else f"{m.get('n_papers')}편"
+        rows.append(f"{k} | {tname} | {m.get('unit')} | n={m.get('n_train')} ({npap}) | "
                     f"R²log={m.get('r2_log') if m.get('r2_log') is not None else m.get('r2')} | cov80={m.get('coverage80')}" + (" | WEAK" if m.get("weak_model") else ""))
     return "\n".join(rows)
 
 
 def build_system_prompt(rt: Runtime, session_summary: str = "", include_date: bool = True) -> str:
+    if lang() == "en":
+        return _build_system_prompt_en(rt, session_summary, include_date)
     bs = rt.build_summary()
     vocab = "\n".join(f"- {f}: {', '.join(classes_of(f))}" for f in ("powder", "admixture", "fibre", "activator", "nano", "aggregate"))
     parts = [ROLE, "",
@@ -52,4 +57,29 @@ def build_system_prompt(rt: Runtime, session_summary: str = "", include_date: bo
         parts += ["", "이 세션의 이전 대화 요약:", session_summary]
     if include_date:
         parts += ["", f"오늘: {date.today().isoformat()}"]
+    return "\n".join(parts)
+
+
+def _build_system_prompt_en(rt: Runtime, session_summary: str, include_date: bool) -> str:
+    bs = rt.build_summary()
+    vocab = "\n".join(f"- {f}: {', '.join(classes_of(f))}" for f in ("powder", "admixture", "fibre", "activator", "nano", "aggregate"))
+    parts = [ROLE_EN, "",
+             f"Data: literature DB {bs.get('n_mixes', '?')} mixes ({bs.get('n_normalised', '?')} normalised), {bs.get('n_features', '?')} features; "
+             "print-label DB 1,014 papers · 7,420 print runs. All model metrics are paper-grouped (GroupKFold) cross-validation.",
+             "", "Prediction models (key | target | unit | training size | quality):", model_table(rt),
+             "The '__3dcp' variants are selected automatically when conditions.is_3dcp=true and their quality is higher. "
+             "Derived targets: shear_stress_at_rate (given shear rate), static_yield_stress_at_rest (given rest time).",
+             "", "Material classes (material_class):", vocab,
+             f"Compressive specimen groups: comp_cube50 (default), comp_cube_other, comp_prism40, comp_cyl_small, comp_cyl_large, "
+             f"comp_cube100, comp_cube150, unknown. Curing presets: {', '.join(CURING_PRESETS)}.",
+             "Mix dict example: {\"system_type\":\"mortar\",\"w_b\":0.35,\"s_b\":1.5,\"binder\":{\"portland_cement\":0.85,\"silica_fume\":0.15},"
+             "\"admixtures_pct\":{\"superplasticiser_pce\":0.5,\"vma_cellulose\":0.2},\"conditions\":{\"age_d\":28,\"curing\":\"moist\",\"is_3dcp\":true}}",
+             "", GUARDRAILS_EN]
+    notes = read_notes(rt)
+    if notes:
+        parts += ["", "Notes the user asked you to remember:", notes]
+    if session_summary:
+        parts += ["", "Summary of the earlier part of this session:", session_summary]
+    if include_date:
+        parts += ["", f"Today: {date.today().isoformat()}"]
     return "\n".join(parts)

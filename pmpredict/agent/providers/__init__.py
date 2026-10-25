@@ -4,7 +4,9 @@ from __future__ import annotations
 import os
 
 ORDER = ["anthropic", "openai", "claude_sdk", "codex"]
-LABELS = {"anthropic": "Anthropic API", "openai": "OpenAI API", "claude_sdk": "Claude 구독 (Agent SDK)", "codex": "ChatGPT 구독 (Codex CLI)", "fake": "테스트용 가짜 프로바이더"}
+from ..i18n import labels as _labels
+
+LABELS = _labels()
 
 
 def _cls(name: str):

@@ -69,17 +69,19 @@ def _sweep_fig(sc: dict, v: B.Verdict, sf: float):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     from ...flowcurve import _korean_font
-    _korean_font()
+    ko = _korean_font()
+    L = (dict(target=f"목표 {v.n_target} 층", cur="현재 사이클", x="층 사이클 시간 (s)", y="적층 가능 층 수") if ko else
+         dict(target=f"target {v.n_target} layers", cur="current cycle time", x="layer cycle time (s)", y="layers the material carries"))
     sw = sc["sweep"]
     fig, ax = plt.subplots(figsize=(6, 3.6))
     ax.plot(sw.layer_cycle_time_s, sw.n_max.clip(upper=v.n_target * 3), label="n_max (sf 1)")
     ax.plot(sw.layer_cycle_time_s, sw.n_max_sf.clip(upper=v.n_target * 3), label=f"n_max (sf {sf:g})", ls="--")
-    ax.axhline(v.n_target, color="k", lw=0.8, label=f"목표 {v.n_target} 층")
-    ax.axvline(v.layer_cycle_time_s, color="gray", lw=0.8, ls=":", label="현재 사이클")
+    ax.axhline(v.n_target, color="k", lw=0.8, label=L["target"])
+    ax.axvline(v.layer_cycle_time_s, color="gray", lw=0.8, ls=":", label=L["cur"])
     if np.isfinite(sc["t_c_max_s"]):
         lo = sc["t_c_min_s"] if np.isfinite(sc["t_c_min_s"]) else sw.layer_cycle_time_s.min()
         ax.axvspan(max(lo, 1e-3), max(sc["t_c_max_s"], lo + 1e-3), color="green" if sc["feasible"] else "red", alpha=0.08)
-    ax.set_xscale("log"); ax.set_xlabel("층 사이클 시간 (s)"); ax.set_ylabel("적층 가능 층 수"); ax.legend(fontsize=8); ax.grid(alpha=0.3)
+    ax.set_xscale("log"); ax.set_xlabel(L["x"]); ax.set_ylabel(L["y"]); ax.legend(fontsize=8); ax.grid(alpha=0.3)
     return fig
 
 

@@ -9,13 +9,19 @@ import os
 import re
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[2]
+# Lookup order: PMPREDICT_SECRETS_FILE → <repo>/secrets.json (git-ignored; template secrets.example.json) → the PI's pastemortar config.json
+LOCAL_SECRETS_FILE = ROOT / "secrets.json"
 DEFAULT_SECRETS_FILE = Path(r"C:\Users\User\pastemortar_extraction_package_v1.2.2\config.json")
 ENV_NAMES = {"anthropic_api_key": "ANTHROPIC_API_KEY", "openai_api_key": "OPENAI_API_KEY"}
 _KEY_RE = re.compile(r"(sk-[A-Za-z0-9_\-]{8,}|key-[A-Za-z0-9_\-]{12,})")
 
 
 def secrets_file() -> Path:
-    return Path(os.environ.get("PMPREDICT_SECRETS_FILE", str(DEFAULT_SECRETS_FILE)))
+    env = os.environ.get("PMPREDICT_SECRETS_FILE")
+    if env:
+        return Path(env)
+    return LOCAL_SECRETS_FILE if LOCAL_SECRETS_FILE.exists() else DEFAULT_SECRETS_FILE
 
 
 def get_secret(name: str) -> str | None:
