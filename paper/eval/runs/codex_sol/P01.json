@@ -1,0 +1,1001 @@
+{
+ "id": "P01",
+ "group": "predict",
+ "provider": "codex_sol",
+ "backend": "codex",
+ "model": "gpt-6-sol",
+ "sessions": [
+  {
+   "session_id": "20261016-170815-c5a2",
+   "turns": [
+    {
+     "user": "Predict the 28-day compressive strength and flow table spread of an OPC mortar with w/b 0.40, s/b 2.0 and 0.5 % PCE superplasticiser. Briefly.",
+     "text": "I’ll run the two prediction models using the stated mix and report their uncertainty ranges.\nAssuming natural sand, moist curing, and 50 mm cubes, the model predicts:\n\n- **28-day compressive strength:** **44.4 [27.9, 75.3] MPa**\n- **Flow table spread:** **184 [130, 241] mm**\n\nThe flow estimate is **order-of-magnitude guidance** because its model is weak. A published mortar measured **184 mm** ([DOI: 10.3390/fib11120109](https://doi.org/10.3390/fib11120109)), but its admixtures and sand ratio differ from yours. Verify the final mix experimentally.\n\nFiles: [predictions CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170815-c5a2/predictions_agent_mix.csv>) · [prediction figure](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170815-c5a2/predictions_agent_mix.png>) · [literature CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170815-c5a2/literature.csv>)\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "powder",
+        "query": "portland_cement"
+       },
+       "t": 19.11,
+       "result": {
+        "data": {
+         "classes": {
+          "powder": [
+           {
+            "material_class": "portland_cement",
+            "group": "opc",
+            "sg": 3.15,
+            "solid_content": null
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.02
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "admixture",
+        "query": "superplasticiser_pce"
+       },
+       "t": 19.15,
+       "result": {
+        "data": {
+         "classes": {
+          "admixture": [
+           {
+            "material_class": "superplasticiser_pce",
+            "group": "sp_pce",
+            "sg": 1.05,
+            "solid_content": 30
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "aggregate",
+        "query": "natural_sand"
+       },
+       "t": 19.17,
+       "result": {
+        "data": {
+         "classes": {
+          "aggregate": [
+           {
+            "material_class": "desert_sand",
+            "group": "natural_sand",
+            "sg": 2.65,
+            "solid_content": null
+           },
+           {
+            "material_class": "natural_sand",
+            "group": "natural_sand",
+            "sg": 2.65,
+            "solid_content": null
+           },
+           {
+            "material_class": "sea_sand",
+            "group": "natural_sand",
+            "sg": 2.65,
+            "solid_content": null
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.4,
+         "s_b": 2,
+         "binder": {
+          "portland_cement": 1
+         },
+         "sand_class": "natural_sand",
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.5
+         },
+         "conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "curing": "moist",
+          "is_3dcp": false
+         }
+        },
+        "targets": [
+         "compressive_strength",
+         "flow_table_spread"
+        ]
+       },
+       "t": 27.27,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "compressive_strength",
+           "name_ko": "압축강도",
+           "q10": 27.871091,
+           "q50": 44.437156,
+           "q90": 75.288022,
+           "unit": "MPa",
+           "model": "compressive_strength",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 47125,
+           "cv_r2": 0.533254
+          },
+          {
+           "target": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "q10": 129.987736,
+           "q50": 184.404982,
+           "q90": 240.705549,
+           "unit": "mm",
+           "model": "flow_table_spread",
+           "weak_model": true,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 1693,
+           "cv_r2": -0.027106
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-c5a2\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 0
+         },
+         "_elapsed_s": 2.54
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-c5a2\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-c5a2\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.56,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "retrieve_literature",
+       "input": {
+        "system_type": "mortar",
+        "targets": [
+         {
+          "quantity": "flow_table_spread",
+          "kind": "goal",
+          "goal": 184.4,
+          "unit": "mm"
+         }
+        ],
+        "n": 3
+       },
+       "t": 39.1,
+       "result": {
+        "data": {
+         "n_hits": 3,
+         "tiers": {
+          "exact": 0,
+          "near": 3
+         },
+         "hits": [
+          {
+           "tier": "near",
+           "score": 0.998,
+           "doi": "10.1016/j.jobe.2025.114485",
+           "title": "Feasibility of waste printed circuit board glass-fibre powder in 3D-printed cement mortar for structural applications",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "W0.4",
+           "system_type": "mortar",
+           "composition": "opc 0.91 / silica_fume 0.09; w/b 0.36; s/b 0.95; sp_pce 2.27%, accelerator 5.45%; fibre 25.94 vol%",
+           "measured": [
+            "flow_table_spread=184mm"
+           ]
+          },
+          {
+           "tier": "near",
+           "score": 0.998,
+           "doi": "10.3390/ma18173933",
+           "title": "Optimizing the Mixture Ratio of 3D-Printed Cementitious Materials Using Response Surface Methodology",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "SF-HPMC-0.23",
+           "system_type": "mortar",
+           "composition": "opc 0.69 / silica_fume 0.21 / ggbfs 0.10; w/b 43.50; s/b 103.45; sp_pce 0.25%, vma 0.23%, accelerator 0.20%; fibre 2.00 vol%",
+           "measured": [
+            "flow_table_spread=184mm"
+           ]
+          },
+          {
+           "tier": "near",
+           "score": 0.997,
+           "doi": "10.3390/fib11120109",
+           "title": "Mechanical Properties of 3D-Printed Carbon Fiber-Reinforced Cement Mortar",
+           "year": 2023,
+           "is_3dcp": 1,
+           "mix": "SP1.5-A6CF5",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.40; s/b 1.05; sp_pce 1.50%, accelerator 6.00%; fibre 5.00 vol%",
+           "measured": [
+            "flow_table_spread=184mm"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-c5a2\\literature.csv",
+         "_elapsed_s": 0.24
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-c5a2\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.25,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 159659,
+      "output_tokens": 931,
+      "cache_read_input_tokens": 122496
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 52.7
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:08:15"
+}

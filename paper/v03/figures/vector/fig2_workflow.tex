@@ -1,0 +1,93 @@
+% Figure 2 — a print-planning conversation as tool calls (vector, short labels only).
+\begin{tikzpicture}[
+  font=\sffamily\small, >=Latex, line cap=round, line join=round,
+  bar/.style={draw=black!55, line width=0.5pt, rounded corners=4pt, fill=#1, inner sep=0pt},
+  tool/.style={draw=orange!70!black, line width=0.7pt, rounded corners=3pt, fill=orange!28, inner sep=6pt, align=center, font=\sffamily\small\ttfamily, minimum height=2.3em},
+  stage/.style={font=\sffamily\bfseries\large, anchor=west},
+  lbl/.style={font=\sffamily\small, align=center},
+  arr/.style={->, line width=0.9pt, black!75},
+  agentarr/.style={->, line width=1.2pt, blue!55!black},
+  loop/.style={->, line width=0.9pt, black!75, rounded corners=5pt},
+]
+\definecolor{cA}{HTML}{BFD9F2}
+\definecolor{cT}{HTML}{FAD9B5}
+\def\W{17.0}
+% ------------------------------------------------ top and bottom bars
+\node[bar=cA, minimum width=\W cm, minimum height=0.8cm, anchor=north] (TOP) at (0,0) {};
+\node[font=\sffamily\bfseries\normalsize] at (TOP.center) {LLM agent};
+\node[bar=cT, minimum width=\W cm, minimum height=0.8cm, anchor=north] (BOT) at (0,-8.9) {};
+\node[font=\sffamily\bfseries\normalsize] at (BOT.center) {computational layer};
+% stage dividers and headings
+\draw[black!25, line width=0.5pt] (-2.4,-1.0) -- (-2.4,-8.7);
+\draw[black!25, line width=0.5pt] (3.6,-1.0) -- (3.6,-8.7);
+\node[stage] at (-8.4,-1.2) {Assess};
+\node[stage] at (-2.2,-1.2) {Design};
+\node[stage] at (3.8,-1.2) {Report};
+% ------------------------------------------------ Assess stage
+% printed wall with nozzle
+\begin{scope}[shift={(-6.4,-3.8)}]
+  \foreach \i in {0,...,4} { \draw[black!60, line width=0.5pt, fill=black!15, rounded corners=1.5pt] (-0.7,\i*0.22-0.1) rectangle (0.7,\i*0.22+0.1); }
+  \draw[black!60, line width=0.5pt, fill=black!30] (-0.22,1.1) rectangle (0.22,1.5);
+  \draw[black!60, line width=0.5pt, fill=black!30] (-0.12,1.0) -- (0.12,1.0) -- (0.06,1.1) -- (-0.06,1.1) -- cycle;
+  \draw[<->, black!70, line width=0.5pt] (-1.0,-0.1) -- (-1.0,0.98);
+  \node[lbl, anchor=south] at (0,1.6) {job};
+\end{scope}
+% rheometer (vane in a cup)
+\begin{scope}[shift={(-3.9,-3.25)}]
+  \draw[black!60, line width=0.5pt, fill=black!8] (-0.6,-0.5) rectangle (0.6,0.5);
+  \draw[black!70, line width=0.7pt] (0,0.9) -- (0,-0.3);
+  \draw[black!70, line width=0.7pt] (-0.3,-0.3) -- (0.3,-0.3); \draw[black!70, line width=0.7pt] (-0.3,-0.05) -- (0.3,-0.05);
+  \node[lbl, anchor=south] at (0,1.0) {material};
+\end{scope}
+\node[tool] (t1) at (-5.6,-5.2) {assess\_buildability};
+\draw[arr] (-6.4,-4.0) -- (t1.north west);
+\draw[arr] (-3.9,-3.85) -- (t1.north east);
+% traffic light
+\begin{scope}[shift={(-6.9,-7.0)}]
+  \draw[black!70, line width=0.5pt, fill=black!60, rounded corners=3pt] (-0.3,-0.75) rectangle (0.3,0.75);
+  \fill[black!25] (0,0.45) circle (0.17); \fill[black!25] (0,0) circle (0.17); \fill[green!60!black] (0,-0.45) circle (0.17);
+  \node[lbl, anchor=north] at (0,-0.85) {verdict};
+\end{scope}
+% cycle-time window bar
+\begin{scope}[shift={(-4.2,-7.0)}]
+  \draw[black!60, line width=0.5pt, fill=black!12] (-1.1,-0.14) rectangle (1.1,0.14);
+  \fill[green!55!black!60] (-0.4,-0.14) rectangle (0.5,0.14);
+  \draw[black!60, line width=0.5pt] (-1.1,-0.14) rectangle (1.1,0.14);
+  \node[lbl, anchor=north] at (0,-0.3) {cycle-time window};
+\end{scope}
+\draw[arr] (t1.south) ++(-1.3,0) -- (-6.9,-6.2);
+\draw[arr] (t1.south) ++(1.4,0) -- (-4.2,-6.8);
+% ------------------------------------------------ Design stage
+\node[tool] (t2) at (0.6,-5.2) {design\_for\_print\_job};
+\draw[arr] (t1.east) -- (t2.west);
+% funnel
+\begin{scope}[shift={(-0.9,-7.1)}]
+  \draw[black!60, line width=0.5pt, fill=black!15] (-0.7,0.55) -- (0.7,0.55) -- (0.12,-0.1) -- (0.12,-0.6) -- (-0.12,-0.6) -- (-0.12,-0.1) -- cycle;
+  \node[lbl, anchor=north] at (0,-0.7) {required rheology};
+\end{scope}
+% candidate dots
+\begin{scope}[shift={(2.0,-7.0)}]
+  \foreach \p in {(-0.45,0.35),(0,0.5),(0.45,0.3),(-0.3,-0.05),(0.2,0.05),(0.55,-0.2),(-0.1,-0.4),(0.35,-0.5)} { \fill[black!50] \p circle (2.4pt); }
+  \node[lbl, anchor=north] at (0.05,-0.65) {candidates};
+\end{scope}
+\draw[arr] (t2.south) ++(-0.9,0) -- (-0.9,-6.5);
+\draw[arr] (t2.south) ++(0.9,0) -- (2.0,-6.45);
+\draw[arr] (-0.05,-7.05) -- (1.35,-7.05);
+% re-assess loop back to the wall
+\draw[loop] (2.0,-7.9) -- (2.0,-8.5) -- (-8.45,-8.5) -- (-8.45,-4.2) -- (-7.2,-4.2);
+\node[font=\sffamily\small, anchor=south] at (-4.6,-8.5) {re-assess};
+% ------------------------------------------------ Report stage
+\node[tool] (t3) at (6.2,-5.2) {save\_report};
+\draw[arr] (t2.east) -- (t3.west);
+% document icon
+\begin{scope}[shift={(6.2,-7.1)}]
+  \draw[black!60, line width=0.5pt, fill=white] (-0.45,-0.6) -- (-0.45,0.6) -- (0.2,0.6) -- (0.45,0.35) -- (0.45,-0.6) -- cycle;
+  \draw[black!60, line width=0.5pt] (0.2,0.6) -- (0.2,0.35) -- (0.45,0.35);
+  \foreach \y in {0.1,-0.1,-0.3} { \draw[black!50, line width=0.6pt] (-0.25,\y) -- (0.25,\y); }
+\end{scope}
+\draw[arr] (t3.south) -- (6.2,-6.45);
+% ------------------------------------------------ agent arrows into the tool boxes
+\draw[agentarr] (-5.6,-0.8) -- (t1.north);
+\draw[agentarr] (0.6,-0.8) -- (t2.north);
+\draw[agentarr] (6.2,-0.8) -- (t3.north);
+\end{tikzpicture}

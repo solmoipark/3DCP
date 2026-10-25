@@ -1,0 +1,33 @@
+\begin{userbox}
+Predict the 28-day compressive strength and flow table spread of an OPC mortar with w/b 0.40, s/b 2.0 and 0.5 \% PCE superplasticiser. Briefly.
+\end{userbox}
+\begin{toolbox}{describe\_vocabulary, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{predict\_properties, 2.5 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"system_type": "mortar", "w_b": 0.4, "s_b": 2, "binder": {"portland_cement": 1}, "admixtures_pct": {"superplasticiser_pce": 0.5}, "sand_class": "natural_sand", "conditions": {"age_d": 28, "comparability_group": "comp_cube50", "curing": "moist", "is_3d ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{retrieve\_literature, 0.6 s}
+\begin{lstlisting}[style=argstyle]
+{"n": 2, "prefer_3dcp": false, "system_type": "mortar", "targets": [{"quantity": "flow_table_spread", "kind": "goal", "goal": 184.404982, "unit": "mm"}]}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll check the input conventions and predict both properties.\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Property & q50 [q10, q90] \\
+28-day compressive strength & \textbf{44.4 [27.9, 75.3] MPa} \\
+Fresh flow-table spread & \textbf{184.4 [130.0, 240.7] mm} \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+Assumed moist curing, \texttt{comp\_cube50}, natural sand, non-3DCP conditions, and PCE dosage by product mass relative to binder.\par
+\par
+Flow is \textbf{order-of-magnitude guidance} from a weak model. Published measurements deserve priority: mix W0.4 reports \textbf{184 mm}, but its composition differs substantially, so it does not validate this mix. Experimental verification is needed.\par
+\par
+Files: predictions CSV, figure, literature CSV.\par
+\par
+\end{agentbox}

@@ -1,0 +1,62 @@
+\begin{mcpbox}{Tool request (client $\rightarrow$ server)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "tool": "predict_properties",
+ "arguments": {
+  "mix": {
+   "system_type": "mortar",
+   "w_b": 0.5,
+   "s_b": 3,
+   "binder": {
+    "portland_cement": 0.8,
+    "natural_pozzolan": 0.2
+   },
+   "conditions": {
+    "age_d": 28,
+    "comparability_group": "comp_cube50",
+    "curing": "moist",
+    "is_3dcp": false
+   }
+  },
+  "targets": [
+   "compressive_strength"
+  ]
+ }
+}
+\end{lstlisting}
+\end{mcpbox}
+\begin{mcpbox}{Tool response (server $\rightarrow$ client, digest)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "summary": "1   --  31.8 MPa",
+ "predictions": [
+  {
+   "target": "compressive_strength",
+   "name_ko": "",
+   "q10": 19.4311,
+   "q50": 31.7849,
+   "q90": 56.185,
+   "unit": "MPa",
+   "model": "compressive_strength",
+   "weak_model": false,
+   "n_range_violations": 0,
+   "range_violations": [],
+   "n_train": 47125,
+   "cv_r2": 0.5333
+  }
+ ],
+ "warnings": [],
+ "conditions": {
+  "age_d": 28.0,
+  "comparability_group": "comp_cube50",
+  "rest_time_s": 0.0,
+  "is_3dcp": 0
+ },
+ "_elapsed_s": 0.22,
+ "artifacts": [
+  "predictions_agent_mix.csv",
+  "predictions_agent_mix.png"
+ ]
+}
+\end{lstlisting}
+\end{mcpbox}

@@ -1,0 +1,35 @@
+\begin{userbox}
+My mix per cubic metre is: cement 500 kg, fly ash (class F) 150 kg, river sand 1300 kg, water 227 kg, PCE 3.25 kg. Predict 28-day compressive strength and drying shrinkage.
+\end{userbox}
+\begin{toolbox}{describe\_vocabulary, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{build\_mix\_spec, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"system_type": "mortar", "w_b": 0.34923076923076923, "s_b": 2, "binder": {"portland_cement": 0.7692307692307693, "fly_ash_class_F": 0.23076923076923078}, "sand_class": "natural_sand", "admixtures_pct": {"superplasticiser_pce": 0.5}, "conditions": {"ag ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{predict\_properties, 2.3 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"system_type": "mortar", "w_b": 0.34923076923076923, "s_b": 2, "binder": {"portland_cement": 0.7692307692307693, "fly_ash_class_F": 0.23076923076923078}, "sand_class": "natural_sand", "admixtures_pct": {"superplasticiser_pce": 0.5}, "conditions": {"ag ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll check the model's input conventions and predict both properties, stating any assumptions needed for curing, specimen type, and PCE dosage.\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Property at 28 days & q50 [q10, q90] \\
+Compressive strength & \textbf{49.7 [31.2, 75.0] MPa} \\
+Drying shrinkage & \textbf{854 [237, 1,577] microstrain} \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+Brackets show the central 80\% prediction interval. Neither prediction exceeded the model's training ranges.\par
+\par
+Assumptions: ordinary Portland cement, river sand classified as \texttt{natural\_sand}, conventional mortar, \texttt{comp\_cube50} specimens, and moist curing at 20  degC / 95\% RH. Your proportions give \textbf{w/b = 0.349}, \textbf{sand/binder = 2.00}, and \textbf{PCE = 0.50\% of binder by product mass}; no additional water correction was made for the PCE.\par
+\par
+Drying shrinkage was evaluated with the age input set to 28 days; drying exposure and specimen details were not specified, so it is not a test-protocol-specific estimate. Both predictions are literature-based correlations and need experimental verification.\par
+\par
+Files: prediction CSV, prediction figure, mix specification.\par
+\par
+\end{agentbox}

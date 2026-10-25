@@ -1,0 +1,28 @@
+% One print-planning conversation as a sequence of tool calls (TikZ).
+\begin{tikzpicture}[font=\small, >=Latex, x=1cm, y=1cm,
+  actor/.style={draw, rounded corners=2pt, fill=white, inner sep=4pt, align=center, minimum width=2.2cm},
+  msg/.style={->, thick},
+  ret/.style={->, thick, dashed, black!60},
+  note/.style={font=\footnotesize, fill=yellow!15, draw=black!30, inner sep=3pt, align=left},
+]
+\node[actor] (U) at (0,0) {User};
+\node[actor] (A) at (3.6,0) {LLM (agent core)};
+\node[actor] (B) at (7.6,0) {\texttt{assess\_buildability}};
+\node[actor] (D) at (11.6,0) {\texttt{design\_for\_print\_job}};
+\node[actor] (R) at (15.0,0) {\texttt{save\_report}};
+\foreach \n in {U,A,B,D,R} \draw[black!40] (\n.south) -- ++(0,-9.6);
+\draw[msg] (0,-0.8) -- (3.6,-0.8) node[midway, above, font=\footnotesize] {job + material in words};
+\node[note, text width=3.0cm] at (3.6,-1.55) {parse job, material; fill unstated fields from printable-run medians; state defaults};
+\draw[msg] (3.6,-2.3) -- (7.6,-2.3) node[midway, above, font=\footnotesize] {\texttt{job}, \texttt{material}};
+\node[note, text width=3.2cm] at (7.6,-3.0) {$\tau_s(t)=\tau_{s,0}+A_{\mathrm{thix}}t$; $n_{\max}$ (plastic, buckling); open time; cycle-time window; $R_{\mathrm{fail}}$ ECDF; similar prints};
+\draw[ret] (7.6,-3.8) -- (3.6,-3.8) node[midway, above, font=\footnotesize] {verdict JSON + figures};
+\draw[ret] (3.6,-4.3) -- (0,-4.3) node[midway, above, font=\footnotesize] {verdict, window, alternatives};
+\draw[msg] (0,-5.0) -- (3.6,-5.0) node[midway, above, font=\footnotesize] {``design a mix for this job''};
+\draw[msg] (3.6,-5.6) -- (11.6,-5.6) node[midway, above, font=\footnotesize] {\texttt{job}, \texttt{space}, \texttt{extra\_targets}};
+\node[note, text width=3.4cm] at (11.6,-6.45) {required $\tau_s$ at rest $=$ print time $\rightarrow$ DesignSpec; Sobol sweep $\rightarrow$ probabilistic screening $\rightarrow$ DE refinement $\rightarrow$ per-candidate re-assessment};
+\draw[ret] (11.6,-7.3) -- (3.6,-7.3) node[midway, above, font=\footnotesize] {candidates, analogues, Pareto};
+\draw[ret] (3.6,-7.8) -- (0,-7.8) node[midway, above, font=\footnotesize] {ranked mixes with $p_{\mathrm{feasible}}$};
+\draw[msg] (0,-8.5) -- (3.6,-8.5) node[midway, above, font=\footnotesize] {``save a report''};
+\draw[msg] (3.6,-9.0) -- (15.0,-9.0) node[midway, above, font=\footnotesize] {title, markdown, tables, artifacts};
+\draw[ret] (15.0,-9.4) -- (0,-9.4) node[pos=0.12, above, font=\footnotesize] {report.md, report.xlsx};
+\end{tikzpicture}

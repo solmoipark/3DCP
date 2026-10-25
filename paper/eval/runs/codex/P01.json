@@ -1,0 +1,205 @@
+{
+ "id": "P01",
+ "group": "predict",
+ "provider": "codex",
+ "model": "",
+ "sessions": [
+  {
+   "session_id": "20261016-165551-93b7",
+   "turns": [
+    {
+     "user": "Predict the 28-day compressive strength and flow table spread of an OPC mortar with w/b 0.40, s/b 2.0 and 0.5 % PCE superplasticiser. Briefly.",
+     "text": "I’ll check the input conventions and predict both properties.\n| Property | q50 [q10, q90] |\n|---|---:|\n| 28-day compressive strength | **44.4 [27.9, 75.3] MPa** |\n| Fresh flow-table spread | **184.4 [130.0, 240.7] mm** |\n\nAssumed moist curing, `comp_cube50`, natural sand, non-3DCP conditions, and PCE dosage by product mass relative to binder.\n\nFlow is **order-of-magnitude guidance** from a weak model. Published measurements deserve priority: [mix W0.4](https://doi.org/10.1016/j.jobe.2025.114485) reports **184 mm**, but its composition differs substantially, so it does not validate this mix. Experimental verification is needed.\n\nFiles: [predictions CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-165551-93b7/predictions_agent_mix.csv>), [figure](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-165551-93b7/predictions_agent_mix.png>), [literature CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-165551-93b7/literature.csv>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {},
+       "t": 11.55,
+       "result": {
+        "data": {
+         "text": "{\"classes\": {\"powder\": [{\"material_class\": \"anhydrite\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"basalt_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"belite_calcium_sulfoaluminate\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"belite_rich_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"biochar\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"bottom_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"calcined_clay\", \"group\": \"calcined_clay\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"calcium_aluminate_cement\", \"group\": \"cac\", \"sg\": 3.2, \"solid_content\": null}, {\"material_class\": \"calcium_hydroxide\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"calcium_sulfate_hemihydrate\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"calcium_sulfoaluminate_cement\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"carbide_slag\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"carbon_black\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"ceramic_waste_powder\", \"group\": \"recycled_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"coal_gangue\", \"group\": \"industrial_residue\", \"sg\": 2.8, \"solid_content\": null}, {\"material_class\": \"copper_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"diatomaceous_earth\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"dolomite_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"expansive_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"ferronickel_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_C\", \"group\": \"fly_ash_c\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_F\", \"group\": \"fly_ash_f\", \"sg\": 2.3, \"solid_content\": null}, {\"material_class\": \"ggbfs\", \"group\": \"ggbfs\", \"sg\": 2.9, \"solid_content\": null}, {\"material_class\": \"glass_powder\", \"group\": \"glass_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"granite_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"gypsum\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"ladle_furnace_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"limestone_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"magnesium_oxychloride_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"magnesium_phosphate_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"marble_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"metakaolin\", \"group\": \"metakaolin\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"municipal_solid_waste_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"natural_pozzolan\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"oil_well_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"palm_oil_fuel_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"phosphorus_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"portland_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_composite_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_limestone_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"quartz_powder\", \"group\": \"quartz_powder"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.4,
+         "s_b": 2,
+         "binder": {
+          "portland_cement": 1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.5
+         },
+         "sand_class": "natural_sand",
+         "conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "curing": "moist",
+          "is_3dcp": false
+         }
+        },
+        "targets": [
+         "compressive_strength",
+         "flow_table_spread"
+        ]
+       },
+       "t": 15.94,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "compressive_strength",
+           "name_ko": "압축강도",
+           "q10": 27.871091,
+           "q50": 44.437156,
+           "q90": 75.288022,
+           "unit": "MPa",
+           "model": "compressive_strength",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 47125,
+           "cv_r2": 0.533254
+          },
+          {
+           "target": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "q10": 129.987736,
+           "q50": 184.404982,
+           "q90": 240.705549,
+           "unit": "mm",
+           "model": "flow_table_spread",
+           "weak_model": true,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 1693,
+           "cv_r2": -0.027106
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165551-93b7\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 0
+         },
+         "_elapsed_s": 2.49
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165551-93b7\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165551-93b7\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.5,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "retrieve_literature",
+       "input": {
+        "n": 2,
+        "prefer_3dcp": false,
+        "system_type": "mortar",
+        "targets": [
+         {
+          "quantity": "flow_table_spread",
+          "kind": "goal",
+          "goal": 184.404982,
+          "unit": "mm"
+         }
+        ]
+       },
+       "t": 22.85,
+       "result": {
+        "data": {
+         "n_hits": 2,
+         "tiers": {
+          "exact": 0,
+          "near": 2
+         },
+         "hits": [
+          {
+           "tier": "near",
+           "score": 0.998,
+           "doi": "10.1016/j.jobe.2025.114485",
+           "title": "Feasibility of waste printed circuit board glass-fibre powder in 3D-printed cement mortar for structural applications",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "W0.4",
+           "system_type": "mortar",
+           "composition": "opc 0.91 / silica_fume 0.09; w/b 0.36; s/b 0.95; sp_pce 2.27%, accelerator 5.45%; fibre 25.94 vol%",
+           "measured": [
+            "flow_table_spread=184mm"
+           ]
+          },
+          {
+           "tier": "near",
+           "score": 0.998,
+           "doi": "10.3390/ma18173933",
+           "title": "Optimizing the Mixture Ratio of 3D-Printed Cementitious Materials Using Response Surface Methodology",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "SF-HPMC-0.23",
+           "system_type": "mortar",
+           "composition": "opc 0.69 / silica_fume 0.21 / ggbfs 0.10; w/b 43.50; s/b 103.45; sp_pce 0.25%, vma 0.23%, accelerator 0.20%; fibre 2.00 vol%",
+           "measured": [
+            "flow_table_spread=184mm"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165551-93b7\\literature.csv",
+         "_elapsed_s": 0.61
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165551-93b7\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.62,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 153513,
+      "output_tokens": 548,
+      "cache_read_input_tokens": 118656
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 36.2
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T16:55:51"
+}

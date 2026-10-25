@@ -1,0 +1,25 @@
+\begin{mcpbox}{Tool request (client $\rightarrow$ server)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "tool": "assess_buildability",
+ "arguments": {
+  "job": {
+   "object_type": "wall",
+   "target_height_mm": 500,
+   "footprint_mm": 2000,
+   "nozzle_d_mm": 25,
+   "print_speed_mm_s": 40
+  },
+  "material": {
+   "tau_s0_Pa": 4000,
+   "athix_Pa_s": 1
+  }
+ }
+}
+\end{lstlisting}
+\end{mcpbox}
+\begin{mcpbox}{Tool response (server $\rightarrow$ client, digest)}
+\begin{lstlisting}[style=jsonstyle]
+{}
+\end{lstlisting}
+\end{mcpbox}

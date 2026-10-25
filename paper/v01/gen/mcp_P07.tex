@@ -1,0 +1,84 @@
+\begin{mcpbox}{Tool request (client $\rightarrow$ server)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "tool": "flow_curve",
+ "arguments": {
+  "mix": {
+   "name": "OPC90_SF10_PCE06",
+   "system_type": "mortar",
+   "w_b": 0.35,
+   "s_b": 1.5,
+   "binder": {
+    "portland_cement": 0.9,
+    "silica_fume": 0.1
+   },
+   "admixtures_pct": {
+    "superplasticiser_pce": 0.6
+   },
+   "conditions": {
+    "is_3dcp": true,
+    "rest_time_s": 0
+   }
+  },
+  "max_rate_1s": 100,
+  "n_analogues": 3
+ }
+}
+\end{lstlisting}
+\end{mcpbox}
+\begin{mcpbox}{Tool response (server $\rightarrow$ client, digest)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "summary": "tau? 234 Pa, ? 6.4 Pa.s",
+ "tau0_Pa": {
+  "q10": 16.0692,
+  "q50": 234.446,
+  "q90": 843.1133,
+  "weak": false
+ },
+ "mu_Pa_s": {
+  "q10": 0.8396,
+  "q50": 6.4256,
+  "q90": 33.1342,
+  "weak": false
+ },
+ "curve_points": [
+  {
+   "shear_rate": 0.0,
+   "q10": 16.6733,
+   "q50": 219.0497,
+   "q90": 848.623
+  },
+  {
+   "shear_rate": 0.9862,
+   "q10": 26.5495,
+   "q50": 235.4808,
+   "q90": 865.8423
+  },
+  "..."
+ ],
+ "analogues": [
+  {
+   "doi": "10.1016/j.cemconcomp.2021.104158",
+   "mix": "M5",
+   "distance": 0.1115,
+   "n_points": 6
+  },
+  {
+   "doi": "10.1016/j.cemconcomp.2021.104158",
+   "mix": "M6",
+   "distance": 0.1006,
+   "n_points": 6
+  },
+  "..."
+ ],
+ "warnings": [],
+ "note": "   x2.1,   86 % ( 137  OOF): . ",
+ "_elapsed_s": 2.07,
+ "artifacts": [
+  "flow_curve_OPC90_SF10_PCE06.png",
+  "flow_curve_OPC90_SF10_PCE06.csv"
+ ]
+}
+\end{lstlisting}
+\end{mcpbox}

@@ -1,0 +1,81 @@
+\begin{mcpbox}{Tool request (client $\rightarrow$ server)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "tool": "predict_properties",
+ "arguments": {
+  "mix": {
+   "system_type": "mortar",
+   "w_b": 0.34923076923076923,
+   "s_b": 2,
+   "binder": {
+    "portland_cement": 0.7692307692307693,
+    "fly_ash_class_F": 0.23076923076923078
+   },
+   "sand_class": "natural_sand",
+   "admixtures_pct": {
+    "superplasticiser_pce": 0.5
+   },
+   "conditions": {
+    "age_d": 28,
+    "comparability_group": "comp_cube50",
+    "curing": "moist",
+    "is_3dcp": false
+   }
+  },
+  "targets": [
+   "compressive_strength",
+   "drying_shrinkage"
+  ]
+ }
+}
+\end{lstlisting}
+\end{mcpbox}
+\begin{mcpbox}{Tool response (server $\rightarrow$ client, digest)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "summary": "2   --  49.7 MPa;  854 microstrain",
+ "predictions": [
+  {
+   "target": "compressive_strength",
+   "name_ko": "",
+   "q10": 31.1904,
+   "q50": 49.7468,
+   "q90": 75.0421,
+   "unit": "MPa",
+   "model": "compressive_strength",
+   "weak_model": false,
+   "n_range_violations": 0,
+   "range_violations": [],
+   "n_train": 47125,
+   "cv_r2": 0.5333
+  },
+  {
+   "target": "drying_shrinkage",
+   "name_ko": "",
+   "q10": 237.3796,
+   "q50": 854.4035,
+   "q90": 1576.7951,
+   "unit": "microstrain",
+   "model": "drying_shrinkage",
+   "weak_model": false,
+   "n_range_violations": 0,
+   "range_violations": [],
+   "n_train": 18236,
+   "cv_r2": 0.1733
+  }
+ ],
+ "warnings": [],
+ "conditions": {
+  "age_d": 28.0,
+  "comparability_group": "comp_cube50",
+  "rest_time_s": 0.0,
+  "is_3dcp": 0
+ },
+ "_elapsed_s": 0.35,
+ "artifacts": [
+  "predictions_agent_mix.csv",
+  "predictions_agent_mix.png"
+ ]
+}
+\end{lstlisting}
+\end{mcpbox}

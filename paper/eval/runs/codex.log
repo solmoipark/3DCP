@@ -1,0 +1,70 @@
+== P01 [predict]
+   turn done 36.2 s, 3 calls
+== P02 [predict]
+   turn done 38.9 s, 5 calls
+== P03 [predict]
+   turn done 27.1 s, 2 calls
+== P04 [predict]
+   turn done 28.3 s, 2 calls
+== P05 [predict]
+   turn done 31.5 s, 3 calls
+== P06 [predict]
+   turn done 70.8 s, 2 calls
+== P07 [curves]
+   turn done 159.1 s, 10 calls
+== P08 [predict]
+   turn done 25.1 s, 2 calls
+   turn done 0.1 s, 0 calls
+== L01 [retrieve]
+   turn done 89.1 s, 12 calls
+== L02 [retrieve]
+   turn done 81.0 s, 8 calls
+== L03 [retrieve]
+   turn done 88.1 s, 14 calls
+== L04 [retrieve]
+   turn done 69.3 s, 11 calls
+== D01 [design]
+   turn done 88.6 s, 4 calls
+== D02 [design]
+   turn done 65.2 s, 2 calls
+== D03 [design]
+   turn done 19.1 s, 0 calls
+== B01 [buildability]
+   turn done 31.1 s, 1 calls
+== B02 [buildability]
+   turn done 34.6 s, 1 calls
+== B03 [buildability]
+   turn done 39.9 s, 2 calls
+== B04 [buildability]
+   turn done 47.4 s, 3 calls
+== B05 [buildability]
+   turn done 60.1 s, 7 calls
+== B06 [buildability]
+   turn done 28.6 s, 1 calls
+== J01 [job_design]
+   turn done 105.8 s, 5 calls
+== J02 [job_design]
+   turn done 32.4 s, 1 calls
+   turn done 0.1 s, 0 calls
+   turn done 0.1 s, 0 calls
+== S01 [sql]
+   turn done 19.5 s, 2 calls
+== S02 [sql]
+   turn done 19.1 s, 2 calls
+== S03 [sql]
+   turn done 20.6 s, 2 calls
+== S04 [sql]
+   turn done 18.6 s, 2 calls
+== S05 [sql]
+   turn done 30.1 s, 4 calls
+== S06 [sql_guard]
+   turn done 16.4 s, 0 calls
+== H01 [hallucination]
+   turn done 24.2 s, 2 calls
+== H02 [hallucination]
+   turn done 40.9 s, 6 calls
+== H03 [hallucination]
+   turn done 27.5 s, 2 calls
+== M01 [memory]
+   turn done 16.6 s, 1 calls
+   turn done 24.4 s, 2 calls

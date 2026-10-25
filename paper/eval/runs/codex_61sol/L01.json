@@ -1,0 +1,249 @@
+{
+ "id": "L01",
+ "group": "retrieve",
+ "provider": "codex_61sol",
+ "backend": "codex",
+ "model": "gpt-6.1-sol",
+ "sessions": [
+  {
+   "session_id": "20261017-015510-780a",
+   "turns": [
+    {
+     "user": "Find 10 published mixes with 28-day compressive strength of at least 40 MPa and a static yield stress between 1 and 4 kPa; prefer 3DCP studies.",
+     "text": "I’ll search for published mixes with both properties reported, prioritizing 3DCP studies.\nFound **10 database matches**, all tagged as **3DCP studies**, with reported 28-day compressive strength ≥40 MPa and at least one static yield stress measurement within 1–4 kPa.\n\n| Published mix | Study | w/b | s/b | 28-day strength (MPa) | Static yield stress (kPa) |\n|---|---|---:|---:|---:|---:|\n| REF | [Cement setting mechanisms, 2024](https://doi.org/10.1007/s41062-024-01788-9) | 0.43 | 2.00 | 41.3 | 1.26 |\n| REF_3DPC | [Cement setting mechanisms, 2024](https://doi.org/10.1007/s41062-024-01788-9) | 0.32 | 1.41 | 46.7 | 1.06 |\n| 3DPC mixture | [Plastic shrinkage and cracking, 2023](https://doi.org/10.1016/j.addma.2023.103722) | 0.35 | 1.00 | 55.7 | 1.56 |\n| M7 | [Printed permanent formwork, 2021](https://doi.org/10.1016/j.cemconcomp.2021.104039) | 0.27 | 0.80 | 40.0 | 2.62* |\n| Mixture A | [Fuller–Thompson mix design, 2018](https://doi.org/10.1016/j.conbuildmat.2017.12.112) | 0.14 | 0.50 | 49.7 | 3.35 |\n| Mixture B | [Fuller–Thompson mix design, 2018](https://doi.org/10.1016/j.conbuildmat.2017.12.112) | 0.14 | 0.50 | 42.0 | 2.41 |\n| Mixture C | [Fuller–Thompson mix design, 2018](https://doi.org/10.1016/j.conbuildmat.2017.12.112) | 0.14 | 0.50 | 51.0 | 2.11 |\n| TS-100 | [Spray-based tunnel slag concrete, 2025](https://doi.org/10.1016/j.conbuildmat.2025.140392) | 0.34 | 0.60 | 77.6 | 1.46 |\n| RFA-50 | [Recycled fine aggregate mixes, 2025](https://doi.org/10.1016/j.conbuildmat.2025.144187) | 0.40 | 1.50 | 44.6 | 1.76 |\n| L0N100 | [Near-nozzle binder–aggregate mixing, 2026](https://doi.org/10.1016/j.conbuildmat.2026.145990) | 0.38 | 3.41 | 72.6 | 3.59 |\n\nHere, w/b and s/b are water/binder and sand/binder mass ratios. These are **literature database measurements, not predictions**.\n\n*For M7, the database also records static yield stresses of 0.863 and 0.943 kPa. Confirm the applicable rest time and test protocol before selecting it. Across studies, specimen, curing and rheology protocols require checking for direct comparison.*\n\n[Download results CSV](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261017-015510-780a/literature.csv>)\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "retrieve_literature",
+       "input": {
+        "n": 10,
+        "prefer_3dcp": true,
+        "targets": [
+         {
+          "quantity": "compressive_strength",
+          "age_d": 28,
+          "kind": "ge",
+          "lo": 40,
+          "unit": "MPa"
+         },
+         {
+          "quantity": "static_yield_stress",
+          "kind": "range",
+          "lo": 1,
+          "hi": 4,
+          "unit": "kPa"
+         }
+        ]
+       },
+       "t": 8.24,
+       "result": {
+        "data": {
+         "n_hits": 10,
+         "tiers": {
+          "exact": 10,
+          "near": 0
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1007/s41062-024-01788-9",
+           "title": "Investigating inherent cement setting mechanisms to improve the constructability performance of extrusion-based 3D concr",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "REF",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.43; s/b 2.00; sp_pce 0.47%",
+           "measured": [
+            "compressive_strength=41.3MPa@28d",
+            "static_yield_stress=1.26e+03Pa",
+            "compressive_strength=16MPa@1d",
+            "compressive_strength=22MPa@2d",
+            "compressive_strength=28MPa@3d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.addma.2023.103722",
+           "title": "Advanced measurement techniques for plastic shrinkage and cracking in 3D-printed concrete utilising distributed optical ",
+           "year": 2023,
+           "is_3dcp": 1,
+           "mix": "3DPC mixture",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.35; s/b 1.00; sp_pce 0.05%, vma 0.06%",
+           "measured": [
+            "compressive_strength=25.6MPa@1d",
+            "compressive_strength=47.2MPa@7d",
+            "compressive_strength=55.7MPa@28d",
+            "static_yield_stress=1.56e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.cemconcomp.2021.104039",
+           "title": "3D concrete printing of permanent formwork for concrete column construction",
+           "year": 2021,
+           "is_3dcp": 1,
+           "mix": "M7",
+           "system_type": "mortar",
+           "composition": "opc 0.82 / silica_fume 0.15 / csa 0.03; w/b 0.27; s/b 0.80; sp_pce 0.10%, vma 0.06%; fibre 8.90 vol%",
+           "measured": [
+            "compressive_strength=40MPa@28d",
+            "static_yield_stress=2.62e+03Pa",
+            "static_yield_stress=2.62e+03Pa",
+            "static_yield_stress=863Pa",
+            "static_yield_stress=943Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "title": "Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model",
+           "year": 2018,
+           "is_3dcp": 1,
+           "mix": "Mixture A",
+           "system_type": "mortar",
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50",
+           "measured": [
+            "compressive_strength=49.7MPa@28d",
+            "static_yield_stress=3.35e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2025.140392",
+           "title": "Spray-based 3D printed tunnel slag concrete: Evaluation for printability and mechanical performance",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "TS-100",
+           "system_type": "mortar",
+           "composition": "opc 0.90 / fly_ash_f 0.05 / silica_fume 0.05; w/b 0.34; s/b 0.60",
+           "measured": [
+            "compressive_strength=59.1MPa@7d",
+            "compressive_strength=77.6MPa@28d",
+            "static_yield_stress=1.46e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2025.144187",
+           "title": "Printability, rheology, and mechanical performance of recycled fine aggregate incorporated 3D concrete printing mixes",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "RFA-50",
+           "system_type": "mortar",
+           "composition": "opc 0.55 / other_powder 0.45; w/b 0.40; s/b 1.50",
+           "measured": [
+            "compressive_strength=30.2MPa@3d",
+            "compressive_strength=44.6MPa@28d",
+            "static_yield_stress=1.76e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2026.145990",
+           "title": "Functional grading of 3D printed concrete via near nozzle binder-aggregate mixing: properties of the transition region b",
+           "year": 2026,
+           "is_3dcp": 1,
+           "mix": "L0N100",
+           "system_type": "mortar",
+           "composition": "opc 0.86 / silica_fume 0.10 / limestone_powder 0.03; w/b 0.38; s/b 3.41; other_admix 0.69%",
+           "measured": [
+            "compressive_strength=72.6MPa@28d",
+            "static_yield_stress=3.59e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.72,
+           "doi": "10.1007/s41062-024-01788-9",
+           "title": "Investigating inherent cement setting mechanisms to improve the constructability performance of extrusion-based 3D concr",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "REF_3DPC",
+           "system_type": "mortar",
+           "composition": "opc 0.70 / fly_ash_f 0.20 / silica_fume 0.10; w/b 0.32; s/b 1.41; sp_pce 0.85%",
+           "measured": [
+            "compressive_strength=46.7MPa@28d",
+            "static_yield_stress=1.06e+03Pa",
+            "compressive_strength=16MPa@1d",
+            "compressive_strength=17.5MPa@2d",
+            "compressive_strength=19MPa@3d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.72,
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "title": "Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model",
+           "year": 2018,
+           "is_3dcp": 1,
+           "mix": "Mixture B",
+           "system_type": "mortar",
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50",
+           "measured": [
+            "static_yield_stress=2.41e+03Pa",
+            "compressive_strength=27MPa@7d",
+            "compressive_strength=35MPa@14d",
+            "compressive_strength=38.5MPa@21d",
+            "compressive_strength=42MPa@28d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.432,
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "title": "Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model",
+           "year": 2018,
+           "is_3dcp": 1,
+           "mix": "Mixture C",
+           "system_type": "mortar",
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50",
+           "measured": [
+            "static_yield_stress=2.11e+03Pa",
+            "compressive_strength=37MPa@7d",
+            "compressive_strength=39MPa@14d",
+            "compressive_strength=45MPa@21d",
+            "compressive_strength=51MPa@28d"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015510-780a\\literature.csv",
+         "_elapsed_s": 1.63
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015510-780a\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.64,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 89750,
+      "output_tokens": 1122,
+      "cache_read_input_tokens": 68736
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 30.2
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:55:10"
+}

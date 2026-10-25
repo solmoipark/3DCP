@@ -1,0 +1,48 @@
+% System architecture (TikZ). Included from main.tex inside a figure environment (resized to \textwidth).
+\begin{tikzpicture}[
+  font=\footnotesize, >=Latex,
+  layer/.style={draw=black!50, rounded corners=3pt, fill=#1, inner sep=0pt},
+  box/.style={draw=black!65, rounded corners=2pt, fill=white, inner sep=3pt, align=center, text width=#1, minimum height=2.6em},
+  lab/.style={font=\footnotesize\bfseries, anchor=north west, inner sep=3pt},
+  arr/.style={->, thick, black!65},
+]
+\def\W{17.2}
+% ---------------- interfaces (y: 0)
+\node[layer=blue!6, minimum width=\W cm, minimum height=1.75cm, anchor=north] (L1) at (0,0) {};
+\node[lab] at (L1.north west) {Interfaces};
+\node[box=3.3cm] (ui) at (-6.3,-1.05) {Chat web app\\(Streamlit)};
+\node[box=3.3cm] (cli) at (-2.1,-1.05) {Terminal REPL\\(interactive or one-shot)};
+\node[box=3.3cm] (mcpc) at (2.1,-1.05) {External MCP clients\\(Claude Code, Codex, Cursor)};
+\node[box=3.3cm] (bundle) at (6.3,-1.05) {Student bundle\\(zip with models, data, launchers)};
+% ---------------- agent core (y: -2.2)
+\node[layer=orange!8, minimum width=\W cm, minimum height=2.9cm, anchor=north] (L2) at (0,-2.15) {};
+\node[lab] at (L2.north west) {Agent core (3DCP-Agent)};
+\node[box=3.3cm, minimum height=4.2em] (prompt) at (-6.3,-3.75) {System prompt with live context: model table, vocabulary, guardrails, notes, session summary};
+\node[box=3.3cm, minimum height=4.2em] (loop) at (-2.1,-3.75) {Tool loop: $\leq$12 iterations per turn, error self-correction ($\leq$2 retries)};
+\node[box=3.3cm, minimum height=4.2em] (mem) at (2.1,-3.75) {Session memory: transcript, rolling summary, durable notes, artifacts};
+\node[box=3.3cm, minimum height=4.2em] (prov) at (6.3,-3.75) {LLM backends: Anthropic API, OpenAI API, Claude Agent SDK, Codex CLI (MCP)};
+% ---------------- registry (y: -5.1)
+\node[layer=green!7, minimum width=\W cm, minimum height=1.75cm, anchor=north] (L3) at (0,-5.45) {};
+\node[lab] at (L3.north west) {Tool registry (\nnTools{} tools, defined once)};
+\node[box=7.2cm] (reg) at (-4.2,-6.5) {name $\cdot$ description $\cdot$ JSON schema $\cdot$ function $\cdot$ flags (read-only, slow, timeout)};
+\node[box=7.2cm] (proj) at (4.2,-6.5) {projections: Anthropic tools $\cdot$ OpenAI functions $\cdot$ MCP \texttt{tools/list}};
+% ---------------- computational layer (y: -7.25)
+\node[layer=red!5, minimum width=\W cm, minimum height=2.9cm, anchor=north] (L4) at (0,-7.6) {};
+\node[lab] at (L4.north west) {Computational layer (prediction, design, buildability)};
+\node[box=2.9cm, minimum height=4.2em] (models) at (-6.9,-9.2) {\nnModels{} property models (LightGBM, quantiles, conformal)};
+\node[box=2.9cm, minimum height=4.2em] (design) at (-3.45,-9.2) {Inverse design (Sobol, screening, NSGA sort, DE)};
+\node[box=2.9cm, minimum height=4.2em] (build) at (0,-9.2) {Buildability physics (Roussel, Perrot, Suiker) + calibration};
+\node[box=2.9cm, minimum height=4.2em] (retr) at (3.45,-9.2) {Literature retrieval (exact / near tiers)};
+\node[box=2.9cm, minimum height=4.2em] (sql) at (6.9,-9.2) {Read-only SQL (authorizer-guarded), reports, notes};
+% ---------------- data layer (y: -10.2)
+\node[layer=gray!10, minimum width=\W cm, minimum height=1.75cm, anchor=north] (L5) at (0,-10.9) {};
+\node[lab] at (L5.north west) {Data layer};
+\node[box=7.2cm] (db) at (-4.2,-11.95) {Literature DB: \npapers{} papers, \nmixes{} mixes, \nmeasurements{} measurements, \ncurves{} curves};
+\node[box=7.2cm] (pdb) at (4.2,-11.95) {Print-process DB: \nprintRuns{} print runs, \nprintPapers{} papers, \nprotocolRows{} protocol rows};
+% ---------------- arrows
+\draw[arr] (L1.south) -- (L2.north);
+\draw[arr] (L2.south) -- (L3.north);
+\draw[arr] (L3.south) -- (L4.north);
+\draw[arr] (L4.south) -- (L5.north);
+\draw[arr, dashed] (mcpc.south) -- ++(0,-0.22) -| ($(L2.east)+(0.3,0)$) |- ($(proj.east)+(0,0.1)$);
+\end{tikzpicture}

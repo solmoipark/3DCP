@@ -1,0 +1,68 @@
+\begin{userbox}
+For a 3DCP mortar with w/b 0.35, s/b 1.5, 90 \% OPC + 10 \% silica fume and 0.6 \% PCE, plot the Bingham flow curve up to 100 1/s and the structuration curve over 45 minutes of rest, and compare both with measured literature curves.
+\end{userbox}
+\begin{toolbox}{describe\_vocabulary, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{describe\_vocabulary, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"query": "superplasticiser_pce"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{build\_mix\_spec, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"name": "OPC90_SF10_PCE06", "system_type": "mortar", "w_b": 0.35, "s_b": 1.5, "binder": {"portland_cement": 0.9, "silica_fume": 0.1}, "admixtures_pct": {"superplasticiser_pce": 0.6}, "conditions": {"is_3dcp": true, "rest_time_s": 0}}}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{flow\_curve, 4.4 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"name": "OPC90_SF10_PCE06", "system_type": "mortar", "w_b": 0.35, "s_b": 1.5, "binder": {"portland_cement": 0.9, "silica_fume": 0.1}, "admixtures_pct": {"superplasticiser_pce": 0.6}, "conditions": {"is_3dcp": true, "rest_time_s": 0}}, "max_rate_1s": 1 ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{structuration\_curve, 0.8 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"name": "OPC90_SF10_PCE06", "system_type": "mortar", "w_b": 0.35, "s_b": 1.5, "binder": {"portland_cement": 0.9, "silica_fume": 0.1}, "admixtures_pct": {"superplasticiser_pce": 0.6}, "conditions": {"is_3dcp": true, "rest_time_s": 0}}, "max_rest_min":  ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{describe\_schema, 0.7 s}
+\begin{lstlisting}[style=argstyle]
+{"db": "master"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{describe\_schema, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"table": "curves"}
+\end{lstlisting}
+\end{toolbox}
+\toolmore{3}
+\begin{agentbox}
+I'll check the mix conventions, predict the flow and structuration curves, and retrieve measured literature curves for comparison.\par
+Created both plots with literature overlays and q10-q90 uncertainty bands:\par
+\par
+\begin{itemize}[nosep,leftmargin=1.2em]
+\item \textbf{Bingham flow:} Plot . CSV
+\item \textbf{Structuration:} Plot . CSV
+\end{itemize}
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Predicted quantity & q50 [q10, q90] \\
+Dynamic yield stress & 234 [16, 843] Pa \\
+Plastic viscosity & 6.43 [0.84, 33.13] Pa.s \\
+Shear stress at 100 s\textasciicircum{}-\textasciicircum{}1 & 1,023 [250, 3,901] Pa \\
+Initial static yield stress & 271 [22, 9,125] Pa \\
+Structuration rate & 0.697 [0.023, 13.669] Pa/s \\
+Static yield stress after 45 min & 4,003 [307, 61,123] Pa \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+The curves use \textbackslash{}(\textbackslash{}tau=\textbackslash{}tau\_0+\textbackslash{}mu\textbackslash{}dot\textbackslash{}gamma\textbackslash{}) and \textbackslash{}(\textbackslash{}tau\_s=\textbackslash{}tau\_\{s0\}+A\_\{\textbackslash{}mathrm\{thix\}\}t\textbackslash{}). Pointwise quantiles come from sampled parameter distributions; they need not equal curves constructed from parameter medians.\par
+\par
+\textbf{Literature comparison.} The flow overlays include published silica-fume mortars at w/b 0.35 and s/b 1. Their stresses at 100 s\textasciicircum{}-\textasciicircum{}1 are 202.2 Pa for 6\% silica fume and 309.17 Pa for 10\%--below the predicted median. These overlays reconstruct the authors' fitted Bingham equations, rather than raw measured points. The NZ-0 overlay uses digitized measured flow curves.\par
+\par
+The structuration overlays are digitized measurements for R20, R40 and R60. Their recorded stress ranges are respectively 2,080-3,650, 970-2,130 and 170-1,080 Pa over 10-60 minutes. \textbf{Their clock starts at water addition, not at the start of rest}, so they provide qualitative context rather than a matched validation.\par
+\par
+The structuration-rate model is weak: treat its curve as \textbf{order-of-magnitude guidance}, with the published measurements as primary evidence. Experimental verification is needed.\par
+\par
+Defaults: natural sand; PCE interpreted as product mass relative to binder; initial rest time zero. The tool also populated age 28 d, \texttt{comp\_cube50}, and moist curing at 20  degC/95\% RH; these are metadata defaults, not a fresh-rheology test protocol.\par
+\par
+\end{agentbox}

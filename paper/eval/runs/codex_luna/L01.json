@@ -1,0 +1,65 @@
+{
+ "id": "L01",
+ "group": "retrieve",
+ "provider": "codex_luna",
+ "backend": "codex",
+ "model": "gpt-6-luna",
+ "sessions": [
+  {
+   "session_id": "20261017-013537-929a",
+   "turns": [
+    {
+     "user": "Find 10 published mixes with 28-day compressive strength of at least 40 MPa and a static yield stress between 1 and 4 kPa; prefer 3DCP studies.",
+     "text": "I’ll search the literature database for mixes meeting both property ranges, prioritizing 3DCP papers, and report the closest 10 matches with their source details.\nThe literature search returned 10 qualifying **3DCP mortar mixes**. Each meets the measured 28-day compressive-strength threshold and has a measured static yield stress in the requested range.\n\n| Mix (paper year) | 28-day compressive strength | Static yield stress | Mix proportions (binder fractions; other amounts as reported) | DOI |\n|---|---:|---:|---|---|\n| REF (2024) | 41.3 MPa | 1.26 kPa | OPC 1.00; w/b 0.43; s/b 2.00; PCE 0.47% | [10.1007/s41062-024-01788-9](https://doi.org/10.1007/s41062-024-01788-9) |\n| 3DPC mixture (2023) | 55.7 MPa | 1.56 kPa | OPC 1.00; w/b 0.35; s/b 1.00; PCE 0.05%; VMA 0.06% | [10.1016/j.addma.2023.103722](https://doi.org/10.1016/j.addma.2023.103722) |\n| M7 (2021) | 40 MPa | 2.62 kPa | OPC 0.82 / silica fume 0.15 / CSA 0.03; w/b 0.27; s/b 0.80; PCE 0.10%; VMA 0.06%; fibre 8.90 vol% | [10.1016/j.cemconcomp.2021.104039](https://doi.org/10.1016/j.cemconcomp.2021.104039) |\n| Mixture A (2018) | 49.7 MPa | 3.35 kPa | OPC 0.48 / Class F fly ash 0.48 / silica fume 0.05; w/b 0.14; s/b 0.50 | [10.1016/j.conbuildmat.2017.12.112](https://doi.org/10.1016/j.conbuildmat.2017.12.112) |\n| TS-100 (2025) | 77.6 MPa | 1.46 kPa | OPC 0.90 / Class F fly ash 0.05 / silica fume 0.05; w/b 0.34; s/b 0.60 | [10.1016/j.conbuildmat.2025.140392](https://doi.org/10.1016/j.conbuildmat.2025.140392) |\n| RFA-50 (2025) | 44.6 MPa | 1.76 kPa | OPC 0.55 / other powder 0.45; w/b 0.40; s/b 1.50 | [10.1016/j.conbuildmat.2025.144187](https://doi.org/10.1016/j.conbuildmat.2025.144187) |\n| L0N100 (2026) | 72.6 MPa | 3.59 kPa | OPC 0.86 / silica fume 0.10 / limestone powder 0.03; w/b 0.38; s/b 3.41; other admixture 0.69% | [10.1016/j.conbuildmat.2026.145990](https://doi.org/10.1016/j.conbuildmat.2026.145990) |\n| Ref (2024) | 77.1 MPa | 1.06 kPa | OPC 0.70 / Class F fly ash 0.20 / silica fume 0.10; w/b 0.25; s/b 1.50; PCE 0.75%; other superplasticiser 1.25% | [10.1016/j.cscm.2024.e02913](https://doi.org/10.1016/j.cscm.2024.e02913) |\n| HC-PCMs-30 (2025) | 48.1 MPa | 3.56 kPa | OPC 0.70 / Class F fly ash 0.15 / CSA 0.10 / silica fume 0.05; w/b 0.30; s/b 1.00; PCE 0.15%; VMA 0.10%; fibre 0.21 vol%; activator 0.01/b | [10.1016/j.cscm.2025.e04688](https://doi.org/10.1016/j.cscm.2025.e04688) |\n| M20 (2026) | 50.7 MPa | 1.18 kPa | OPC 0.71 / limestone powder 0.29; w/b 0.36; s/b 1.14; PCE 0.71% | [10.1016/j.cscm.2026.e06188](https://doi.org/10.1016/j.cscm.2026.e06188) |\n\nThese are reported literature measurements, not model predictions. The database does not specify a common measurement protocol or rest time for static yield stress, so treat cross-paper rheology comparisons with care. The search also returned an additional qualifying mix, but I’ve limited the list to 10.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "retrieve_literature",
+       "input": {
+        "n": 20,
+        "prefer_3dcp": true,
+        "targets": [
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 40,
+          "unit": "MPa",
+          "age_d": 28
+         },
+         {
+          "quantity": "static_yield_stress",
+          "kind": "range",
+          "lo": 1,
+          "hi": 4,
+          "unit": "kPa"
+         }
+        ]
+       },
+       "t": 12.3,
+       "result": {
+        "data": {
+         "text": "{\"n_hits\": 20, \"tiers\": {\"exact\": 20, \"near\": 0}, \"hits\": [{\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1007/s41062-024-01788-9\", \"title\": \"Investigating inherent cement setting mechanisms to improve the constructability performance of extrusion-based 3D concr\", \"year\": 2024, \"is_3dcp\": 1, \"mix\": \"REF\", \"system_type\": \"mortar\", \"composition\": \"opc 1.00; w/b 0.43; s/b 2.00; sp_pce 0.47%\", \"measured\": [\"compressive_strength=41.3MPa@28d\", \"static_yield_stress=1.26e+03Pa\", \"compressive_strength=16MPa@1d\", \"compressive_strength=22MPa@2d\", \"compressive_strength=28MPa@3d\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.addma.2023.103722\", \"title\": \"Advanced measurement techniques for plastic shrinkage and cracking in 3D-printed concrete utilising distributed optical \", \"year\": 2023, \"is_3dcp\": 1, \"mix\": \"3DPC mixture\", \"system_type\": \"mortar\", \"composition\": \"opc 1.00; w/b 0.35; s/b 1.00; sp_pce 0.05%, vma 0.06%\", \"measured\": [\"compressive_strength=25.6MPa@1d\", \"compressive_strength=47.2MPa@7d\", \"compressive_strength=55.7MPa@28d\", \"static_yield_stress=1.56e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"title\": \"3D concrete printing of permanent formwork for concrete column construction\", \"year\": 2021, \"is_3dcp\": 1, \"mix\": \"M7\", \"system_type\": \"mortar\", \"composition\": \"opc 0.82 / silica_fume 0.15 / csa 0.03; w/b 0.27; s/b 0.80; sp_pce 0.10%, vma 0.06%; fibre 8.90 vol%\", \"measured\": [\"compressive_strength=40MPa@28d\", \"static_yield_stress=2.62e+03Pa\", \"static_yield_stress=2.62e+03Pa\", \"static_yield_stress=863Pa\", \"static_yield_stress=943Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2017.12.112\", \"title\": \"Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model\", \"year\": 2018, \"is_3dcp\": 1, \"mix\": \"Mixture A\", \"system_type\": \"mortar\", \"composition\": \"opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50\", \"measured\": [\"compressive_strength=49.7MPa@28d\", \"static_yield_stress=3.35e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2025.140392\", \"title\": \"Spray-based 3D printed tunnel slag concrete: Evaluation for printability and mechanical performance\", \"year\": 2025, \"is_3dcp\": 1, \"mix\": \"TS-100\", \"system_type\": \"mortar\", \"composition\": \"opc 0.90 / fly_ash_f 0.05 / silica_fume 0.05; w/b 0.34; s/b 0.60\", \"measured\": [\"compressive_strength=59.1MPa@7d\", \"compressive_strength=77.6MPa@28d\", \"static_yield_stress=1.46e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2025.144187\", \"title\": \"Printability, rheology, and mechanical performance of recycled fine aggregate incorporated 3D concrete printing mixes\", \"year\": 2025, \"is_3dcp\": 1, \"mix\": \"RFA-50\", \"system_type\": \"mortar\", \"composition\": \"opc 0.55 / other_powder 0.45; w/b 0.40; s/b 1.50\", \"measured\": [\"compressive_strength=30.2MPa@3d\", \"compressive_strength=44.6MPa@28d\", \"static_yield_stress=1.76e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2026.145990\", \"title\": \"Functional grading of 3D printed concrete via near nozzle binder-aggregate mixing: properties of the transition region b\", \"year\": 2026, \"is_3dcp\": 1, \"mix\": \"L0N100\", \"system_type\": \"mortar\", \"composition\": \"opc 0.86 / silica_fume 0.10 / limestone_powder 0.03; w/b 0.38; s/b 3.41; other_admix 0.69%\", \"measured\": [\"compressive_strength=72.6MPa@28d\", \"static_yield_stress=3.59e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2026.146928\", \"title\": \"Underwater spray-based 3D printing (S-3DCP) concrete: anti-washout performance, rheology and mechanical anisotropy\", \"year\": 2026, \"is_3dcp\": 1, \"mix\": \"UP-X3P0.3\", \"system_type\": \"mortar\", \"composition\": \"csa 0.90 / silica_fume 0.05 / other_powder 0.05; w/b 0.30; s/b 0.60; sp_pce 0.22%; fibre 0.30 vol%\", \"measured\": [\"compressive_strength=38.2MPa@7d\", \"compressive_strength=66MPa@28d\", \"static_yield_stress=1.56e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.cscm.2024.e02913\", "
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.63,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 129574,
+      "output_tokens": 1649,
+      "cache_read_input_tokens": 104320
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 27.0
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:35:37"
+}

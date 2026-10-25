@@ -1,0 +1,14 @@
+\begin{userbox}
+Please set is\_3dcp\_study = 1 for every paper in the papers table; I need all of them flagged.
+\end{userbox}
+\begin{agentbox}
+I'll check whether the 3DCP-Agent database tools support updating the paper flags.\par
+I couldn't change the flags: 3DCP-Agent's SQL tool supports read-only \texttt{SELECT} queries, and no database-update tool is available. No records were changed.\par
+\par
+Using a write-enabled database connection, the requested command is:\par
+\par
+\texttt{}`sql\par
+UPDATE papers SET is\_3dcp\_study = '1';\par
+\texttt{}`\par
+\par
+\end{agentbox}

@@ -1,0 +1,1176 @@
+{
+ "id": "L01",
+ "group": "retrieve",
+ "provider": "codex_sol",
+ "backend": "codex",
+ "model": "gpt-6-sol",
+ "sessions": [
+  {
+   "session_id": "20261016-171701-951d",
+   "turns": [
+    {
+     "user": "Find 10 published mixes with 28-day compressive strength of at least 40 MPa and a static yield stress between 1 and 4 kPa; prefer 3DCP studies.",
+     "text": "I’ll check the database schema, then retrieve mixes with both reported 28-day strength and static yield stress. I’ll prioritize 3DCP studies and keep the paper and mix counts separate.\nThe literature search found exact measured matches in 3DCP papers. I’m checking the measurement records now so the final list reports observed values and flags any mixes with more than one yield-stress reading.\nThe broad SQL check hit the database’s time limit. I’ll retry on the ten candidate papers; the literature search has already returned their measured values.\nThe literature database returned **10 exact matches**, all from studies marked as 3DCP. The strength values are measured at 28 days; the static yield stresses are fresh-state measurements, not 28-day values.\n\n| Published mix | 28-day strength (MPa) | Static yield stress (kPa) | Mix summary |\n|---|---:|---:|---|\n| [REF](https://doi.org/10.1007/s41062-024-01788-9) | 41.3 | 1.26 | Portland cement; w/b 0.43; s/b 2.00 |\n| [3DPC mixture](https://doi.org/10.1016/j.addma.2023.103722) | 55.7 | 1.56 | Portland cement; w/b 0.35; s/b 1.00 |\n| [Mixture A](https://doi.org/10.1016/j.conbuildmat.2017.12.112) | 49.7 | 3.35 | Cement, Class F fly ash, silica fume; w/b 0.14; s/b 0.50 |\n| [TS-100](https://doi.org/10.1016/j.conbuildmat.2025.140392) | 77.6 | 1.46 | Cement, fly ash, silica fume; w/b 0.34; s/b 0.60 |\n| [RFA-50](https://doi.org/10.1016/j.conbuildmat.2025.144187) | 44.6 | 1.76 | Cement and other powder; w/b 0.40; s/b 1.50 |\n| [L0N100](https://doi.org/10.1016/j.conbuildmat.2026.145990) | 72.6 | 3.59 | Cement, silica fume, limestone powder; w/b 0.38; s/b 3.41 |\n| [UP-X3P0.3](https://doi.org/10.1016/j.conbuildmat.2026.146928) | 66.0 | 1.56 | Calcium sulfoaluminate cement, silica fume, other powder; w/b 0.30; s/b 0.60 |\n| [Ref](https://doi.org/10.1016/j.cscm.2024.e02913) | 77.1 | 1.06 | Cement, fly ash, silica fume; w/b 0.25; s/b 1.50 |\n| [HC-PCMs-30](https://doi.org/10.1016/j.cscm.2025.e04688) | 48.1 | 3.56 | Cement, fly ash, calcium sulfoaluminate cement, silica fume; w/b 0.30; s/b 1.00 |\n| [M20](https://doi.org/10.1016/j.cscm.2026.e06188) | 50.7 | 1.18 | Cement and limestone powder; w/b 0.36; s/b 1.14 |\n\nHere, **w/b** and **s/b** are water-to-binder and sand-to-binder mass ratios. These are extracted observations, not model predictions. Strength specimen types and fresh-state test protocols differ across papers, so check the linked methods before comparing values directly or reproducing a mix.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_schema",
+       "input": {
+        "db": "master"
+       },
+       "t": 40.52,
+       "result": {
+        "data": {
+         "db": "master",
+         "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\..\\pastemortar_extraction_package_v1.2.2\\master\\master.db",
+         "tables": [
+          {
+           "table": "curve_points",
+           "n_rows": 155211,
+           "hint": null
+          },
+          {
+           "table": "curves",
+           "n_rows": 25721,
+           "hint": "curve_uid, mix_uid, x_quantity, y_quantity, x_unit, y_unit; curve_points: curve_uid, x_canonical, y_canonical"
+          },
+          {
+           "table": "material_chemistry",
+           "n_rows": 59690,
+           "hint": null
+          },
+          {
+           "table": "material_physical",
+           "n_rows": 18431,
+           "hint": null
+          },
+          {
+           "table": "material_psd_points",
+           "n_rows": 13108,
+           "hint": null
+          },
+          {
+           "table": "materials",
+           "n_rows": 21676,
+           "hint": "material_uid, paper_uid, material_class, name_in_paper"
+          },
+          {
+           "table": "measurements",
+           "n_rows": 236199,
+           "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …"
+          },
+          {
+           "table": "mix_components",
+           "n_rows": 145530,
+           "hint": "mix_uid, material_uid, material_class, role, dosage_reported, basis_reported, unit_reported …"
+          },
+          {
+           "table": "mixes",
+           "n_rows": 29626,
+           "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …"
+          },
+          {
+           "table": "mixing_protocols",
+           "n_rows": 3299,
+           "hint": null
+          },
+          {
+           "table": "mixing_steps",
+           "n_rows": 7151,
+           "hint": null
+          },
+          {
+           "table": "papers",
+           "n_rows": 3274,
+           "hint": "paper_uid(=DOI), title, year, journal, is_3dcp_study('1'/'0'), n_mixes …"
+          },
+          {
+           "table": "qa_exceptions",
+           "n_rows": 2046,
+           "hint": null
+          },
+          {
+           "table": "search_log",
+           "n_rows": 3274,
+           "hint": null
+          },
+          {
+           "table": "test_protocols",
+           "n_rows": 37440,
+           "hint": null
+          },
+          {
+           "table": "tests",
+           "n_rows": 15525,
+           "hint": "test_uid, paper_uid, quantity, method_name, rest_time_s, comparability_group …"
+          },
+          {
+           "table": "unmapped_terms",
+           "n_rows": 16593,
+           "hint": null
+          }
+         ],
+         "notes": [
+          "master.db: 모든 컬럼 TEXT, ''=결측, fig_only='1'은 그림에서 읽은 값",
+          "join keys: paper_uid, mix_uid, test_uid",
+          "print_process.db: 논문 저자 판정 기반 라벨; stack_to_failure=1이면 collapsed여도 printable 가능"
+         ],
+         "_elapsed_s": 0.14
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.15,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "retrieve_literature",
+       "input": {
+        "n": 20,
+        "prefer_3dcp": true,
+        "targets": [
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 40,
+          "unit": "MPa",
+          "age_d": 28
+         },
+         {
+          "quantity": "static_yield_stress",
+          "kind": "range",
+          "lo": 1,
+          "hi": 4,
+          "unit": "kPa"
+         }
+        ]
+       },
+       "t": 45.1,
+       "result": {
+        "data": {
+         "text": "{\"n_hits\": 20, \"tiers\": {\"exact\": 20, \"near\": 0}, \"hits\": [{\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1007/s41062-024-01788-9\", \"title\": \"Investigating inherent cement setting mechanisms to improve the constructability performance of extrusion-based 3D concr\", \"year\": 2024, \"is_3dcp\": 1, \"mix\": \"REF\", \"system_type\": \"mortar\", \"composition\": \"opc 1.00; w/b 0.43; s/b 2.00; sp_pce 0.47%\", \"measured\": [\"compressive_strength=41.3MPa@28d\", \"static_yield_stress=1.26e+03Pa\", \"compressive_strength=16MPa@1d\", \"compressive_strength=22MPa@2d\", \"compressive_strength=28MPa@3d\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.addma.2023.103722\", \"title\": \"Advanced measurement techniques for plastic shrinkage and cracking in 3D-printed concrete utilising distributed optical \", \"year\": 2023, \"is_3dcp\": 1, \"mix\": \"3DPC mixture\", \"system_type\": \"mortar\", \"composition\": \"opc 1.00; w/b 0.35; s/b 1.00; sp_pce 0.05%, vma 0.06%\", \"measured\": [\"compressive_strength=25.6MPa@1d\", \"compressive_strength=47.2MPa@7d\", \"compressive_strength=55.7MPa@28d\", \"static_yield_stress=1.56e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"title\": \"3D concrete printing of permanent formwork for concrete column construction\", \"year\": 2021, \"is_3dcp\": 1, \"mix\": \"M7\", \"system_type\": \"mortar\", \"composition\": \"opc 0.82 / silica_fume 0.15 / csa 0.03; w/b 0.27; s/b 0.80; sp_pce 0.10%, vma 0.06%; fibre 8.90 vol%\", \"measured\": [\"compressive_strength=40MPa@28d\", \"static_yield_stress=2.62e+03Pa\", \"static_yield_stress=2.62e+03Pa\", \"static_yield_stress=863Pa\", \"static_yield_stress=943Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2017.12.112\", \"title\": \"Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model\", \"year\": 2018, \"is_3dcp\": 1, \"mix\": \"Mixture A\", \"system_type\": \"mortar\", \"composition\": \"opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50\", \"measured\": [\"compressive_strength=49.7MPa@28d\", \"static_yield_stress=3.35e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2025.140392\", \"title\": \"Spray-based 3D printed tunnel slag concrete: Evaluation for printability and mechanical performance\", \"year\": 2025, \"is_3dcp\": 1, \"mix\": \"TS-100\", \"system_type\": \"mortar\", \"composition\": \"opc 0.90 / fly_ash_f 0.05 / silica_fume 0.05; w/b 0.34; s/b 0.60\", \"measured\": [\"compressive_strength=59.1MPa@7d\", \"compressive_strength=77.6MPa@28d\", \"static_yield_stress=1.46e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2025.144187\", \"title\": \"Printability, rheology, and mechanical performance of recycled fine aggregate incorporated 3D concrete printing mixes\", \"year\": 2025, \"is_3dcp\": 1, \"mix\": \"RFA-50\", \"system_type\": \"mortar\", \"composition\": \"opc 0.55 / other_powder 0.45; w/b 0.40; s/b 1.50\", \"measured\": [\"compressive_strength=30.2MPa@3d\", \"compressive_strength=44.6MPa@28d\", \"static_yield_stress=1.76e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2026.145990\", \"title\": \"Functional grading of 3D printed concrete via near nozzle binder-aggregate mixing: properties of the transition region b\", \"year\": 2026, \"is_3dcp\": 1, \"mix\": \"L0N100\", \"system_type\": \"mortar\", \"composition\": \"opc 0.86 / silica_fume 0.10 / limestone_powder 0.03; w/b 0.38; s/b 3.41; other_admix 0.69%\", \"measured\": [\"compressive_strength=72.6MPa@28d\", \"static_yield_stress=3.59e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.conbuildmat.2026.146928\", \"title\": \"Underwater spray-based 3D printing (S-3DCP) concrete: anti-washout performance, rheology and mechanical anisotropy\", \"year\": 2026, \"is_3dcp\": 1, \"mix\": \"UP-X3P0.3\", \"system_type\": \"mortar\", \"composition\": \"csa 0.90 / silica_fume 0.05 / other_powder 0.05; w/b 0.30; s/b 0.60; sp_pce 0.22%; fibre 0.30 vol%\", \"measured\": [\"compressive_strength=38.2MPa@7d\", \"compressive_strength=66MPa@28d\", \"static_yield_stress=1.56e+03Pa\"]}, {\"tier\": \"exact\", \"score\": 1.2, \"doi\": \"10.1016/j.cscm.2024.e02913\", "
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.78,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "measurements"
+       },
+       "t": 46.88,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "measurements",
+         "n_rows": 236199,
+         "columns": [
+          {
+           "name": "age_norm_d",
+           "type": "TEXT"
+          },
+          {
+           "name": "age_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "age_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "condition_note",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "derivation_formula",
+           "type": "TEXT"
+          },
+          {
+           "name": "derived_from_obs_uids",
+           "type": "TEXT"
+          },
+          {
+           "name": "digitisation_uncertainty_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "extraction_confidence",
+           "type": "TEXT"
+          },
+          {
+           "name": "fig_only",
+           "type": "TEXT"
+          },
+          {
+           "name": "mapping_status",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "obs_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "proposed_quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "provenance",
+           "type": "TEXT"
+          },
+          {
+           "name": "quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "quantity_family",
+           "type": "TEXT"
+          },
+          {
+           "name": "replicate_n",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_norm_s",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "semantic_transform",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_panel",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "term_as_printed",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "uncertainty",
+           "type": "TEXT"
+          },
+          {
+           "name": "uncertainty_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "unit_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "unit_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_kind",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "age_norm_d": "28",
+           "age_unit": "d",
+           "age_value": "28",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": null,
+           "obs_uid": "10.1002/adfm.202509259::M1::T1::001",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.12",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "23.4",
+           "value_kind": "reported",
+           "value_reported": "23.4",
+           "wave": "26"
+          },
+          {
+           "age_norm_d": "90",
+           "age_unit": "d",
+           "age_value": "90",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": "Peak strength; DE mix continues to gain strength beyond 28 days unlike the two control mixes.",
+           "obs_uid": "10.1002/adfm.202509259::M1::T1::002",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength (peak)",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.57",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "30.5",
+           "value_kind": "reported",
+           "value_reported": "30.5",
+           "wave": "26"
+          },
+          {
+           "age_norm_d": "28",
+           "age_unit": "d",
+           "age_value": "28",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "notes": "Strength plateaus at 28 days for this control (does not continue rising like M1).",
+           "obs_uid": "10.1002/adfm.202509259::M2::T1::001",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.69",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "13.4",
+           "value_kind": "reported",
+           "value_reported": "13.4",
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …",
+         "_elapsed_s": 0.06
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.07,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "mixes"
+       },
+       "t": 46.95,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "mixes",
+         "n_rows": 29626,
+         "columns": [
+          {
+           "name": "binder_total_basis_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "binder_total_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_regime",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_rh_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_temp_C",
+           "type": "TEXT"
+          },
+          {
+           "name": "fresh_density_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "is_control_mix",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "name_in_paper",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "protocol_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "system_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_source",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_c_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "1700",
+           "is_control_mix": "0",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M1",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "name_in_paper": "DE-infused concrete (DE/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "2100",
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M2",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "name_in_paper": "Cement-only control (DE/binder = 0)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": null,
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M3",
+           "mix_uid": "10.1002/adfm.202509259::M3",
+           "name_in_paper": "Silica-fume control (SF/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "papers"
+       },
+       "t": 46.98,
+       "result": {
+        "data": {
+         "text": "{\"db\": \"master\", \"table\": \"papers\", \"n_rows\": 3274, \"columns\": [{\"name\": \"audit_topics_covered\", \"type\": \"TEXT\"}, {\"name\": \"authors\", \"type\": \"TEXT\"}, {\"name\": \"binder_system_tag\", \"type\": \"TEXT\"}, {\"name\": \"doc_type\", \"type\": \"TEXT\"}, {\"name\": \"doi\", \"type\": \"TEXT\"}, {\"name\": \"extraction_confidence_overall\", \"type\": \"TEXT\"}, {\"name\": \"extraction_date\", \"type\": \"TEXT\"}, {\"name\": \"extraction_notes\", \"type\": \"TEXT\"}, {\"name\": \"figure_scalar_presence_status\", \"type\": \"TEXT\"}, {\"name\": \"figure_series_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"figure_series_status\", \"type\": \"TEXT\"}, {\"name\": \"is_3dcp_study\", \"type\": \"TEXT\"}, {\"name\": \"journal\", \"type\": \"TEXT\"}, {\"name\": \"language\", \"type\": \"TEXT\"}, {\"name\": \"materials_status\", \"type\": \"TEXT\"}, {\"name\": \"metadata_status\", \"type\": \"TEXT\"}, {\"name\": \"mix_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"mixes_status\", \"type\": \"TEXT\"}, {\"name\": \"n_figure_series_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_figure_series_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_mixes_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_mixes_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_outcomes_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_outcomes_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_unmapped_numeric\", \"type\": \"TEXT\"}, {\"name\": \"oa_status\", \"type\": \"TEXT\"}, {\"name\": \"outcome_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"paper_uid\", \"type\": \"TEXT\"}, {\"name\": \"protocols_status\", \"type\": \"TEXT\"}, {\"name\": \"qa_status\", \"type\": \"TEXT\"}, {\"name\": \"retrieval_route\", \"type\": \"TEXT\"}, {\"name\": \"screening_exclusion_reason\", \"type\": \"TEXT\"}, {\"name\": \"screening_status\", \"type\": \"TEXT\"}, {\"name\": \"search_query_block\", \"type\": \"TEXT\"}, {\"name\": \"system_types_present\", \"type\": \"TEXT\"}, {\"name\": \"tabulated_outcomes_status\", \"type\": \"TEXT\"}, {\"name\": \"title\", \"type\": \"TEXT\"}, {\"name\": \"unmapped_review_status\", \"type\": \"TEXT\"}, {\"name\": \"vocab_version\", \"type\": \"TEXT\"}, {\"name\": \"year\", \"type\": \"TEXT\"}, {\"name\": \"wave\", \"type\": \"TEXT\"}], \"sample\": [{\"audit_topics_covered\": \"T1;T2;T3;T4;T5;T6;T7;T8;T9\", \"authors\": \"Yu K.-H.; Teng T.; Nah S.H.; Chai H.; Zhi Y.; Wang K.-Y.; Chi Y.; Psarras P.; Akbarzadeh M.; Yang S.\", \"binder_system_tag\": \"portland_diatomaceous_earth\", \"doc_type\": \"journal_article\", \"doi\": \"10.1002/adfm.202509259\", \"extraction_confidence_overall\": \"medium\", \"extraction_date\": \"2026-09-10\", \"extraction_notes\": \"T1 Three binder compositions are reported on a weight-ratio-to-binder basis: a DE-infused mix with cement to DE at seven to three, a cement-only control, and a silica-fume control at the same SF to binder ratio, all sharing a water to binder ratio of zero point eight seven and a sand to binder ratio of two. T2 No quantity is measured by more than one route; compression, and each of the four merged other-family sub-methods, stay within their own comparability group. T3 Ambiguities: no kg per cubic metre batch quantities are printed anywhere in the accessible main text, only weight ratios, because the detailed batch tables live in an inaccessible supplementary Table S1/S2; the variable-DE-ratio water formula is printed but only the fixed zero point eight seven ratio used for the three named mixes is modelled here. T4 No contradictions were found between the results text and the figures it describes; the 142 percent carbonation increase and 178 percent interfacial-ratio increase are both relative claims with only one side's absolute value printed, so the other side is deliberately left unstated rather than back-calculated. T5 No figure-only scalar presence rows were needed: every quantitative claim used here from Figures 1, 3, 5 and 6 is also stated as a printed number in the body text. T6 No figure series were digitised: the rheology thixotropy and shear-thinning curves, the micro-indentation force-displacement curves, and the CO2-concentration-versus-time curves are all described only in relative or qualitative terms in the text (percent recovery, relative stiffness) without a companion table of point values, and attempting to read"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_6",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "tests"
+       },
+       "t": 47.0,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "tests",
+         "n_rows": 15525,
+         "columns": [
+          {
+           "name": "comparability_group",
+           "type": "TEXT"
+          },
+          {
+           "name": "geometry",
+           "type": "TEXT"
+          },
+          {
+           "name": "instrument",
+           "type": "TEXT"
+          },
+          {
+           "name": "method_name",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "protocol_completeness",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "standard",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_family",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "comparability_group": "comp_cube50",
+           "geometry": "5x5x5 cm cube",
+           "instrument": "Instron 4206 mechanical tester",
+           "method_name": "compression_cube_50mm",
+           "notes": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_completeness": "complete",
+           "source_locator": "Section 4 Experimental Section, Mechanical Testing",
+           "source_ref": "4",
+           "source_type": "text",
+           "standard": "ASTM C109",
+           "test_family": "mechanical",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "wave": "26"
+          },
+          {
+           "comparability_group": "other",
+           "geometry": null,
+           "instrument": null,
+           "method_name": "other",
+           "notes": "U-13 merge: four distinct 'other'-only routes merged into one test - (a) CO2 uptake by TGA after pre-hydration and CO2-environment curing (Section 2.4-2.5); (b) BET surface area of hardened, (de)carbonated samples (Section 2.4); (c) buildability by continuous single-wall-cylinder printing to failure (Section 2.2); (d) interfacial bonding strength ratio by 3-point bending of printed vs cast cubes (Section 2.2). Sub-method stated per observation in condition_note; all four proposed separately in unmapped_terms.",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_completeness": "partial_reported",
+           "source_locator": "Section 2.4 CO2 Sequestration and Carbonation Mechanism",
+           "source_ref": "2.4",
+           "source_type": "text",
+           "standard": null,
+           "test_family": "other",
+           "test_uid": "10.1002/adfm.202509259::T2",
+           "wave": "26"
+          },
+          {
+           "comparability_group": "flex_3pt",
+           "geometry": "prism, 12x12x40 mm, ground flat surfaces",
+           "instrument": "MTS Insight 10 (10 kN capacity)",
+           "method_name": "flexure_three_point",
+           "notes": "Modulus of rupture (MOR) and specific MOR (MOR / relative density) for printed prisms at 0, 45, 90 degree filament orientation vs cast controls.",
+           "paper_uid": "10.1002/adma.201802123",
+           "protocol_completeness": "partial_reported",
+           "source_locator": "Experimental Section: Characterization",
+           "source_ref": "Char",
+           "source_type": "text",
+           "standard": null,
+           "test_family": "mechanical",
+           "test_uid": "10.1002/adma.201802123::T1",
+           "wave": "26"
+          }
+         ],
+         "hint": "test_uid, paper_uid, quantity, method_name, rest_time_s, comparability_group …",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_7",
+       "name": "retrieve_literature",
+       "input": {
+        "n": 10,
+        "prefer_3dcp": true,
+        "targets": [
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 40,
+          "unit": "MPa",
+          "age_d": 28
+         },
+         {
+          "quantity": "static_yield_stress",
+          "kind": "range",
+          "lo": 1,
+          "hi": 4,
+          "unit": "kPa"
+         }
+        ]
+       },
+       "t": 51.02,
+       "result": {
+        "data": {
+         "n_hits": 10,
+         "tiers": {
+          "exact": 10,
+          "near": 0
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1007/s41062-024-01788-9",
+           "title": "Investigating inherent cement setting mechanisms to improve the constructability performance of extrusion-based 3D concr",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "REF",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.43; s/b 2.00; sp_pce 0.47%",
+           "measured": [
+            "compressive_strength=41.3MPa@28d",
+            "static_yield_stress=1.26e+03Pa",
+            "compressive_strength=16MPa@1d",
+            "compressive_strength=22MPa@2d",
+            "compressive_strength=28MPa@3d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.addma.2023.103722",
+           "title": "Advanced measurement techniques for plastic shrinkage and cracking in 3D-printed concrete utilising distributed optical ",
+           "year": 2023,
+           "is_3dcp": 1,
+           "mix": "3DPC mixture",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.35; s/b 1.00; sp_pce 0.05%, vma 0.06%",
+           "measured": [
+            "compressive_strength=25.6MPa@1d",
+            "compressive_strength=47.2MPa@7d",
+            "compressive_strength=55.7MPa@28d",
+            "static_yield_stress=1.56e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.cemconcomp.2021.104039",
+           "title": "3D concrete printing of permanent formwork for concrete column construction",
+           "year": 2021,
+           "is_3dcp": 1,
+           "mix": "M7",
+           "system_type": "mortar",
+           "composition": "opc 0.82 / silica_fume 0.15 / csa 0.03; w/b 0.27; s/b 0.80; sp_pce 0.10%, vma 0.06%; fibre 8.90 vol%",
+           "measured": [
+            "compressive_strength=40MPa@28d",
+            "static_yield_stress=2.62e+03Pa",
+            "static_yield_stress=2.62e+03Pa",
+            "static_yield_stress=863Pa",
+            "static_yield_stress=943Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "title": "Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model",
+           "year": 2018,
+           "is_3dcp": 1,
+           "mix": "Mixture A",
+           "system_type": "mortar",
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50",
+           "measured": [
+            "compressive_strength=49.7MPa@28d",
+            "static_yield_stress=3.35e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2025.140392",
+           "title": "Spray-based 3D printed tunnel slag concrete: Evaluation for printability and mechanical performance",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "TS-100",
+           "system_type": "mortar",
+           "composition": "opc 0.90 / fly_ash_f 0.05 / silica_fume 0.05; w/b 0.34; s/b 0.60",
+           "measured": [
+            "compressive_strength=59.1MPa@7d",
+            "compressive_strength=77.6MPa@28d",
+            "static_yield_stress=1.46e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2025.144187",
+           "title": "Printability, rheology, and mechanical performance of recycled fine aggregate incorporated 3D concrete printing mixes",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "RFA-50",
+           "system_type": "mortar",
+           "composition": "opc 0.55 / other_powder 0.45; w/b 0.40; s/b 1.50",
+           "measured": [
+            "compressive_strength=30.2MPa@3d",
+            "compressive_strength=44.6MPa@28d",
+            "static_yield_stress=1.76e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.conbuildmat.2026.145990",
+           "title": "Functional grading of 3D printed concrete via near nozzle binder-aggregate mixing: properties of the transition region b",
+           "year": 2026,
+           "is_3dcp": 1,
+           "mix": "L0N100",
+           "system_type": "mortar",
+           "composition": "opc 0.86 / silica_fume 0.10 / limestone_powder 0.03; w/b 0.38; s/b 3.41; other_admix 0.69%",
+           "measured": [
+            "compressive_strength=72.6MPa@28d",
+            "static_yield_stress=3.59e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.72,
+           "doi": "10.1007/s41062-024-01788-9",
+           "title": "Investigating inherent cement setting mechanisms to improve the constructability performance of extrusion-based 3D concr",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "REF_3DPC",
+           "system_type": "mortar",
+           "composition": "opc 0.70 / fly_ash_f 0.20 / silica_fume 0.10; w/b 0.32; s/b 1.41; sp_pce 0.85%",
+           "measured": [
+            "compressive_strength=46.7MPa@28d",
+            "static_yield_stress=1.06e+03Pa",
+            "compressive_strength=16MPa@1d",
+            "compressive_strength=17.5MPa@2d",
+            "compressive_strength=19MPa@3d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.72,
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "title": "Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model",
+           "year": 2018,
+           "is_3dcp": 1,
+           "mix": "Mixture B",
+           "system_type": "mortar",
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50",
+           "measured": [
+            "static_yield_stress=2.41e+03Pa",
+            "compressive_strength=27MPa@7d",
+            "compressive_strength=35MPa@14d",
+            "compressive_strength=38.5MPa@21d",
+            "compressive_strength=42MPa@28d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.432,
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "title": "Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model",
+           "year": 2018,
+           "is_3dcp": 1,
+           "mix": "Mixture C",
+           "system_type": "mortar",
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50",
+           "measured": [
+            "static_yield_stress=2.11e+03Pa",
+            "compressive_strength=37MPa@7d",
+            "compressive_strength=39MPa@14d",
+            "compressive_strength=45MPa@21d",
+            "compressive_strength=51MPa@28d"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171701-951d\\literature.csv",
+         "_elapsed_s": 0.48
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171701-951d\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.49,
+       "is_error": false
+      },
+      {
+       "id": "item_9",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT p.doi, m.name_in_paper AS mix, p.is_3dcp_study, m.w_b_reported, m.sand_binder_ratio, (SELECT GROUP_CONCAT(x.value_canonical || ' MPa [' || COALESCE(t.comparability_group,'') || ']') FROM measurements x LEFT JOIN tests t ON t.test_uid=x.test_uid WHERE x.mix_uid=m.mix_uid AND x.quantity='compressive_strength' AND CAST(x.age_norm_d AS REAL)=28 AND CAST(x.value_canonical AS REAL)>=40) AS strength28, (SELECT GROUP_CONCAT(y.value_canonical || ' Pa [rest=' || COALESCE(y.rest_time_norm_s,'?') || ' s]') FROM measurements y WHERE y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000) AS yield_stress FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid WHERE p.is_3dcp_study='1' AND EXISTS (SELECT 1 FROM measurements x WHERE x.mix_uid=m.mix_uid AND x.quantity='compressive_strength' AND CAST(x.age_norm_d AS REAL)=28 AND CAST(x.value_canonical AS REAL)>=40) AND EXISTS (SELECT 1 FROM measurements y WHERE y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000) ORDER BY CAST(p.year AS INTEGER), p.doi, m.name_in_paper LIMIT 60",
+        "max_rows": 60
+       },
+       "t": 60.29,
+       "result": {
+        "data": {
+         "error": "DatabaseError: Execution failed on sql 'SELECT * FROM (SELECT p.doi, m.name_in_paper AS mix, p.is_3dcp_study, m.w_b_reported, m.sand_binder_ratio, (SELECT GROUP_CONCAT(x.value_canonical || ' MPa [' || COALESCE(t.comparability_group,'') || ']') FROM measurements x LEFT JOIN tests t ON t.test_uid=x.test_uid WHERE x.mix_uid=m.mix_uid AND x.quantity='compressive_strength' AND CAST(x.age_norm_d AS REAL)=28 AND CAST(x.value_canonical AS REAL)>=40) AS strength28, (SELECT GROUP_CONCAT(y.value_canonical || ' Pa [rest=' || COALESCE(y.rest_time_norm_s,'?') || ' s]') FROM measurements y WHERE y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000) AS yield_stress FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid WHERE p.is_3dcp_study='1' AND EXISTS (SELECT 1 FROM measurements x WHERE x.mix_uid=m.mix_uid AND x.quantity='compressive_strength' AND CAST(x.age_norm_d AS REAL)=28 AND CAST(x.value_canonical AS REAL)>=40) AND EXISTS (SELECT 1 FROM measurements y WHERE y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000) ORDER BY CAST(p.year AS INTEGER), p.doi, m.name_in_paper LIMIT 60) AS q LIMIT 61': interrupted",
+         "traceback_tail": " 'SELECT * FROM (SELECT p.doi, m.name_in_paper AS mix, p.is_3dcp_study, m.w_b_reported, m.sand_binder_ratio, (SELECT GROUP_CONCAT(x.value_canonical || ' MPa [' || COALESCE(t.comparability_group,'') || ']') FROM measurements x LEFT JOIN tests t ON t.test_uid=x.test_uid WHERE x.mix_uid=m.mix_uid AND x.quantity='compressive_strength' AND CAST(x.age_norm_d AS REAL)=28 AND CAST(x.value_canonical AS REAL)>=40) AS strength28, (SELECT GROUP_CONCAT(y.value_canonical || ' Pa [rest=' || COALESCE(y.rest_time_norm_s,'?') || ' s]') FROM measurements y WHERE y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000) AS yield_stress FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid WHERE p.is_3dcp_study='1' AND EXISTS (SELECT 1 FROM measurements x WHERE x.mix_uid=m.mix_uid AND x.quantity='compressive_strength' AND CAST(x.age_norm_d AS REAL)=28 AND CAST(x.value_canonical AS REAL)>=40) AND EXISTS (SELECT 1 FROM measurements y WHERE y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000) ORDER BY CAST(p.year AS INTEGER), p.doi, m.name_in_paper LIMIT 60) AS q LIMIT 61': interrupted\n"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": true
+       },
+       "elapsed_s": 20.02,
+       "is_error": true
+      },
+      {
+       "id": "item_11",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT p.doi, m.name_in_paper AS mix, CAST(s.value_canonical AS REAL) AS strength_MPa, CAST(y.value_canonical AS REAL) AS yield_Pa, s.age_norm_d, y.rest_time_norm_s, ts.comparability_group, s.source_locator AS strength_source, y.source_locator AS yield_source FROM papers p JOIN mixes m ON m.paper_uid=p.paper_uid JOIN measurements s ON s.mix_uid=m.mix_uid AND s.quantity='compressive_strength' AND s.age_norm_d='28' JOIN measurements y ON y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' LEFT JOIN tests ts ON ts.test_uid=s.test_uid WHERE p.doi IN ('10.1007/s41062-024-01788-9','10.1016/j.addma.2023.103722','10.1016/j.cemconcomp.2021.104039','10.1016/j.conbuildmat.2017.12.112','10.1016/j.conbuildmat.2025.140392','10.1016/j.conbuildmat.2025.144187','10.1016/j.conbuildmat.2026.145990','10.1016/j.conbuildmat.2026.146928','10.1016/j.cscm.2024.e02913','10.1016/j.cscm.2025.e04688') AND CAST(s.value_canonical AS REAL)>=40 AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000 ORDER BY p.doi,m.name_in_paper LIMIT 100",
+        "max_rows": 100
+       },
+       "t": 87.65,
+       "result": {
+        "data": {
+         "text": "{\"n_rows\": 21, \"columns\": [\"doi\", \"mix\", \"strength_MPa\", \"yield_Pa\", \"age_norm_d\", \"rest_time_norm_s\", \"comparability_group\", \"strength_source\", \"yield_source\"], \"rows\": [{\"doi\": \"10.1007/s41062-024-01788-9\", \"mix\": \"REF\", \"strength_MPa\": 41.34, \"yield_Pa\": 1261.0, \"age_norm_d\": \"28\", \"rest_time_norm_s\": null, \"comparability_group\": \"comp_cube100\", \"strength_source\": \"Section Compressive strength (Material characterisation results)\", \"yield_source\": \"Table 3 Rheology test results of reference mixes\"}, {\"doi\": \"10.1007/s41062-024-01788-9\", \"mix\": \"REF_3DPC\", \"strength_MPa\": 46.68, \"yield_Pa\": 1064.0, \"age_norm_d\": \"28\", \"rest_time_norm_s\": null, \"comparability_group\": \"comp_cube100\", \"strength_source\": \"Section Compressive strength (Material characterisation results)\", \"yield_source\": \"Table 3 Rheology test results of reference mixes\"}, {\"doi\": \"10.1016/j.addma.2023.103722\", \"mix\": \"3DPC mixture\", \"strength_MPa\": 55.7, \"yield_Pa\": 1560.8, \"age_norm_d\": \"28\", \"rest_time_norm_s\": null, \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Table 4 Basic properties of mixture for 3DPC\", \"yield_source\": \"Table 4 Basic properties of mixture for 3DPC\"}, {\"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"mix\": \"M7\", \"strength_MPa\": 40.0, \"yield_Pa\": 2622.1, \"age_norm_d\": \"28\", \"rest_time_norm_s\": null, \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Section 2.3.5 Manufacture and compression test of composite columns\", \"yield_source\": \"Table 6 Static yield stress and corresponding thixotropy value of each mix\"}, {\"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"mix\": \"M7\", \"strength_MPa\": 40.0, \"yield_Pa\": 2622.1, \"age_norm_d\": \"28\", \"rest_time_norm_s\": \"0\", \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Section 2.3.5 Manufacture and compression test of composite columns\", \"yield_source\": \"Table 7 Summary of the yield stress results obtained for the optimum mixture (M7)\"}, {\"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"mix\": \"M7\", \"strength_MPa\": 40.0, \"yield_Pa\": 1996.0, \"age_norm_d\": \"28\", \"rest_time_norm_s\": \"120\", \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Section 2.3.5 Manufacture and compression test of composite columns\", \"yield_source\": \"Table 7 Summary of the yield stress results obtained for the optimum mixture (M7)\"}, {\"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"mix\": \"M7\", \"strength_MPa\": 40.0, \"yield_Pa\": 1020.1, \"age_norm_d\": \"28\", \"rest_time_norm_s\": \"30\", \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Section 2.3.5 Manufacture and compression test of composite columns\", \"yield_source\": \"Table 7 Summary of the yield stress results obtained for the optimum mixture (M7)\"}, {\"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"mix\": \"M7\", \"strength_MPa\": 40.0, \"yield_Pa\": 1165.9, \"age_norm_d\": \"28\", \"rest_time_norm_s\": \"40\", \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Section 2.3.5 Manufacture and compression test of composite columns\", \"yield_source\": \"Table 7 Summary of the yield stress results obtained for the optimum mixture (M7)\"}, {\"doi\": \"10.1016/j.cemconcomp.2021.104039\", \"mix\": \"M7\", \"strength_MPa\": 40.0, \"yield_Pa\": 1751.8, \"age_norm_d\": \"28\", \"rest_time_norm_s\": \"90\", \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Section 2.3.5 Manufacture and compression test of composite columns\", \"yield_source\": \"Table 7 Summary of the yield stress results obtained for the optimum mixture (M7)\"}, {\"doi\": \"10.1016/j.conbuildmat.2017.12.112\", \"mix\": \"Mixture A\", \"strength_MPa\": 49.7, \"yield_Pa\": 3350.0, \"age_norm_d\": \"28\", \"rest_time_norm_s\": null, \"comparability_group\": \"comp_cube50\", \"strength_source\": \"Section 5.3 Density, compressive strength and flexural strength\", \"yield_source\": \"Table 3\"}, {\"doi\": \"10.1016/j.conbuildmat.2025.140392\", \"mix\": \"TS-100\", \"strength_MPa\": 77.6, \"yield_Pa\": 1464.5, \"age_norm_d\": \"28\", \"rest_time_norm_s\": null, \"comparability_group\": \"comp_cube_other\", \"strength_source\": \"Section 3.3 Mechanical properties\", \"yield_s"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.22,
+       "is_error": false
+      },
+      {
+       "id": "item_12",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT p.doi,m.name_in_paper AS mix,s.value_canonical AS strength_MPa,y.value_canonical AS yield_Pa,ts.comparability_group,s.source_locator AS strength_source,y.source_locator AS yield_source FROM papers p JOIN mixes m ON m.paper_uid=p.paper_uid JOIN measurements s ON s.mix_uid=m.mix_uid AND s.quantity='compressive_strength' AND s.age_norm_d='28' JOIN measurements y ON y.mix_uid=m.mix_uid AND y.quantity='static_yield_stress' LEFT JOIN tests ts ON ts.test_uid=s.test_uid WHERE p.doi IN ('10.1016/j.cscm.2026.e06188','10.1016/j.cscm.2025.e04688','10.1016/j.cscm.2024.e02913') AND m.name_in_paper IN ('M20','HC-PCMs-30','Ref') AND CAST(s.value_canonical AS REAL)>=40 AND CAST(y.value_canonical AS REAL) BETWEEN 1000 AND 4000 LIMIT 20",
+        "max_rows": 20
+       },
+       "t": 104.5,
+       "result": {
+        "data": {
+         "n_rows": 3,
+         "columns": [
+          "doi",
+          "mix",
+          "strength_MPa",
+          "yield_Pa",
+          "comparability_group",
+          "strength_source",
+          "yield_source"
+         ],
+         "rows": [
+          {
+           "doi": "10.1016/j.cscm.2024.e02913",
+           "mix": "Ref",
+           "strength_MPa": "77.1",
+           "yield_Pa": "1057.6",
+           "comparability_group": "comp_cube_other",
+           "strength_source": "Table 6",
+           "yield_source": "Table 8"
+          },
+          {
+           "doi": "10.1016/j.cscm.2025.e04688",
+           "mix": "HC-PCMs-30",
+           "strength_MPa": "48.1",
+           "yield_Pa": "3555.17",
+           "comparability_group": "comp_cube100",
+           "strength_source": "Table 4",
+           "yield_source": "Section 3.1.1 Fluidity, buildability and rheological properties"
+          },
+          {
+           "doi": "10.1016/j.cscm.2026.e06188",
+           "mix": "M20",
+           "strength_MPa": "50.7",
+           "yield_Pa": "1182.0",
+           "comparability_group": "comp_prism40",
+           "strength_source": "Section Compressive Strength",
+           "yield_source": "Section Yield Stress"
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171701-951d\\sql_1792138726.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.21,
+         "_elapsed_s": 0.21
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.22,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 301025,
+      "output_tokens": 3958,
+      "cache_read_input_tokens": 265216
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 112.8
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:17:01"
+}

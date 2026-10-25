@@ -1,0 +1,24 @@
+\begin{userbox}
+Predict the 28-day compressive strength of a mortar with 20 \% volcanic tuff powder replacing OPC, w/b 0.5, s/b 3.
+\end{userbox}
+\begin{toolbox}{describe\_vocabulary, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"family": "powder"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{predict\_properties, 2.7 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"system_type": "mortar", "w_b": 0.5, "s_b": 3, "binder": {"portland_cement": 0.8, "natural_pozzolan": 0.2}, "conditions": {"age_d": 28, "comparability_group": "comp_cube50", "curing": "moist", "is_3dcp": false}}, "targets": ["compressive_strength"]}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll check the material vocabulary and predict the strength, using moist curing and the default specimen type unless specified otherwise.\par
+Predicted 28-day compressive strength: \textbf{31.8 [19.4, 56.2] MPa} -- q50 [q10, q90].\par
+\par
+Assumptions: volcanic tuff represented by \texttt{natural\_pozzolan}, replacement by binder mass, moist curing, \texttt{comp\_cube50} specimens, conventional cast mortar, and no added admixtures.\par
+\par
+No training-range violations were flagged. This literature-based estimate needs experimental verification, particularly for your tuff's specific reactivity and fineness.\par
+\par
+Files: Prediction CSV . Prediction figure\par
+\par
+\end{agentbox}

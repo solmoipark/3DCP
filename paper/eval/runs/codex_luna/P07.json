@@ -1,0 +1,316 @@
+{
+ "id": "P07",
+ "group": "curves",
+ "provider": "codex_luna",
+ "backend": "codex",
+ "model": "gpt-6-luna",
+ "sessions": [
+  {
+   "session_id": "20261017-013453-eade",
+   "turns": [
+    {
+     "user": "For a 3DCP mortar with w/b 0.35, s/b 1.5, 90 % OPC + 10 % silica fume and 0.6 % PCE, plot the Bingham flow curve up to 100 1/s and the structuration curve over 45 minutes of rest, and compare both with measured literature curves.",
+     "text": "I’ll use the pmpredict vocabulary and retrieve comparable measured curves from its literature database, then plot model and literature curves on the same axes. I’ll state assumptions for any missing mix or test conditions.\nThe model tools return the plotted curves and measured analogues together, so I’ll request both at the specified limits. Since no sand type or testing conditions were given, I’ll use the mortar default and mark those assumptions explicitly.\nBoth curves are plotted with the model estimates and measured literature analogues:\n\n- [Bingham flow curve, to 100 s⁻¹](C:\\Users\\User\\3D%20Printing%20Concrete%20Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\flow_curve_agent_mix.png) · [CSV data](C:\\Users\\User\\3D%20Printing%20Concrete%20Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\flow_curve_agent_mix.csv)\n- [Structuration curve, to 45 min](C:\\Users\\User\\3D%20Printing%20Concrete%20Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\structuration_agent_mix.png) · [CSV data](C:\\Users\\User\\3D%20Printing%20Concrete%20Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\structuration_agent_mix.csv)\n\nFor the assumed 3DCP mortar, the Bingham model gives **τ₀ = 234 Pa [16, 843]** and **μ = 6.43 Pa·s [0.84, 33.13]**. At 100 s⁻¹, predicted shear stress is **1,023 Pa [250, 3,901]**. The structuration model gives **τₛ(0) = 271 Pa [22, 9,125]** and **Aₜₕᵢₓ = 0.70 Pa/s [0.02, 13.67]**; at 45 minutes, **τₛ = 4,003 Pa [307, 61,123]**. Its Athix estimate is flagged weak, and the intervals are broad; treat these as guidance, not precise mix properties.\n\nThe closest measured flow analogues are M5 and M6 (DOI [10.1016/j.cemconcomp.2021.104158](https://doi.org/10.1016/j.cemconcomp.2021.104158)) and M1 ([10.3390/buildings16030490](https://doi.org/10.3390/buildings16030490)). The closest measured structuration analogues are M2–M4 ([10.1016/j.cemconcomp.2024.105509](https://doi.org/10.1016/j.cemconcomp.2024.105509)). The returned plots compare against these measured curves.\n\nAssumptions: `is_3dcp=true`; default sand class and unspecified age/curing/rest conditions. Final mix behavior needs experimental verification.\n",
+     "calls": [
+      {
+       "id": "item_2",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "powder"
+       },
+       "t": 11.37,
+       "result": {
+        "data": {
+         "text": "{\"classes\": {\"powder\": [{\"material_class\": \"anhydrite\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"basalt_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"belite_calcium_sulfoaluminate\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"belite_rich_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"biochar\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"bottom_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"calcined_clay\", \"group\": \"calcined_clay\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"calcium_aluminate_cement\", \"group\": \"cac\", \"sg\": 3.2, \"solid_content\": null}, {\"material_class\": \"calcium_hydroxide\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"calcium_sulfate_hemihydrate\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"calcium_sulfoaluminate_cement\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"carbide_slag\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"carbon_black\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"ceramic_waste_powder\", \"group\": \"recycled_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"coal_gangue\", \"group\": \"industrial_residue\", \"sg\": 2.8, \"solid_content\": null}, {\"material_class\": \"copper_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"diatomaceous_earth\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"dolomite_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"expansive_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"ferronickel_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_C\", \"group\": \"fly_ash_c\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_F\", \"group\": \"fly_ash_f\", \"sg\": 2.3, \"solid_content\": null}, {\"material_class\": \"ggbfs\", \"group\": \"ggbfs\", \"sg\": 2.9, \"solid_content\": null}, {\"material_class\": \"glass_powder\", \"group\": \"glass_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"granite_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"gypsum\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"ladle_furnace_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"limestone_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"magnesium_oxychloride_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"magnesium_phosphate_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"marble_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"metakaolin\", \"group\": \"metakaolin\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"municipal_solid_waste_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"natural_pozzolan\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"oil_well_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"palm_oil_fuel_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"phosphorus_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"portland_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_composite_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_limestone_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"quartz_powder\", \"group\": \"quartz_powder"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "flow_curve",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.35,
+         "s_b": 1.5,
+         "binder": {
+          "portland_cement": 0.9,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.6
+         },
+         "conditions": {
+          "is_3dcp": true
+         }
+        },
+        "max_rate_1s": 100,
+        "n_analogues": 3
+       },
+       "t": 11.39,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "tau0_Pa": {
+          "q10": 16.069188,
+          "q50": 234.446011,
+          "q90": 843.113304,
+          "weak": false
+         },
+         "mu_Pa_s": {
+          "q10": 0.839584,
+          "q50": 6.425629,
+          "q90": 33.134209,
+          "weak": false
+         },
+         "curve_points": [
+          {
+           "shear_rate": 0.0,
+           "q10": 16.673256,
+           "q50": 219.049737,
+           "q90": 848.623042
+          },
+          {
+           "shear_rate": 0.98622,
+           "q10": 26.54948,
+           "q50": 235.480757,
+           "q90": 865.842327
+          },
+          {
+           "shear_rate": 1.94526,
+           "q10": 32.656193,
+           "q50": 250.552286,
+           "q90": 882.723985
+          },
+          {
+           "shear_rate": 4.395237,
+           "q10": 45.564839,
+           "q50": 281.216961,
+           "q90": 940.951456
+          },
+          {
+           "shear_rate": 9.930861,
+           "q10": 65.362153,
+           "q50": 344.85578,
+           "q90": 1100.287717
+          },
+          {
+           "shear_rate": 22.438382,
+           "q10": 104.350349,
+           "q50": 461.81868,
+           "q90": 1502.605833
+          },
+          {
+           "shear_rate": 44.258367,
+           "q10": 151.913019,
+           "q50": 630.260439,
+           "q90": 2165.664651
+          },
+          {
+           "shear_rate": 100.0,
+           "q10": 249.857032,
+           "q50": 1022.656722,
+           "q90": 3900.814088
+          }
+         ],
+         "analogues": [
+          {
+           "doi": "10.1016/j.cemconcomp.2021.104158",
+           "mix": "M5",
+           "distance": 0.111516,
+           "n_points": 6
+          },
+          {
+           "doi": "10.1016/j.cemconcomp.2021.104158",
+           "mix": "M6",
+           "distance": 0.100609,
+           "n_points": 6
+          },
+          {
+           "doi": "10.3390/buildings16030490",
+           "mix": "M1",
+           "distance": 0.120876,
+           "n_points": 20
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\flow_curve_agent_mix.csv",
+         "note": "점단위 오차 중앙 ×2.1, 밴드 커버리지 86 % (실측 137 믹스 OOF): 자릿수·경향 참고용",
+         "_elapsed_s": 4.0
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\flow_curve_agent_mix.png",
+          "kind": "image",
+          "title": "유동곡선 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\flow_curve_agent_mix.csv",
+          "kind": "table",
+          "title": "유동곡선 표 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 4.01,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "structuration_curve",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.35,
+         "s_b": 1.5,
+         "binder": {
+          "portland_cement": 0.9,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.6
+         },
+         "conditions": {
+          "is_3dcp": true
+         }
+        },
+        "max_rest_min": 45,
+        "n_analogues": 3
+       },
+       "t": 15.4,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "tau_s0_Pa": {
+          "q10": 21.506077,
+          "q50": 271.031498,
+          "q90": 9125.091548,
+          "weak": false
+         },
+         "athix_Pa_s": {
+          "q10": 0.022512,
+          "q50": 0.696872,
+          "q90": 13.668548,
+          "weak": true
+         },
+         "tau_s_at_max_rest": {
+          "rest_s": 2700.0,
+          "q10": 306.809757,
+          "q50": 4002.872283,
+          "q90": 61123.175308
+         },
+         "curve_points": [
+          {
+           "rest_s": 0.0,
+           "q10": 21.490855,
+           "q50": 242.479099,
+           "q90": 9066.249609
+          },
+          {
+           "rest_s": 47.784195,
+           "q10": 55.782655,
+           "q50": 499.990748,
+           "q90": 10325.997169
+          },
+          {
+           "rest_s": 103.806043,
+           "q10": 71.273578,
+           "q50": 655.375842,
+           "q90": 11756.310782
+          },
+          {
+           "rest_s": 193.096022,
+           "q10": 89.099831,
+           "q50": 851.16934,
+           "q90": 14095.484392
+          },
+          {
+           "rest_s": 359.189819,
+           "q10": 112.991699,
+           "q50": 1189.798569,
+           "q90": 17944.178115
+          },
+          {
+           "rest_s": 668.151133,
+           "q10": 147.544846,
+           "q50": 1677.945926,
+           "q90": 25055.238719
+          },
+          {
+           "rest_s": 1451.486742,
+           "q10": 211.544228,
+           "q50": 2661.430884,
+           "q90": 38964.398127
+          },
+          {
+           "rest_s": 2700.0,
+           "q10": 306.809757,
+           "q50": 4002.872283,
+           "q90": 61123.175308
+          }
+         ],
+         "analogues": [
+          {
+           "doi": "10.1016/j.cemconcomp.2024.105509",
+           "mix": "M2",
+           "distance": 0.117993,
+           "n_points": 6
+          },
+          {
+           "doi": "10.1016/j.cemconcomp.2024.105509",
+           "mix": "M3",
+           "distance": 0.068322,
+           "n_points": 6
+          },
+          {
+           "doi": "10.1016/j.cemconcomp.2024.105509",
+           "mix": "M4",
+           "distance": 0.115114,
+           "n_points": 6
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\structuration_agent_mix.csv",
+         "note": "선형 Roussel 모델; 실측 곡선(91 믹스) 0–80 분 선형 R² 중앙 0.92",
+         "_elapsed_s": 0.67
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\structuration_agent_mix.png",
+          "kind": "image",
+          "title": "구조화곡선 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013453-eade\\structuration_agent_mix.csv",
+          "kind": "table",
+          "title": "구조화곡선 표 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.68,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 89687,
+      "output_tokens": 880,
+      "cache_read_input_tokens": 66688
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 23.2
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:34:53"
+}

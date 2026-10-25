@@ -1,0 +1,259 @@
+{
+ "id": "L04",
+ "group": "retrieve",
+ "provider": "codex_luna",
+ "backend": "codex",
+ "model": "gpt-6-luna",
+ "sessions": [
+  {
+   "session_id": "20261017-013706-10e6",
+   "turns": [
+    {
+     "user": "I need published mortars with drying shrinkage no more than 600 microstrain at 28 days and compressive strength of at least 50 MPa.",
+     "text": "I’ll search the published mix records for mortars meeting both thresholds, then report the matching mixes and their reported 28-day properties.\nI found **three mortars with reported measurements at both 28 days** that meet your limits:\n\n| Mix | Binder and proportions | w/b; s/b | 28-day compressive strength | 28-day drying shrinkage |\n|---|---|---:|---:|---:|\n| EX-6 | 85% OPC, 15% CSA | 0.40; 2.60 | 65 MPa | 150 microstrain |\n| EX-L-0 | 85% OPC, 15% CSA; PCE superplasticizer 0.72% | 0.40; 2.60 | 59 MPa | 222 microstrain |\n| EX-L-6 | 85% OPC, 15% CSA | 0.40; 2.60 | 69 MPa | 125 microstrain |\n\nAll are from *Validation of statistical models* ([DOI: 10.1016/j.cemconcomp.2017.12.001](https://doi.org/10.1016/j.cemconcomp.2017.12.001)). The literature search also returned other candidates, but their listed measurements did not establish that both thresholds were met at 28 days, so I left them out.\n\nThe search created a CSV at `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013706-10e6\\literature.csv`.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "retrieve_literature",
+       "input": {
+        "system_type": "mortar",
+        "n": 20,
+        "targets": [
+         {
+          "quantity": "drying_shrinkage",
+          "kind": "le",
+          "hi": 600,
+          "unit": "microstrain",
+          "age_d": 28
+         },
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 50,
+          "unit": "MPa",
+          "age_d": 28
+         }
+        ]
+       },
+       "t": 9.82,
+       "result": {
+        "data": {
+         "text": "{\"n_hits\": 20, \"tiers\": {\"exact\": 20, \"near\": 0}, \"hits\": [{\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1007/s41062-023-01334-z\", \"title\": \"Sustainable application of industrial side streams as alternative fine aggregates for cement mortar\", \"year\": 2024, \"is_3dcp\": 0, \"mix\": \"M2\", \"system_type\": \"mortar\", \"composition\": \"slag_other 0.71 / opc 0.29; w/b 0.15; s/b 0.18\", \"measured\": [\"compressive_strength=74MPa@28d\", \"drying_shrinkage=10microstrain@2d\", \"drying_shrinkage=20microstrain@3d\", \"drying_shrinkage=88microstrain@7d\", \"drying_shrinkage=100microstrain@14d\"]}, {\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1016/j.cemconcomp.2017.12.001\", \"title\": \"Validation of statistical models\", \"year\": 2018, \"is_3dcp\": 0, \"mix\": \"EX-6\", \"system_type\": \"mortar\", \"composition\": \"opc 0.85 / csa 0.15; w/b 0.40; s/b 2.60\", \"measured\": [\"compressive_strength=45MPa@7d\", \"compressive_strength=65MPa@28d\", \"compressive_strength=70MPa@90d\", \"drying_shrinkage=328microstrain@3d\", \"drying_shrinkage=150microstrain@28d\"]}, {\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1016/j.conbuildmat.2018.09.069\", \"title\": \"Influence of RAP aggregates on strength, durability and porosity of cement mortar\", \"year\": 2018, \"is_3dcp\": 0, \"mix\": \"CM\", \"system_type\": \"mortar\", \"composition\": \"opc 1.00; w/b 0.44; s/b 3.00\", \"measured\": [\"drying_shrinkage=60microstrain@14d\", \"drying_shrinkage=250microstrain@21d\", \"drying_shrinkage=330microstrain@28d\", \"compressive_strength=39MPa@7d\", \"compressive_strength=43MPa@14d\"]}, {\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1016/j.conbuildmat.2019.117353\", \"title\": \"Effects of metakaolin on properties and microstructure of magnesium phosphate cement\", \"year\": 2020, \"is_3dcp\": 0, \"mix\": \"M15\", \"system_type\": \"mortar\", \"composition\": \"magnesia 0.64 / other_powder 0.25 / metakaolin 0.11; w/b 0.20; s/b 1.00; sp_other 0.12%, retarder 3.82%\", \"measured\": [\"compressive_strength=27.5MPa@0.042d\", \"drying_shrinkage=0.168microstrain@0.042d\", \"drying_shrinkage=0.5microstrain@0.125d\", \"drying_shrinkage=1microstrain@0.25d\", \"drying_shrinkage=2microstrain@0.5d\"]}, {\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1016/j.conbuildmat.2020.120852\", \"title\": \"Behavior of blends of CSA and Portland cements in high chloride environment\", \"year\": 2020, \"is_3dcp\": 0, \"mix\": \"Mix1s\", \"system_type\": \"mortar\", \"composition\": \"opc 0.61 / csa 0.31 / gypsum_sulfate 0.08\", \"measured\": [\"drying_shrinkage=18.8microstrain@0.042d\", \"drying_shrinkage=20.2microstrain@0.125d\", \"drying_shrinkage=22.5microstrain@0.25d\", \"drying_shrinkage=27microstrain@0.5d\", \"drying_shrinkage=36microstrain@1d\"]}, {\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1016/j.conbuildmat.2024.135172\", \"title\": \"Drying shrinkage mitigation of alkali-activated blast furnace slag-copper slag by polyether-based shrinkage reducing adm\", \"year\": 2024, \"is_3dcp\": 0, \"mix\": \"P1\", \"system_type\": \"mortar\", \"composition\": \"ggbfs 0.70 / slag_other 0.30; w/b 0.42; s/b 3.00; other_admix 0.50%; activator 0.32/b\", \"measured\": [\"drying_shrinkage=2.1microstrain@0.042d\", \"drying_shrinkage=6.25microstrain@0.125d\", \"drying_shrinkage=12.5microstrain@0.25d\", \"drying_shrinkage=25microstrain@0.5d\", \"drying_shrinkage=50microstrain@1d\"]}, {\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1016/j.conbuildmat.2025.140217\", \"title\": \"Autogenous and drying shrinkage mitigation and restrained cracking risk of internally cured UHPC using lightweight sand\", \"year\": 2025, \"is_3dcp\": 0, \"mix\": \"R-20% LWS\", \"system_type\": \"mortar\", \"composition\": \"opc 0.58 / limestone_powder 0.24 / silica_fume 0.18; w/b 0.15; s/b 0.52; sp_pce 0.80%, other_admix 0.27%; fibre 2.00 vol%\", \"measured\": [\"drying_shrinkage=624microstrain@56d\", \"drying_shrinkage=4.94microstrain@0.042d\", \"drying_shrinkage=14.7microstrain@0.125d\", \"drying_shrinkage=29.4microstrain@0.25d\", \"drying_shrinkage=58.8microstrain@0.5d\"]}, {\"tier\": \"exact\", \"score\": 1.0, \"doi\": \"10.1016/j.cscm.2026.e06193\", \"title\": \"Regulating early-age autogenous and long-term drying shrinkage of UHPC using SRA, SAP and limestone"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.64,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "retrieve_literature",
+       "input": {
+        "system_type": "mortar",
+        "n": 8,
+        "targets": [
+         {
+          "quantity": "drying_shrinkage",
+          "kind": "le",
+          "hi": 600,
+          "unit": "microstrain",
+          "age_d": 28
+         },
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 50,
+          "unit": "MPa",
+          "age_d": 28
+         }
+        ]
+       },
+       "t": 17.93,
+       "result": {
+        "data": {
+         "n_hits": 8,
+         "tiers": {
+          "exact": 8,
+          "near": 0
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1007/s41062-023-01334-z",
+           "title": "Sustainable application of industrial side streams as alternative fine aggregates for cement mortar",
+           "year": 2024,
+           "is_3dcp": 0,
+           "mix": "M2",
+           "system_type": "mortar",
+           "composition": "slag_other 0.71 / opc 0.29; w/b 0.15; s/b 0.18",
+           "measured": [
+            "compressive_strength=74MPa@28d",
+            "drying_shrinkage=10microstrain@2d",
+            "drying_shrinkage=20microstrain@3d",
+            "drying_shrinkage=88microstrain@7d",
+            "drying_shrinkage=100microstrain@14d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.cemconcomp.2017.12.001",
+           "title": "Validation of statistical models",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "EX-6",
+           "system_type": "mortar",
+           "composition": "opc 0.85 / csa 0.15; w/b 0.40; s/b 2.60",
+           "measured": [
+            "compressive_strength=45MPa@7d",
+            "compressive_strength=65MPa@28d",
+            "compressive_strength=70MPa@90d",
+            "drying_shrinkage=328microstrain@3d",
+            "drying_shrinkage=150microstrain@28d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2018.09.069",
+           "title": "Influence of RAP aggregates on strength, durability and porosity of cement mortar",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "CM",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.44; s/b 3.00",
+           "measured": [
+            "drying_shrinkage=60microstrain@14d",
+            "drying_shrinkage=250microstrain@21d",
+            "drying_shrinkage=330microstrain@28d",
+            "compressive_strength=39MPa@7d",
+            "compressive_strength=43MPa@14d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2019.117353",
+           "title": "Effects of metakaolin on properties and microstructure of magnesium phosphate cement",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "M15",
+           "system_type": "mortar",
+           "composition": "magnesia 0.64 / other_powder 0.25 / metakaolin 0.11; w/b 0.20; s/b 1.00; sp_other 0.12%, retarder 3.82%",
+           "measured": [
+            "compressive_strength=27.5MPa@0.042d",
+            "drying_shrinkage=0.168microstrain@0.042d",
+            "drying_shrinkage=0.5microstrain@0.125d",
+            "drying_shrinkage=1microstrain@0.25d",
+            "drying_shrinkage=2microstrain@0.5d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.6,
+           "doi": "10.1007/s41062-023-01334-z",
+           "title": "Sustainable application of industrial side streams as alternative fine aggregates for cement mortar",
+           "year": 2024,
+           "is_3dcp": 0,
+           "mix": "M3",
+           "system_type": "mortar",
+           "composition": "slag_other 0.71 / opc 0.29; w/b 0.15; s/b 0.18",
+           "measured": [
+            "drying_shrinkage=8.5microstrain@2d",
+            "drying_shrinkage=17microstrain@3d",
+            "drying_shrinkage=65microstrain@7d",
+            "drying_shrinkage=95microstrain@14d",
+            "drying_shrinkage=106microstrain@21d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.6,
+           "doi": "10.1016/j.cemconcomp.2017.12.001",
+           "title": "Validation of statistical models",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "EX-L-0",
+           "system_type": "mortar",
+           "composition": "opc 0.85 / csa 0.15; w/b 0.40; s/b 2.60; sp_pce 0.72%",
+           "measured": [
+            "compressive_strength=46MPa@7d",
+            "compressive_strength=59MPa@28d",
+            "compressive_strength=65MPa@90d",
+            "drying_shrinkage=115microstrain@3d",
+            "drying_shrinkage=222microstrain@28d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.36,
+           "doi": "10.1007/s41062-023-01334-z",
+           "title": "Sustainable application of industrial side streams as alternative fine aggregates for cement mortar",
+           "year": 2024,
+           "is_3dcp": 0,
+           "mix": "M4",
+           "system_type": "mortar",
+           "composition": "slag_other 0.71 / opc 0.29; w/b 0.15; s/b 0.18",
+           "measured": [
+            "drying_shrinkage=6microstrain@2d",
+            "drying_shrinkage=12microstrain@3d",
+            "drying_shrinkage=42microstrain@7d",
+            "drying_shrinkage=80microstrain@14d",
+            "drying_shrinkage=79microstrain@21d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.36,
+           "doi": "10.1016/j.cemconcomp.2017.12.001",
+           "title": "Validation of statistical models",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "EX-L-6",
+           "system_type": "mortar",
+           "composition": "opc 0.85 / csa 0.15; w/b 0.40; s/b 2.60",
+           "measured": [
+            "compressive_strength=49MPa@7d",
+            "compressive_strength=69MPa@28d",
+            "compressive_strength=74MPa@90d",
+            "drying_shrinkage=435microstrain@3d",
+            "drying_shrinkage=125microstrain@28d"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013706-10e6\\literature.csv",
+         "_elapsed_s": 0.43
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013706-10e6\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.44,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 132562,
+      "output_tokens": 763,
+      "cache_read_input_tokens": 107776
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 24.3
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:37:06"
+}

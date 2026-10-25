@@ -1,0 +1,451 @@
+{
+ "id": "P08",
+ "group": "predict",
+ "provider": "codex_sol",
+ "backend": "codex",
+ "model": "gpt-6-sol",
+ "sessions": [
+  {
+   "session_id": "20261016-174039-226e",
+   "turns": [
+    {
+     "user": "Predict the 28-day compressive strength of an OPC mortar, w/b 0.45, s/b 2.5, no admixtures.",
+     "text": "I’ll check the model’s mix conventions, then predict strength using the stated proportions and explicit specimen and curing defaults.\n**Predicted 28-day compressive strength:** **34.2 [20.8, 65.7] MPa** (median [10th, 90th percentiles]).\n\nI used the stated OPC mortar proportions (w/b 0.45, s/b 2.5, no admixtures) and assumed moist curing, a 50 mm cube specimen, and a non-3DCP mix. The model reports no training-range violations. This literature-based prediction needs experimental verification.\n\nFiles: [prediction CSV](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.csv>) · [prediction figure](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.png>)\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "powder",
+        "query": "portland_cement"
+       },
+       "t": 9.54,
+       "result": {
+        "data": {
+         "classes": {
+          "powder": [
+           {
+            "material_class": "portland_cement",
+            "group": "opc",
+            "sg": 3.15,
+            "solid_content": null
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.02
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.45,
+         "s_b": 2.5,
+         "binder": {
+          "portland_cement": 1
+         },
+         "admixtures_pct": {},
+         "conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "curing": "moist",
+          "is_3dcp": false
+         }
+        },
+        "targets": [
+         "compressive_strength"
+        ]
+       },
+       "t": 12.15,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "compressive_strength",
+           "name_ko": "압축강도",
+           "q10": 20.830917,
+           "q50": 34.214125,
+           "q90": 65.727036,
+           "unit": "MPa",
+           "model": "compressive_strength",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 47125,
+           "cv_r2": 0.533254
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 0
+         },
+         "_elapsed_s": 2.41
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.42,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 121196,
+      "output_tokens": 577,
+      "cache_read_input_tokens": 105984
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 20.9
+    },
+    {
+     "user": "And if I lower w/b to 0.30 and add 0.8 % PCE, keeping everything else the same?",
+     "text": "I’ll run the same strength model with w/b 0.30 and PCE at 0.8% of binder mass, keeping the earlier specimen and curing assumptions.\nWith w/b reduced to 0.30 and PCE added at 0.8% of binder mass, the **predicted 28-day compressive strength is 51.2 [28.9, 94.0] MPa** (median [10th, 90th percentiles]). The earlier mix was predicted at 34.2 [20.8, 65.7] MPa.\n\nI kept s/b at 2.5 and assumed moist curing, a 50 mm cube, and a non-3DCP mix. The new inputs have no reported training-range violations. Both predictions are literature-based estimates; test the mix to confirm its strength.\n\nFiles from this run: [CSV](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.csv>) · [figure](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.png>)\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.3,
+         "s_b": 2.5,
+         "binder": {
+          "portland_cement": 1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.8
+         },
+         "conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "curing": "moist",
+          "is_3dcp": false
+         }
+        },
+        "targets": [
+         "compressive_strength"
+        ]
+       },
+       "t": 22.83,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "compressive_strength",
+           "name_ko": "압축강도",
+           "q10": 28.905077,
+           "q50": 51.188966,
+           "q90": 94.018683,
+           "unit": "MPa",
+           "model": "compressive_strength",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 47125,
+           "cv_r2": 0.533254
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 0
+         },
+         "_elapsed_s": 2.15
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174039-226e\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.16,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 189439,
+      "output_tokens": 1040,
+      "cache_read_input_tokens": 172928
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 32.3
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:40:39"
+}

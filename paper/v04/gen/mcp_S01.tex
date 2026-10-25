@@ -1,0 +1,37 @@
+\begin{mcpbox}{Tool request (client $\rightarrow$ server)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "tool": "describe_schema",
+ "arguments": {
+  "db": "master"
+ }
+}
+\end{lstlisting}
+\end{mcpbox}
+\begin{mcpbox}{Tool response (server $\rightarrow$ client, digest)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "db": "master",
+ "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\..\\pastemortar_extraction_packa...",
+ "tables": [
+  {
+   "table": "curve_points",
+   "n_rows": 155211,
+   "hint": null
+  },
+  {
+   "table": "curves",
+   "n_rows": 25721,
+   "hint": "curve_uid, mix_uid, x_quantity, y_quantity, x_unit, y_unit; curve_points: cur..."
+  },
+  "..."
+ ],
+ "notes": [
+  "master.db:   TEXT, ''=, fig_only='1'   ",
+  "join keys: paper_uid, mix_uid, test_uid",
+  "..."
+ ],
+ "_elapsed_s": 0.14
+}
+\end{lstlisting}
+\end{mcpbox}

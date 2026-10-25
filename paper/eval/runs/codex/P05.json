@@ -1,0 +1,254 @@
+{
+ "id": "P05",
+ "group": "predict",
+ "provider": "codex",
+ "model": "",
+ "sessions": [
+  {
+   "session_id": "20261016-165801-8697",
+   "turns": [
+    {
+     "user": "My mix per cubic metre is: cement 500 kg, fly ash (class F) 150 kg, river sand 1300 kg, water 227 kg, PCE 3.25 kg. Predict 28-day compressive strength and drying shrinkage.",
+     "text": "I’ll check the model’s input conventions and predict both properties, stating any assumptions needed for curing, specimen type, and PCE dosage.\n| Property at 28 days | q50 [q10, q90] |\n|---|---:|\n| Compressive strength | **49.7 [31.2, 75.0] MPa** |\n| Drying shrinkage | **854 [237, 1,577] microstrain** |\n\nBrackets show the central 80% prediction interval. Neither prediction exceeded the model’s training ranges.\n\nAssumptions: ordinary Portland cement, river sand classified as `natural_sand`, conventional mortar, `comp_cube50` specimens, and moist curing at 20 °C / 95% RH. Your proportions give **w/b = 0.349**, **sand/binder = 2.00**, and **PCE = 0.50% of binder by product mass**; no additional water correction was made for the PCE.\n\nDrying shrinkage was evaluated with the age input set to 28 days; drying exposure and specimen details were not specified, so it is not a test-protocol-specific estimate. Both predictions are literature-based correlations and need experimental verification.\n\nFiles: [prediction CSV](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-165801-8697/predictions_agent_mix.csv>), [prediction figure](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-165801-8697/predictions_agent_mix.png>), [mix specification](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-165801-8697/mix_agent_mix.json>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {},
+       "t": 10.24,
+       "result": {
+        "data": {
+         "text": "{\"classes\": {\"powder\": [{\"material_class\": \"anhydrite\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"basalt_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"belite_calcium_sulfoaluminate\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"belite_rich_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"biochar\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"bottom_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"calcined_clay\", \"group\": \"calcined_clay\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"calcium_aluminate_cement\", \"group\": \"cac\", \"sg\": 3.2, \"solid_content\": null}, {\"material_class\": \"calcium_hydroxide\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"calcium_sulfate_hemihydrate\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"calcium_sulfoaluminate_cement\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"carbide_slag\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"carbon_black\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"ceramic_waste_powder\", \"group\": \"recycled_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"coal_gangue\", \"group\": \"industrial_residue\", \"sg\": 2.8, \"solid_content\": null}, {\"material_class\": \"copper_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"diatomaceous_earth\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"dolomite_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"expansive_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"ferronickel_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_C\", \"group\": \"fly_ash_c\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_F\", \"group\": \"fly_ash_f\", \"sg\": 2.3, \"solid_content\": null}, {\"material_class\": \"ggbfs\", \"group\": \"ggbfs\", \"sg\": 2.9, \"solid_content\": null}, {\"material_class\": \"glass_powder\", \"group\": \"glass_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"granite_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"gypsum\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"ladle_furnace_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"limestone_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"magnesium_oxychloride_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"magnesium_phosphate_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"marble_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"metakaolin\", \"group\": \"metakaolin\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"municipal_solid_waste_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"natural_pozzolan\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"oil_well_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"palm_oil_fuel_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"phosphorus_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"portland_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_composite_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_limestone_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"quartz_powder\", \"group\": \"quartz_powder"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "build_mix_spec",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.34923076923076923,
+         "s_b": 2,
+         "binder": {
+          "portland_cement": 0.7692307692307693,
+          "fly_ash_class_F": 0.23076923076923078
+         },
+         "sand_class": "natural_sand",
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.5
+         },
+         "conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "curing": "moist",
+          "is_3dcp": false
+         }
+        }
+       },
+       "t": 15.57,
+       "result": {
+        "data": {
+         "mix_spec": {
+          "system_type": "mortar",
+          "components": [
+           {
+            "material_class": "portland_cement",
+            "amount": 0.769231,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "fly_ash_class_F",
+            "amount": 0.230769,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "natural_sand",
+            "amount": 2.0,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "superplasticiser_pce",
+            "amount": 0.005,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           }
+          ],
+          "water_binder": 0.349231,
+          "sand_binder": null,
+          "conditions": {
+           "age_d": 28.0,
+           "comparability_group": "comp_cube50",
+           "rest_time_s": 0.0,
+           "curing_temp_C": 20.0,
+           "curing_rh_pct": 95.0,
+           "curing_regime": "moist curing",
+           "is_3dcp": 0,
+           "mix_time_s": null,
+           "max_rpm": null,
+           "mixer_type": null,
+           "rheometer_geometry": null,
+           "rheometer_method": null,
+           "rheometer": {}
+          },
+          "basis": "mass_frac_of_powder",
+          "name": "agent_mix",
+          "year": null,
+          "schema_version": "1.0"
+         },
+         "warnings": [],
+         "components": [
+          "portland_cement",
+          "fly_ash_class_F",
+          "natural_sand",
+          "superplasticiser_pce"
+         ],
+         "_elapsed_s": 0.0
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165801-8697\\mix_agent_mix.json",
+          "kind": "json",
+          "title": "MixSpec agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.01,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.34923076923076923,
+         "s_b": 2,
+         "binder": {
+          "portland_cement": 0.7692307692307693,
+          "fly_ash_class_F": 0.23076923076923078
+         },
+         "sand_class": "natural_sand",
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.5
+         },
+         "conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "curing": "moist",
+          "is_3dcp": false
+         }
+        },
+        "targets": [
+         "compressive_strength",
+         "drying_shrinkage"
+        ]
+       },
+       "t": 15.59,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "compressive_strength",
+           "name_ko": "압축강도",
+           "q10": 31.190424,
+           "q50": 49.746778,
+           "q90": 75.042073,
+           "unit": "MPa",
+           "model": "compressive_strength",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 47125,
+           "cv_r2": 0.533254
+          },
+          {
+           "target": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "q10": 237.379621,
+           "q50": 854.403546,
+           "q90": 1576.795102,
+           "unit": "microstrain",
+           "model": "drying_shrinkage",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 18236,
+           "cv_r2": 0.173305
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165801-8697\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 0
+         },
+         "_elapsed_s": 2.25
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165801-8697\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-165801-8697\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.26,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 120151,
+      "output_tokens": 594,
+      "cache_read_input_tokens": 98688
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 31.5
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T16:58:01"
+}

@@ -1,0 +1,62 @@
+\begin{userbox}
+Find 10 published mixes with 28-day compressive strength of at least 40 MPa and a static yield stress between 1 and 4 kPa; prefer 3DCP studies.
+\end{userbox}
+\begin{toolbox}{describe\_schema, 0.2 s}
+\begin{lstlisting}[style=argstyle]
+{"db": "master"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{retrieve\_literature, 2.2 s}
+\begin{lstlisting}[style=argstyle]
+{"n": 10, "prefer_3dcp": true, "targets": [{"quantity": "compressive_strength", "kind": "ge", "lo": 40, "unit": "MPa", "age_d": 28}, {"quantity": "static_yield_stress", "kind": "range", "lo": 1, "hi": 4, "unit": "kPa"}]}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{describe\_schema, 0.1 s}
+\begin{lstlisting}[style=argstyle]
+{"db": "master", "table": "measurements"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{describe\_schema, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"db": "master", "table": "tests"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{describe\_schema, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"db": "master", "table": "mixes"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{sql\_query, 0.1 s}
+\begin{lstlisting}[style=argstyle]
+{"sql": "SELECT m.paper_uid, m.name_in_paper, o.quantity, o.value_canonical, o.unit_canonical, o.rest_time_norm_s, o.condition_note, o.fig_only, o.source_locator, t.method_name, t.comparability_group FROM mixes m JOIN measurements o ON m.mix_uid=o.mix_uid LEFT ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{sql\_query [error], 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"sql": "SELECT m.paper_uid, m.name_in_paper, MAX(CASE WHEN o.quantity='compressive_strength' THEN CAST(o.value_canonical AS REAL) END) AS strength_28d_MPa, GROUP_CONCAT(CASE WHEN o.quantity='static_yield_stress' THEN CAST(o.value_canonical AS REAL)/1000.0 ||  ...}
+\end{lstlisting}
+\end{toolbox}
+\toolmore{5}
+\begin{agentbox}
+I'll check the database schema, then look for published mixes meeting both limits, prioritizing 3DCP studies.\par
+The literature search returned the requested matches, all from 3DCP studies. I'm checking measurement conditions; the SQL tool rejected punctuation inside a text field, so I'll retry with simpler formatting.\par
+Found \textbf{10 published mixes meeting both limits}, all indexed as \textbf{3DCP studies}. Values below are literature measurements, not model predictions.\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.19\linewidth}p{0.19\linewidth}p{0.19\linewidth}p{0.19\linewidth}p{0.19\linewidth}}
+Mix & Study / DOI & 28-day strength (MPa) & Static yield stress (kPa) & w/b \\
+REF & Cement setting mechanisms & 41.34 & 1.261 & 0.43 \\
+REF\_3DPC & Cement setting mechanisms & 46.68 & 1.064 & 0.32 \\
+3DPC mixture & Plastic shrinkage and cracking & 55.7 & 1.561 & 0.35 \\
+M7 & Printed permanent formwork & 40.0 & 2.622 & 0.27 \\
+Mixture A & Fuller-Thompson mix design & 49.7 & 3.350 & 0.14 \\
+Mixture B & Fuller-Thompson mix design & \textasciitilde{}=42* & 2.411 & 0.14 \\
+\multicolumn{1}{l}{\textit{\ldots 4 further rows in the transcript}} \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+*Mixtures B and C have strength values manually digitized from Figure 17.*\par
+\par
+\textbf{Comparability:} Specimen geometry and rheology protocols vary. The listed yield stresses are qualifying reported measurements, not a standardized rest-time comparison; M7 also has measurements outside your range under other conditions. No curing, specimen, or rest-time defaults were imposed.\par
+\par
+Download the literature CSV, including composition summaries. Any selected mix needs experimental verification with your materials and printing process.\par
+\par
+\end{agentbox}

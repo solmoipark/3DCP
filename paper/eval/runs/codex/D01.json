@@ -1,0 +1,628 @@
+{
+ "id": "D01",
+ "group": "design",
+ "provider": "codex",
+ "model": "",
+ "sessions": [
+  {
+   "session_id": "20261016-170815-e482",
+   "turns": [
+    {
+     "user": "Inverse-design a printable mortar: 28-day compressive strength >= 40 MPa and static yield stress between 1 and 4 kPa, minimising the clinker fraction. Search space: OPC required 0.5-1.0, silica fume 0-0.15, limestone powder 0-0.3, w/b 0.28-0.45. Run without asking.",
+     "text": "I’ll run the inverse design over your specified search space, minimising OPC fraction as the available proxy for clinker content, then check the candidates and their published analogues.\nThe initial search returned low-OPC candidates, but their median yield stresses fall below your requested range. I’ll tighten the rheology screening to check whether the same search space offers a more convincing candidate. Assumptions are fixed sand/binder ratio, moist curing, standard cube testing, and no added admixtures.\n**The search found a low-clinker trial candidate, but did not establish a mortar meeting both targets reliably.**\n\nBest candidate from the initial search:\n\n| Parameter | Result |\n|---|---:|\n| OPC binder fraction | 0.70 |\n| Limestone powder fraction | 0.30 |\n| Silica fume | Absent |\n| w/b | 0.302 |\n| s/b | 1.50 |\n| Compressive strength | **47.73 [27.22, 69.89] MPa** |\n| Static yield stress | **787 [19, 4,181] Pa** |\n\nPredictions are q50 [q10, q90]. The engine reports clinker fraction **0.70**, effectively an OPC-fraction proxy here; actual cement clinker content was not supplied.\n\nThe strength target has predicted satisfaction probability **0.69**, and the yield-stress target **0.36**. Median yield stress misses your lower limit. Tightening rheology probability to **0.50** produced **no feasible candidates before automatic threshold relaxation**; the relaxed result is not a successful design.\n\nDefaults used: moist curing, `comp_cube50`, s/b **1.50**, no admixtures, printing context enabled, and static yield assessed at rest time **0 s**.\n\nPublished evidence provides stronger starting references: [Mixture A](https://doi.org/10.1016/j.conbuildmat.2017.12.112) reports **49.7 MPa** and **3,350 Pa**; [RFA-50](https://doi.org/10.1016/j.conbuildmat.2025.144187) reports **44.6 MPa** and **1,760 Pa**. Both lie outside your permitted binder space.\n\nTreat the rheology prediction as order-of-magnitude guidance. Printability remains unverified without geometry and printing schedule; final selection requires experiments.\n\nFiles: [initial report](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170815-e482/design_Low-clinker printable mortar/report.md>), [candidate CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170815-e482/design_Low-clinker printable mortar/candidates.csv>), [stricter-screen report](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170815-e482/design_Low-clinker mortar stricter rheology/report.md>), [literature CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170815-e482/literature.csv>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "powder"
+       },
+       "t": 11.21,
+       "result": {
+        "data": {
+         "text": "{\"classes\": {\"powder\": [{\"material_class\": \"anhydrite\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"basalt_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"belite_calcium_sulfoaluminate\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"belite_rich_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"biochar\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"bottom_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"calcined_clay\", \"group\": \"calcined_clay\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"calcium_aluminate_cement\", \"group\": \"cac\", \"sg\": 3.2, \"solid_content\": null}, {\"material_class\": \"calcium_hydroxide\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"calcium_sulfate_hemihydrate\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"calcium_sulfoaluminate_cement\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"carbide_slag\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"carbon_black\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"ceramic_waste_powder\", \"group\": \"recycled_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"coal_gangue\", \"group\": \"industrial_residue\", \"sg\": 2.8, \"solid_content\": null}, {\"material_class\": \"copper_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"diatomaceous_earth\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"dolomite_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"expansive_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"ferronickel_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_C\", \"group\": \"fly_ash_c\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_F\", \"group\": \"fly_ash_f\", \"sg\": 2.3, \"solid_content\": null}, {\"material_class\": \"ggbfs\", \"group\": \"ggbfs\", \"sg\": 2.9, \"solid_content\": null}, {\"material_class\": \"glass_powder\", \"group\": \"glass_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"granite_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"gypsum\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"ladle_furnace_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"limestone_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"magnesium_oxychloride_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"magnesium_phosphate_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"marble_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"metakaolin\", \"group\": \"metakaolin\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"municipal_solid_waste_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"natural_pozzolan\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"oil_well_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"palm_oil_fuel_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"phosphorus_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"portland_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_composite_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_limestone_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"quartz_powder\", \"group\": \"quartz_powder"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "design_mix",
+       "input": {
+        "name": "Low-clinker printable mortar",
+        "objectives": [
+         "clinker_fraction"
+        ],
+        "space": {
+         "system_type": "mortar",
+         "binder": {
+          "portland_cement": {
+           "lo": 0.5,
+           "hi": 1,
+           "required": true
+          },
+          "silica_fume": {
+           "lo": 0,
+           "hi": 0.15
+          },
+          "limestone_powder": {
+           "lo": 0,
+           "hi": 0.3
+          }
+         },
+         "w_b": [
+          0.28,
+          0.45
+         ],
+         "s_b": [
+          1.5,
+          1.5
+         ],
+         "admixtures": {},
+         "curing": "moist",
+         "is_3dcp": true,
+         "max_binder_components": 3,
+         "fixed_conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0
+         }
+        },
+        "targets": [
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 40,
+          "unit": "MPa",
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "p_min": 0.6
+         },
+         {
+          "quantity": "static_yield_stress",
+          "kind": "range",
+          "lo": 1,
+          "hi": 4,
+          "unit": "kPa",
+          "rest_time_s": 0,
+          "p_min": 0.35
+         }
+        ],
+        "top_n": 3,
+        "n_literature": 3
+       },
+       "t": 20.41,
+       "result": {
+        "data": {
+         "name": "Low-clinker printable mortar",
+         "diagnostics": {
+          "n_sampled": 8192,
+          "n_feasible": 296,
+          "relaxation": null,
+          "p_min_used": null,
+          "t_total_s": 16.4,
+          "fallback_highest_P": null
+         },
+         "warnings": [],
+         "models": {
+          "compressive_strength": {
+           "weak": false,
+           "n_train": 47125,
+           "r2_log": 0.44929
+          },
+          "static_yield_stress": {
+           "weak": false,
+           "n_train": 1728,
+           "r2_log": 0.398974
+          }
+         },
+         "candidates": [
+          {
+           "rank": 1,
+           "mix": "portland_cement 0.70 / limestone_powder 0.30; w/b 0.302; s/b 1.50",
+           "p_feasible": 0.244,
+           "p_min_targets": 0.355,
+           "ad_max": 0.51,
+           "predictions": {
+            "compressive_strength": {
+             "q50": 47.73256,
+             "q10": 27.220271,
+             "q90": 69.894798,
+             "unit": "MPa",
+             "p": 0.69,
+             "weak": false
+            },
+            "static_yield_stress": {
+             "q50": 787.357493,
+             "q10": 18.936592,
+             "q90": 4181.246596,
+             "unit": "Pa",
+             "p": 0.36,
+             "weak": false
+            }
+           },
+           "objectives": {
+            "powder_kg_m3": 815.967,
+            "cost_per_kg_powder": 0.123,
+            "co2_per_kg_powder": 0.612,
+            "cost_per_m3": 100.61,
+            "co2_per_m3": 499.038,
+            "clinker_fraction": 0.7,
+            "co2_per_mpa": 18.333,
+            "cost_per_mpa": 3.696
+           },
+           "analogue_doi": "10.1016/j.cemconcomp.2025.106439",
+           "mix_json": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\cand_01.json"
+          },
+          {
+           "rank": 2,
+           "mix": "portland_cement 0.70 / limestone_powder 0.30; w/b 0.354; s/b 1.50",
+           "p_feasible": 0.233,
+           "p_min_targets": 0.386,
+           "ad_max": 0.5,
+           "predictions": {
+            "compressive_strength": {
+             "q50": 43.483175,
+             "q10": 26.558616,
+             "q90": 68.591254,
+             "unit": "MPa",
+             "p": 0.6,
+             "weak": false
+            },
+            "static_yield_stress": {
+             "q50": 806.465767,
+             "q10": 13.049721,
+             "q90": 3717.913468,
+             "unit": "Pa",
+             "p": 0.39,
+             "weak": false
+            }
+           },
+           "objectives": {
+            "powder_kg_m3": 781.688,
+            "cost_per_kg_powder": 0.123,
+            "co2_per_kg_powder": 0.612,
+            "cost_per_m3": 96.425,
+            "co2_per_m3": 478.085,
+            "clinker_fraction": 0.7,
+            "co2_per_mpa": 18.001,
+            "cost_per_mpa": 3.631
+           },
+           "analogue_doi": "10.1016/j.cemconcomp.2025.106439",
+           "mix_json": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\cand_02.json"
+          }
+         ],
+         "literature": [
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.cemconcomp.2021.104039",
+           "mix": "M7",
+           "year": 2021,
+           "is_3dcp": 1,
+           "composition": "opc 0.82 / silica_fume 0.15 / csa 0.03; w/b 0.27; s/b 0.80; sp_pce 0.10%, vma 0.06%; fibre 8.90 vol%"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "mix": "Mixture A",
+           "year": 2018,
+           "is_3dcp": 1,
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.conbuildmat.2025.144187",
+           "mix": "RFA-50",
+           "year": 2025,
+           "is_3dcp": 1,
+           "composition": "opc 0.55 / other_powder 0.45; w/b 0.40; s/b 1.50"
+          }
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "kind": "ge",
+           "lo": 40.0,
+           "hi": null,
+           "p_min": 0.6
+          },
+          {
+           "quantity": "static_yield_stress",
+           "kind": "range",
+           "lo": 1000.0,
+           "hi": 4000.0,
+           "p_min": 0.35
+          }
+         ],
+         "note": "P는 타깃별 만족 확률의 곱(독립 가정). 유변 타깃 모델은 weak이므로 후보는 방향 제시, 문헌 배합이 1차 근거.",
+         "_elapsed_s": 19.46
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\result.json",
+          "kind": "json",
+          "title": "result (Low-clinker printable mortar)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\report.md",
+          "kind": "markdown",
+          "title": "report (Low-clinker printable mortar)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\candidates.csv",
+          "kind": "table",
+          "title": "candidates (Low-clinker printable mortar)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\literature.csv",
+          "kind": "table",
+          "title": "literature (Low-clinker printable mortar)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\pareto.png",
+          "kind": "image",
+          "title": "pareto (Low-clinker printable mortar)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker printable mortar\\parallel_coords.png",
+          "kind": "image",
+          "title": "parallel (Low-clinker printable mortar)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 19.47,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "design_mix",
+       "input": {
+        "name": "Low-clinker mortar stricter rheology",
+        "objectives": [
+         "clinker_fraction"
+        ],
+        "space": {
+         "system_type": "mortar",
+         "binder": {
+          "portland_cement": {
+           "lo": 0.5,
+           "hi": 1,
+           "required": true
+          },
+          "silica_fume": {
+           "lo": 0,
+           "hi": 0.15
+          },
+          "limestone_powder": {
+           "lo": 0,
+           "hi": 0.3
+          }
+         },
+         "w_b": [
+          0.28,
+          0.45
+         ],
+         "s_b": [
+          1.5,
+          1.5
+         ],
+         "admixtures": {},
+         "curing": "moist",
+         "is_3dcp": true,
+         "max_binder_components": 3,
+         "fixed_conditions": {
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0
+         }
+        },
+        "targets": [
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 40,
+          "unit": "MPa",
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "p_min": 0.6
+         },
+         {
+          "quantity": "static_yield_stress",
+          "kind": "range",
+          "lo": 1,
+          "hi": 4,
+          "unit": "kPa",
+          "rest_time_s": 0,
+          "p_min": 0.5
+         }
+        ],
+        "top_n": 3,
+        "n_literature": 3
+       },
+       "t": 48.05,
+       "result": {
+        "data": {
+         "name": "Low-clinker mortar stricter rheology",
+         "diagnostics": {
+          "n_sampled": 8192,
+          "n_feasible": 0,
+          "relaxation": [
+           {
+            "threshold_scale": 0.9,
+            "ad_max": 1.0,
+            "n_feasible": 0
+           },
+           {
+            "threshold_scale": 0.8,
+            "ad_max": 1.0,
+            "n_feasible": 38
+           }
+          ],
+          "p_min_used": {
+           "compressive_strength": 0.48,
+           "static_yield_stress": 0.4
+          },
+          "t_total_s": 17.3,
+          "fallback_highest_P": null
+         },
+         "warnings": [],
+         "models": {
+          "compressive_strength": {
+           "weak": false,
+           "n_train": 47125,
+           "r2_log": 0.44929
+          },
+          "static_yield_stress": {
+           "weak": false,
+           "n_train": 1728,
+           "r2_log": 0.398974
+          }
+         },
+         "candidates": [
+          {
+           "rank": 1,
+           "mix": "portland_cement 0.70 / limestone_powder 0.30; w/b 0.393; s/b 1.50",
+           "p_feasible": 0.233,
+           "p_min_targets": 0.407,
+           "ad_max": 0.5,
+           "predictions": {
+            "compressive_strength": {
+             "q50": 42.606841,
+             "q10": 24.20326,
+             "q90": 67.287201,
+             "unit": "MPa",
+             "p": 0.57,
+             "weak": false
+            },
+            "static_yield_stress": {
+             "q50": 825.750203,
+             "q10": 13.616944,
+             "q90": 3423.018327,
+             "unit": "Pa",
+             "p": 0.41,
+             "weak": false
+            }
+           },
+           "objectives": {
+            "powder_kg_m3": 758.097,
+            "cost_per_kg_powder": 0.123,
+            "co2_per_kg_powder": 0.612,
+            "cost_per_m3": 93.544,
+            "co2_per_m3": 463.666,
+            "clinker_fraction": 0.7,
+            "co2_per_mpa": 19.157,
+            "cost_per_mpa": 3.865
+           },
+           "analogue_doi": "10.1016/j.cemconcomp.2025.106439",
+           "mix_json": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker mortar stricter rheology\\cand_01.json"
+          }
+         ],
+         "literature": [
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.cemconcomp.2021.104039",
+           "mix": "M7",
+           "year": 2021,
+           "is_3dcp": 1,
+           "composition": "opc 0.82 / silica_fume 0.15 / csa 0.03; w/b 0.27; s/b 0.80; sp_pce 0.10%, vma 0.06%; fibre 8.90 vol%"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "mix": "Mixture A",
+           "year": 2018,
+           "is_3dcp": 1,
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.conbuildmat.2025.144187",
+           "mix": "RFA-50",
+           "year": 2025,
+           "is_3dcp": 1,
+           "composition": "opc 0.55 / other_powder 0.45; w/b 0.40; s/b 1.50"
+          }
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "kind": "ge",
+           "lo": 40.0,
+           "hi": null,
+           "p_min": 0.6
+          },
+          {
+           "quantity": "static_yield_stress",
+           "kind": "range",
+           "lo": 1000.0,
+           "hi": 4000.0,
+           "p_min": 0.5
+          }
+         ],
+         "note": "P는 타깃별 만족 확률의 곱(독립 가정). 유변 타깃 모델은 weak이므로 후보는 방향 제시, 문헌 배합이 1차 근거.",
+         "_elapsed_s": 18.09
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker mortar stricter rheology\\result.json",
+          "kind": "json",
+          "title": "result (Low-clinker mortar stricter rheology)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker mortar stricter rheology\\report.md",
+          "kind": "markdown",
+          "title": "report (Low-clinker mortar stricter rheology)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker mortar stricter rheology\\candidates.csv",
+          "kind": "table",
+          "title": "candidates (Low-clinker mortar stricter rheology)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker mortar stricter rheology\\literature.csv",
+          "kind": "table",
+          "title": "literature (Low-clinker mortar stricter rheology)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker mortar stricter rheology\\pareto.png",
+          "kind": "image",
+          "title": "pareto (Low-clinker mortar stricter rheology)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\design_Low-clinker mortar stricter rheology\\parallel_coords.png",
+          "kind": "image",
+          "title": "parallel (Low-clinker mortar stricter rheology)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 18.11,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "retrieve_literature",
+       "input": {
+        "targets": [
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 40,
+          "unit": "MPa",
+          "age_d": 28,
+          "comparability_group": "comp_cube50",
+          "p_min": 0.6
+         },
+         {
+          "quantity": "static_yield_stress",
+          "kind": "range",
+          "lo": 1,
+          "hi": 4,
+          "unit": "kPa",
+          "rest_time_s": 0,
+          "p_min": 0.5
+         }
+        ],
+        "system_type": "mortar",
+        "prefer_3dcp": true,
+        "n": 3
+       },
+       "t": 66.16,
+       "result": {
+        "data": {
+         "n_hits": 3,
+         "tiers": {
+          "exact": 3,
+          "near": 0
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.004,
+           "doi": "10.1016/j.cemconcomp.2021.104039",
+           "title": "3D concrete printing of permanent formwork for concrete column construction",
+           "year": 2021,
+           "is_3dcp": 1,
+           "mix": "M7",
+           "system_type": "mortar",
+           "composition": "opc 0.82 / silica_fume 0.15 / csa 0.03; w/b 0.27; s/b 0.80; sp_pce 0.10%, vma 0.06%; fibre 8.90 vol%",
+           "measured": [
+            "compressive_strength=40MPa@28d",
+            "static_yield_stress=2.62e+03Pa",
+            "static_yield_stress=2.62e+03Pa",
+            "static_yield_stress=863Pa",
+            "static_yield_stress=943Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.004,
+           "doi": "10.1016/j.conbuildmat.2017.12.112",
+           "title": "Design 3D printing cementitious materials via Fuller Thompson theory and Marson-Percy model",
+           "year": 2018,
+           "is_3dcp": 1,
+           "mix": "Mixture A",
+           "system_type": "mortar",
+           "composition": "opc 0.48 / fly_ash_f 0.48 / silica_fume 0.05; w/b 0.14; s/b 0.50",
+           "measured": [
+            "compressive_strength=49.7MPa@28d",
+            "static_yield_stress=3.35e+03Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.004,
+           "doi": "10.1016/j.conbuildmat.2025.144187",
+           "title": "Printability, rheology, and mechanical performance of recycled fine aggregate incorporated 3D concrete printing mixes",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "RFA-50",
+           "system_type": "mortar",
+           "composition": "opc 0.55 / other_powder 0.45; w/b 0.40; s/b 1.50",
+           "measured": [
+            "compressive_strength=30.2MPa@3d",
+            "compressive_strength=44.6MPa@28d",
+            "static_yield_stress=1.76e+03Pa"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\literature.csv",
+         "_elapsed_s": 0.58
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170815-e482\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.59,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 158488,
+      "output_tokens": 1120,
+      "cache_read_input_tokens": 133888
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 88.6
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:08:15"
+}

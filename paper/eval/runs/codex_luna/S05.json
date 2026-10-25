@@ -1,0 +1,721 @@
+{
+ "id": "S05",
+ "group": "sql",
+ "provider": "codex_luna",
+ "backend": "codex",
+ "model": "gpt-6-luna",
+ "sessions": [
+  {
+   "session_id": "20261017-014445-62f3",
+   "turns": [
+    {
+     "user": "How many 3DCP papers use a viscosity-modifying admixture (VMA)?",
+     "text": "I’ll check the literature database schema, then count distinct 3DCP papers associated with the VMA admixture classes.\n**403 papers** in the literature database are marked as 3DCP studies and include at least one VMA-class material (cellulose, diutan gum, other polysaccharide, welan gum, or xanthan gum). This is a distinct-paper count.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_schema",
+       "input": {
+        "db": "master"
+       },
+       "t": 8.12,
+       "result": {
+        "data": {
+         "db": "master",
+         "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\..\\pastemortar_extraction_package_v1.2.2\\master\\master.db",
+         "tables": [
+          {
+           "table": "curve_points",
+           "n_rows": 155211,
+           "hint": null
+          },
+          {
+           "table": "curves",
+           "n_rows": 25721,
+           "hint": "curve_uid, mix_uid, x_quantity, y_quantity, x_unit, y_unit; curve_points: curve_uid, x_canonical, y_canonical"
+          },
+          {
+           "table": "material_chemistry",
+           "n_rows": 59690,
+           "hint": null
+          },
+          {
+           "table": "material_physical",
+           "n_rows": 18431,
+           "hint": null
+          },
+          {
+           "table": "material_psd_points",
+           "n_rows": 13108,
+           "hint": null
+          },
+          {
+           "table": "materials",
+           "n_rows": 21676,
+           "hint": "material_uid, paper_uid, material_class, name_in_paper"
+          },
+          {
+           "table": "measurements",
+           "n_rows": 236199,
+           "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …"
+          },
+          {
+           "table": "mix_components",
+           "n_rows": 145530,
+           "hint": "mix_uid, material_uid, material_class, role, dosage_reported, basis_reported, unit_reported …"
+          },
+          {
+           "table": "mixes",
+           "n_rows": 29626,
+           "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …"
+          },
+          {
+           "table": "mixing_protocols",
+           "n_rows": 3299,
+           "hint": null
+          },
+          {
+           "table": "mixing_steps",
+           "n_rows": 7151,
+           "hint": null
+          },
+          {
+           "table": "papers",
+           "n_rows": 3274,
+           "hint": "paper_uid(=DOI), title, year, journal, is_3dcp_study('1'/'0'), n_mixes …"
+          },
+          {
+           "table": "qa_exceptions",
+           "n_rows": 2046,
+           "hint": null
+          },
+          {
+           "table": "search_log",
+           "n_rows": 3274,
+           "hint": null
+          },
+          {
+           "table": "test_protocols",
+           "n_rows": 37440,
+           "hint": null
+          },
+          {
+           "table": "tests",
+           "n_rows": 15525,
+           "hint": "test_uid, paper_uid, quantity, method_name, rest_time_s, comparability_group …"
+          },
+          {
+           "table": "unmapped_terms",
+           "n_rows": 16593,
+           "hint": null
+          }
+         ],
+         "notes": [
+          "master.db: 모든 컬럼 TEXT, ''=결측, fig_only='1'은 그림에서 읽은 값",
+          "join keys: paper_uid, mix_uid, test_uid",
+          "print_process.db: 논문 저자 판정 기반 라벨; stack_to_failure=1이면 collapsed여도 printable 가능"
+         ],
+         "_elapsed_s": 0.14
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.15,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "papers"
+       },
+       "t": 11.51,
+       "result": {
+        "data": {
+         "text": "{\"db\": \"master\", \"table\": \"papers\", \"n_rows\": 3274, \"columns\": [{\"name\": \"audit_topics_covered\", \"type\": \"TEXT\"}, {\"name\": \"authors\", \"type\": \"TEXT\"}, {\"name\": \"binder_system_tag\", \"type\": \"TEXT\"}, {\"name\": \"doc_type\", \"type\": \"TEXT\"}, {\"name\": \"doi\", \"type\": \"TEXT\"}, {\"name\": \"extraction_confidence_overall\", \"type\": \"TEXT\"}, {\"name\": \"extraction_date\", \"type\": \"TEXT\"}, {\"name\": \"extraction_notes\", \"type\": \"TEXT\"}, {\"name\": \"figure_scalar_presence_status\", \"type\": \"TEXT\"}, {\"name\": \"figure_series_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"figure_series_status\", \"type\": \"TEXT\"}, {\"name\": \"is_3dcp_study\", \"type\": \"TEXT\"}, {\"name\": \"journal\", \"type\": \"TEXT\"}, {\"name\": \"language\", \"type\": \"TEXT\"}, {\"name\": \"materials_status\", \"type\": \"TEXT\"}, {\"name\": \"metadata_status\", \"type\": \"TEXT\"}, {\"name\": \"mix_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"mixes_status\", \"type\": \"TEXT\"}, {\"name\": \"n_figure_series_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_figure_series_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_mixes_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_mixes_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_outcomes_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_outcomes_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_unmapped_numeric\", \"type\": \"TEXT\"}, {\"name\": \"oa_status\", \"type\": \"TEXT\"}, {\"name\": \"outcome_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"paper_uid\", \"type\": \"TEXT\"}, {\"name\": \"protocols_status\", \"type\": \"TEXT\"}, {\"name\": \"qa_status\", \"type\": \"TEXT\"}, {\"name\": \"retrieval_route\", \"type\": \"TEXT\"}, {\"name\": \"screening_exclusion_reason\", \"type\": \"TEXT\"}, {\"name\": \"screening_status\", \"type\": \"TEXT\"}, {\"name\": \"search_query_block\", \"type\": \"TEXT\"}, {\"name\": \"system_types_present\", \"type\": \"TEXT\"}, {\"name\": \"tabulated_outcomes_status\", \"type\": \"TEXT\"}, {\"name\": \"title\", \"type\": \"TEXT\"}, {\"name\": \"unmapped_review_status\", \"type\": \"TEXT\"}, {\"name\": \"vocab_version\", \"type\": \"TEXT\"}, {\"name\": \"year\", \"type\": \"TEXT\"}, {\"name\": \"wave\", \"type\": \"TEXT\"}], \"sample\": [{\"audit_topics_covered\": \"T1;T2;T3;T4;T5;T6;T7;T8;T9\", \"authors\": \"Yu K.-H.; Teng T.; Nah S.H.; Chai H.; Zhi Y.; Wang K.-Y.; Chi Y.; Psarras P.; Akbarzadeh M.; Yang S.\", \"binder_system_tag\": \"portland_diatomaceous_earth\", \"doc_type\": \"journal_article\", \"doi\": \"10.1002/adfm.202509259\", \"extraction_confidence_overall\": \"medium\", \"extraction_date\": \"2026-09-10\", \"extraction_notes\": \"T1 Three binder compositions are reported on a weight-ratio-to-binder basis: a DE-infused mix with cement to DE at seven to three, a cement-only control, and a silica-fume control at the same SF to binder ratio, all sharing a water to binder ratio of zero point eight seven and a sand to binder ratio of two. T2 No quantity is measured by more than one route; compression, and each of the four merged other-family sub-methods, stay within their own comparability group. T3 Ambiguities: no kg per cubic metre batch quantities are printed anywhere in the accessible main text, only weight ratios, because the detailed batch tables live in an inaccessible supplementary Table S1/S2; the variable-DE-ratio water formula is printed but only the fixed zero point eight seven ratio used for the three named mixes is modelled here. T4 No contradictions were found between the results text and the figures it describes; the 142 percent carbonation increase and 178 percent interfacial-ratio increase are both relative claims with only one side's absolute value printed, so the other side is deliberately left unstated rather than back-calculated. T5 No figure-only scalar presence rows were needed: every quantitative claim used here from Figures 1, 3, 5 and 6 is also stated as a printed number in the body text. T6 No figure series were digitised: the rheology thixotropy and shear-thinning curves, the micro-indentation force-displacement curves, and the CO2-concentration-versus-time curves are all described only in relative or qualitative terms in the text (percent recovery, relative stiffness) without a companion table of point values, and attempting to read"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "mix_components"
+       },
+       "t": 11.54,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "mix_components",
+         "n_rows": 145530,
+         "columns": [
+          {
+           "name": "basis_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "component_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "dosage_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "dosage_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "mass_frac_of_binder",
+           "type": "TEXT"
+          },
+          {
+           "name": "material_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "role",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "unit_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "basis_reported": "ratio_to_binder",
+           "component_uid": "10.1002/adfm.202509259::M1::C1",
+           "conversion_check": null,
+           "conversion_id": null,
+           "dosage_kg_m3": null,
+           "dosage_reported": "0.7",
+           "mass_frac_of_binder": "0.7",
+           "material_uid": "10.1002/adfm.202509259::MAT1",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "role": "binder",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "unit_reported": "dimensionless",
+           "wave": "26"
+          },
+          {
+           "basis_reported": "ratio_to_binder",
+           "component_uid": "10.1002/adfm.202509259::M1::C2",
+           "conversion_check": null,
+           "conversion_id": null,
+           "dosage_kg_m3": null,
+           "dosage_reported": "0.3",
+           "mass_frac_of_binder": "0.3",
+           "material_uid": "10.1002/adfm.202509259::MAT2",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "role": "scm",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "unit_reported": "dimensionless",
+           "wave": "26"
+          },
+          {
+           "basis_reported": "ratio_to_binder",
+           "component_uid": "10.1002/adfm.202509259::M1::C3",
+           "conversion_check": null,
+           "conversion_id": null,
+           "dosage_kg_m3": null,
+           "dosage_reported": "2.0",
+           "mass_frac_of_binder": null,
+           "material_uid": "10.1002/adfm.202509259::MAT4",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "role": "fine_aggregate",
+           "source_locator": "Section 4 Experimental Section",
+           "source_ref": "4",
+           "source_type": "text",
+           "unit_reported": "dimensionless",
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, material_uid, material_class, role, dosage_reported, basis_reported, unit_reported …",
+         "_elapsed_s": 0.02
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "mixes"
+       },
+       "t": 11.57,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "mixes",
+         "n_rows": 29626,
+         "columns": [
+          {
+           "name": "binder_total_basis_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "binder_total_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_regime",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_rh_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_temp_C",
+           "type": "TEXT"
+          },
+          {
+           "name": "fresh_density_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "is_control_mix",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "name_in_paper",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "protocol_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "system_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_source",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_c_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "1700",
+           "is_control_mix": "0",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M1",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "name_in_paper": "DE-infused concrete (DE/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "2100",
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M2",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "name_in_paper": "Cement-only control (DE/binder = 0)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": null,
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M3",
+           "mix_uid": "10.1002/adfm.202509259::M3",
+           "name_in_paper": "Silica-fume control (SF/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "materials"
+       },
+       "t": 14.61,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "materials",
+         "n_rows": 21676,
+         "columns": [
+          {
+           "name": "chemistry_status",
+           "type": "TEXT"
+          },
+          {
+           "name": "material_class",
+           "type": "TEXT"
+          },
+          {
+           "name": "material_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "material_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "name_in_paper",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "oxide_sum_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "oxide_sum_computed_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "standard_designation",
+           "type": "TEXT"
+          },
+          {
+           "name": "supplier",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "chemistry_status": "not_reported",
+           "material_class": "portland_cement",
+           "material_id": "MAT1",
+           "material_uid": "10.1002/adfm.202509259::MAT1",
+           "name_in_paper": "ASTM C-150 type I Portland cement",
+           "notes": null,
+           "oxide_sum_basis": null,
+           "oxide_sum_computed_pct": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "standard_designation": "ASTM C150 Type I",
+           "supplier": "Quikrete, USA",
+           "wave": "26"
+          },
+          {
+           "chemistry_status": "not_reported",
+           "material_class": "diatomaceous_earth",
+           "material_id": "MAT2",
+           "material_uid": "10.1002/adfm.202509259::MAT2",
+           "name_in_paper": "Diatomaceous earth (DE)",
+           "notes": "Uncalcined, naturally occurring, primarily amorphous silica (>95% SiO2) with <5% crystalline silica, used as received. Specific gravity 2.2, pH 7.5-9.0, water solubility <1%, melting point >1300 C. Hierarchical pore structure 2-100 nm (per introduction).",
+           "oxide_sum_basis": null,
+           "oxide_sum_computed_pct": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "standard_designation": null,
+           "supplier": "DiatomaceousEarth.com",
+           "wave": "26"
+          },
+          {
+           "chemistry_status": "not_reported",
+           "material_class": "silica_fume",
+           "material_id": "MAT3",
+           "material_uid": "10.1002/adfm.202509259::MAT3",
+           "name_in_paper": "Silica fume (Sikacrete-950DP)",
+           "notes": "Used only in the SF control mix, replacing DE at an equal weight.",
+           "oxide_sum_basis": null,
+           "oxide_sum_computed_pct": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "standard_designation": "ASTM C1240",
+           "supplier": "Sika",
+           "wave": "26"
+          }
+         ],
+         "hint": "material_uid, paper_uid, material_class, name_in_paper",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_6",
+       "name": "sql_query",
+       "input": {
+        "db": "master",
+        "max_rows": 20,
+        "sql": "SELECT COUNT(DISTINCT p.paper_uid) AS n_3dcp_papers_with_vma FROM papers p JOIN mix_components mc ON mc.paper_uid = p.paper_uid WHERE p.is_3dcp_study = '1' AND mc.role = 'admixture' AND mc.material_class IN ('vma_cellulose','vma_diutan_gum','vma_polysaccharide_other','vma_welan_gum','vma_xanthan_gum')"
+       },
+       "t": 17.62,
+       "result": {
+        "data": {
+         "error": "DatabaseError: Execution failed on sql 'SELECT * FROM (SELECT COUNT(DISTINCT p.paper_uid) AS n_3dcp_papers_with_vma FROM papers p JOIN mix_components mc ON mc.paper_uid = p.paper_uid WHERE p.is_3dcp_study = '1' AND mc.role = 'admixture' AND mc.material_class IN ('vma_cellulose','vma_diutan_gum','vma_polysaccharide_other','vma_welan_gum','vma_xanthan_gum')) AS q LIMIT 21': no such column: mc.material_class",
+         "traceback_tail": "fn(args, ctx)\n          ^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\3D Printing Concrete Prediction\\pmpredict\\agent\\tools\\sql_tools.py\", line 120, in sql_query\n    df, truncated, el = run_query(p, args[\"sql\"], max_rows=max_rows)\n                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\3D Printing Concrete Prediction\\pmpredict\\agent\\tools\\sql_tools.py\", line 65, in run_query\n    df = pd.read_sql_query(f\"SELECT * FROM ({s}) AS q LIMIT {int(max_rows) + 1}\", con)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pandas\\io\\sql.py\", line 497, in read_sql_query\n    return pandas_sql.read_query(\n           ^^^^^^^^^^^^^^^^^^^^^^\npandas.errors.DatabaseError: Execution failed on sql 'SELECT * FROM (SELECT COUNT(DISTINCT p.paper_uid) AS n_3dcp_papers_with_vma FROM papers p JOIN mix_components mc ON mc.paper_uid = p.paper_uid WHERE p.is_3dcp_study = '1' AND mc.role = 'admixture' AND mc.material_class IN ('vma_cellulose','vma_diutan_gum','vma_polysaccharide_other','vma_welan_gum','vma_xanthan_gum')) AS q LIMIT 21': no such column: mc.material_class\n"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": true
+       },
+       "elapsed_s": 0.02,
+       "is_error": true
+      },
+      {
+       "id": "item_7",
+       "name": "sql_query",
+       "input": {
+        "db": "master",
+        "max_rows": 20,
+        "sql": "SELECT COUNT(DISTINCT p.paper_uid) AS n_3dcp_papers_with_vma FROM papers p JOIN mix_components mc ON mc.paper_uid = p.paper_uid JOIN materials m ON m.material_uid = mc.material_uid WHERE p.is_3dcp_study = '1' AND m.material_class IN ('vma_cellulose','vma_diutan_gum','vma_polysaccharide_other','vma_welan_gum','vma_xanthan_gum')"
+       },
+       "t": 21.17,
+       "result": {
+        "data": {
+         "n_rows": 1,
+         "columns": [
+          "n_3dcp_papers_with_vma"
+         ],
+         "rows": [
+          {
+           "n_3dcp_papers_with_vma": 403
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-014445-62f3\\sql_1792169106.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.12,
+         "_elapsed_s": 0.13
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.13,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 236078,
+      "output_tokens": 661,
+      "cache_read_input_tokens": 185984
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 24.4
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:44:45"
+}

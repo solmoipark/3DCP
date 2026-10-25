@@ -1,0 +1,194 @@
+{
+ "id": "S01",
+ "group": "sql",
+ "provider": "codex_56sol",
+ "backend": "codex",
+ "model": "gpt-5.6-sol",
+ "sessions": [
+  {
+   "session_id": "20261017-015408-4136",
+   "turns": [
+    {
+     "user": "How many 3DCP papers are in the literature database?",
+     "text": "I’ll query the database schema first, then count distinct papers marked as 3DCP, keeping paper and mix counts separate.\nThe literature database contains **1,014 distinct 3DCP papers**.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_schema",
+       "input": {
+        "db": "print_process"
+       },
+       "t": 8.56,
+       "result": {
+        "data": {
+         "db": "print_process",
+         "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\data\\print_process.db",
+         "tables": [
+          {
+           "table": "label_files",
+           "n_rows": 1014,
+           "hint": null
+          },
+          {
+           "table": "print_runs",
+           "n_rows": 7420,
+           "hint": "paper_uid, run_id, mix_uid, object, layer_height_mm, print_speed_mm_s, layer_cycle_time_s, n_layers_achieved, height_achieved_mm, stack_to_failure, outcome, failure_mode, printability_label, label_basis, confidence, open_time_min"
+          },
+          {
+           "table": "printers",
+           "n_rows": 1014,
+           "hint": "paper_uid, system, pump, nozzle_shape, nozzle_d_mm, nozzle_w_mm, nozzle_h_mm"
+          },
+          {
+           "table": "rheology_protocols",
+           "n_rows": 1507,
+           "hint": "paper_uid, test_uid, quantity, protocol_class, rest_time_s, preshear, shear_rate_s1, device"
+          }
+         ],
+         "notes": [
+          "master.db: 모든 컬럼 TEXT, ''=결측, fig_only='1'은 그림에서 읽은 값",
+          "join keys: paper_uid, mix_uid, test_uid",
+          "print_process.db: 논문 저자 판정 기반 라벨; stack_to_failure=1이면 collapsed여도 printable 가능"
+         ],
+         "_elapsed_s": 0.0
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.01,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "describe_schema",
+       "input": {
+        "db": "print_process",
+        "table": "label_files"
+       },
+       "t": 10.96,
+       "result": {
+        "data": {
+         "db": "print_process",
+         "table": "label_files",
+         "n_rows": 1014,
+         "columns": [
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "file",
+           "type": "TEXT"
+          },
+          {
+           "name": "n_runs",
+           "type": "INT"
+          },
+          {
+           "name": "n_protocols",
+           "type": "INT"
+          },
+          {
+           "name": "n_figures_checked",
+           "type": "INT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "status",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "paper_uid": "10.1002/adfm.202509259",
+           "file": "10.1002_adfm.202509259.json",
+           "n_runs": 5,
+           "n_protocols": 2,
+           "n_figures_checked": 0,
+           "notes": "Buildability test (R1/R2) and single-filament nozzle-diameter test (R4/R5) matched to test_uid T2 (merged 'other' family test covering buildability, CO2 uptake, BET and interfacial bending; see record unmapped_terms UM3). Rheology thixotropy (3-step shear rate 0.1/100/0.1 s-1) and shear-thinning sweep (0.1-150 s-1) protocols are described only qualitatively in the paper (percent recovery, relative stiffness) and are NOT captured as a test row in the record (extraction_notes T6: figure series not digitised) - both rheology_protocols rows carry test_uid: null. shear_rate_s1 left null for the flow-curve-fit sweep because it spans a range (0.1-150 s-1), not a single stated rate. No print speed (mm/s) or layer cycle time is stated anywhere in the accessible text. R4/R5 (single-filament nozzle test) report a nozzle-diameter range (2-21 mm) rather than a single run setting; run-level nozzle diameter fields are not part of this schema (only printer.nozzle_d_mm, set to the 4.8 mm nozzle used for the main structures) so the range is described in the quote instead. No units required conversion.",
+           "status": "PASS"
+          },
+          {
+           "paper_uid": "10.1002/adma.201802123",
+           "file": "10.1002_adma.201802123.json",
+           "n_runs": 6,
+           "n_protocols": 0,
+           "n_figures_checked": 3,
+           "notes": "No rheology (yield-stress/viscosity/Athix) test protocol reported; ink flow properties are only described qualitatively ('proper flow properties... shape holding'), no instrument/protocol named, so rheology_protocols is empty and matches the record's test list (flexural only). print_speed_mm_s converted from 250 mm/min to mm/s by /60 (=4.17). Pitch angle for the smallest Bouligand category is given as psi=2 degrees in the introductory list of architectures but as psi=8 degrees in the Results paragraph reporting pitch angles studied (8,15,30,45,90); likely an OCR/typo discrepancy in the source text, both values are quoted verbatim, neither is treated as authoritative. No print failures, buildability tests, or stack-to-failure trials are reported anywhere in the paper; all printed architectures proceed directly to post-cure mechanical testing, so all runs are labelled printable on the general author statement that these elements were 'achieved by 3D-printing'. The figures directory for this paper contains only manuscript text page scans (page_01..page_41.png); no distinct figure graphics with captions were found in the 3 pages sampled (pp. 2, 17, 18), so figures did not add information beyond the body text.",
+           "status": "PASS"
+          },
+          {
+           "paper_uid": "10.1002/cend.202100024",
+           "file": "10.1002_cend.202100024.json",
+           "n_runs": 0,
+           "n_protocols": 0,
+           "n_figures_checked": 0,
+           "notes": "No printing experiment reported: the paper investigates carbon-fiber-tape reinforcement 'for' 3D concrete printing but the four-point-bending test specimens (series 1-4) were cast in moulds per DIN EN 12390-2 ('The production and storage of the test specimens is carried out according to the standard DIN EN 12390-2'), not additively manufactured; no printer, nozzle, or print settings are mentioned anywhere in the text. The record's only test (T1, flexure_four_point) is a hardened-concrete mechanical test, not a fresh-state rheology test, so rheology_protocols is empty; no yield-stress/viscosity/Athix test is reported for the fine-grained concrete mix either.",
+           "status": "PASS"
+          }
+         ],
+         "hint": null,
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "sql_query",
+       "input": {
+        "db": "print_process",
+        "sql": "SELECT COUNT(DISTINCT paper_uid) AS paper_count, COUNT(*) AS record_count FROM label_files"
+       },
+       "t": 13.65,
+       "result": {
+        "data": {
+         "n_rows": 1,
+         "columns": [
+          "paper_count",
+          "record_count"
+         ],
+         "rows": [
+          {
+           "paper_count": 1014,
+           "record_count": 1014
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015408-4136\\sql_1792169661.csv",
+         "db": "print_process",
+         "row_limit_hit": false,
+         "elapsed_s": 0.0,
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.01,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 150553,
+      "output_tokens": 450,
+      "cache_read_input_tokens": 135424
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 16.1
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:54:08"
+}

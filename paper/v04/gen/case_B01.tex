@@ -1,0 +1,36 @@
+\begin{userbox}
+I want to print a 600 mm high, 1.5 m long wall with two filaments across the thickness, 25 mm nozzle, 50 mm/s, open time 60 min. The material has a static yield stress of 3 kPa and Athix of 1 Pa/s. Is it printable, and what is the layer cycle-time window?
+\end{userbox}
+\begin{toolbox}{assess\_buildability, 2.1 s}
+\begin{lstlisting}[style=argstyle]
+{"job": {"object_type": "wall", "target_height_mm": 600, "footprint_mm": 1500, "wall_filaments": 2, "nozzle_d_mm": 25, "print_speed_mm_s": 50, "open_time_min": 60}, "material": {"tau_s0_Pa": 3000, "athix_Pa_s": 1}}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll check the wall's buildability and layer cycle-time window using the physical model, including collapse, buckling, and open time.\par
+\textbf{Not printable as an unsupported straight wall under the calculator's default assumptions. There is no feasible layer cycle-time window.}\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Check & Calculated result \\
+Current cycle, including both filaments & 60 s/layer \\
+Total printing time & 48 min \\
+Minimum cycle for plastic stability, safety factor 1.5 & 160.5 s/layer \\
+Maximum cycle allowed by open time & 75.0 s/layer \\
+Feasible window & \textbf{None: minimum exceeds maximum} \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+\textbf{Buckling governs:} the free-wall model estimates instability at approximately \textbf{212.5 mm}. Plastic collapse also prevents reaching the target; its estimated height limit without the safety factor is \textbf{423 mm}. Even without that factor, the plastic-stability minimum cycle is \textbf{86.2 s}, exceeding the open-time limit.\par
+\par
+Assumed defaults: \textbf{12.5 mm layer height}, \textbf{29.61 mm filament width}, approximately \textbf{59 mm total thickness}, density \textbf{2,100 kg/m\textasciicircum{}3}, \textbf{E/tau = 25}, immediate printing after mixing, and no dwell or travel overhead.\par
+\par
+To proceed:\par
+\begin{itemize}[nosep,leftmargin=1.2em]
+\item Add bracing, returns, or wall thickness to address buckling.
+\item At the current \textbf{60 s} cycle, the plastic-stability calculation requires either initial static yield stress \textbf{>=7.82 kPa} with Athix unchanged, or \textbf{Athix >=2.68 Pa/s} with initial yield stress unchanged. These thresholds \textbf{do not resolve buckling}.
+\item Accelerator, VMA, or lower w/b are possible material adjustments, subject to extrusion testing.
+\end{itemize}
+These are deterministic physical calculations, not prediction intervals. Confirm fresh stiffness, density, and stability experimentally.\par
+\par
+Files: Assessment, cycle plot, cycle CSV, literature analogues.\par
+\par
+\end{agentbox}

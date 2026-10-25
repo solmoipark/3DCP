@@ -1,0 +1,1937 @@
+{
+ "id": "P07",
+ "group": "curves",
+ "provider": "codex_sol",
+ "backend": "codex",
+ "model": "gpt-6-sol",
+ "sessions": [
+  {
+   "session_id": "20261016-171442-84a2",
+   "turns": [
+    {
+     "user": "For a 3DCP mortar with w/b 0.35, s/b 1.5, 90 % OPC + 10 % silica fume and 0.6 % PCE, plot the Bingham flow curve up to 100 1/s and the structuration curve over 45 minutes of rest, and compare both with measured literature curves.",
+     "text": "I’ll use the pmpredict models to generate both curves, then retrieve measured 3DCP mortar data for comparison. I’ll report the model assumptions and keep measured and predicted values distinct.\nBoth plots are generated with literature curves overlaid. I’m checking the measured curve records so the comparison reflects the actual analogue values, especially since the structuration rate model is weak.\nThe plots overlay the model prediction and its 80% interval with measured curves from nearby literature mixes. The literature mixes are analogues, not measurements of the specified mix.\n\n### Bingham flow curve, 0–100 s⁻¹\n\n![Bingham flow curve](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171442-84a2/flow_curve_agent_mix.png>)\n\nAt 100 s⁻¹, predicted shear stress is **1,023 [250, 3,901] Pa** (q50 [q10, q90]). Measured values for analogue mixes M5 and M6 are **202 and 309 Pa**, respectively, in [Fig. 20 of the source paper](https://doi.org/10.1016/j.cemconcomp.2021.104158). The predicted median is higher than both.\n\n### Structuration curve, 0–45 min rest\n\n![Structuration curve](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171442-84a2/structuration_agent_mix.png>)\n\nPredicted static yield stress at 45 min is **4,003 [307, 61,123] Pa**. At 40 min, measured analogue mixes M2, M3 and M4 give **2,850, 1,780 and 620 Pa**, respectively, in [Fig. 8 of the source paper](https://doi.org/10.1016/j.cemconcomp.2024.105509). The measurement times differ, so this is a nearby-time comparison.\n\nI used the supplied ratios, with PCE at **0.6% of binder mass as product**, and set `is_3dcp=true`. Sand type was unspecified. The structuration-rate model is weak, so its curve is **order-of-magnitude guidance**; the measured analogues are the stronger evidence. Verify the final mix by rheometry.\n\nData: [flow CSV](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171442-84a2/flow_curve_agent_mix.csv>) · [structuration CSV](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171442-84a2/structuration_agent_mix.csv>)\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "powder",
+        "query": "portland_cement"
+       },
+       "t": 17.69,
+       "result": {
+        "data": {
+         "classes": {
+          "powder": [
+           {
+            "material_class": "portland_cement",
+            "group": "opc",
+            "sg": 3.15,
+            "solid_content": null
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "powder",
+        "query": "silica_fume"
+       },
+       "t": 17.72,
+       "result": {
+        "data": {
+         "classes": {
+          "powder": [
+           {
+            "material_class": "silica_fume",
+            "group": "silica_fume",
+            "sg": 2.2,
+            "solid_content": null
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "admixture",
+        "query": "superplasticiser_pce"
+       },
+       "t": 17.74,
+       "result": {
+        "data": {
+         "classes": {
+          "admixture": [
+           {
+            "material_class": "superplasticiser_pce",
+            "group": "sp_pce",
+            "sg": 1.05,
+            "solid_content": 30
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "flow_curve",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.35,
+         "s_b": 1.5,
+         "binder": {
+          "portland_cement": 0.9,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.6
+         },
+         "conditions": {
+          "is_3dcp": true
+         }
+        },
+        "max_rate_1s": 100,
+        "n_analogues": 3
+       },
+       "t": 26.53,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "tau0_Pa": {
+          "q10": 16.069188,
+          "q50": 234.446011,
+          "q90": 843.113304,
+          "weak": false
+         },
+         "mu_Pa_s": {
+          "q10": 0.839584,
+          "q50": 6.425629,
+          "q90": 33.134209,
+          "weak": false
+         },
+         "curve_points": [
+          {
+           "shear_rate": 0.0,
+           "q10": 16.673256,
+           "q50": 219.049737,
+           "q90": 848.623042
+          },
+          {
+           "shear_rate": 0.98622,
+           "q10": 26.54948,
+           "q50": 235.480757,
+           "q90": 865.842327
+          },
+          {
+           "shear_rate": 1.94526,
+           "q10": 32.656193,
+           "q50": 250.552286,
+           "q90": 882.723985
+          },
+          {
+           "shear_rate": 4.395237,
+           "q10": 45.564839,
+           "q50": 281.216961,
+           "q90": 940.951456
+          },
+          {
+           "shear_rate": 9.930861,
+           "q10": 65.362153,
+           "q50": 344.85578,
+           "q90": 1100.287717
+          },
+          {
+           "shear_rate": 22.438382,
+           "q10": 104.350349,
+           "q50": 461.81868,
+           "q90": 1502.605833
+          },
+          {
+           "shear_rate": 44.258367,
+           "q10": 151.913019,
+           "q50": 630.260439,
+           "q90": 2165.664651
+          },
+          {
+           "shear_rate": 100.0,
+           "q10": 249.857032,
+           "q50": 1022.656722,
+           "q90": 3900.814088
+          }
+         ],
+         "analogues": [
+          {
+           "doi": "10.1016/j.cemconcomp.2021.104158",
+           "mix": "M5",
+           "distance": 0.111516,
+           "n_points": 6
+          },
+          {
+           "doi": "10.1016/j.cemconcomp.2021.104158",
+           "mix": "M6",
+           "distance": 0.100609,
+           "n_points": 6
+          },
+          {
+           "doi": "10.3390/buildings16030490",
+           "mix": "M1",
+           "distance": 0.120876,
+           "n_points": 20
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\flow_curve_agent_mix.csv",
+         "note": "점단위 오차 중앙 ×2.1, 밴드 커버리지 86 % (실측 137 믹스 OOF): 자릿수·경향 참고용",
+         "_elapsed_s": 4.07
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\flow_curve_agent_mix.png",
+          "kind": "image",
+          "title": "유동곡선 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\flow_curve_agent_mix.csv",
+          "kind": "table",
+          "title": "유동곡선 표 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 4.08,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "structuration_curve",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.35,
+         "s_b": 1.5,
+         "binder": {
+          "portland_cement": 0.9,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.6
+         },
+         "conditions": {
+          "is_3dcp": true
+         }
+        },
+        "max_rest_min": 45,
+        "n_analogues": 3
+       },
+       "t": 30.61,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "tau_s0_Pa": {
+          "q10": 21.506077,
+          "q50": 271.031498,
+          "q90": 9125.091548,
+          "weak": false
+         },
+         "athix_Pa_s": {
+          "q10": 0.022512,
+          "q50": 0.696872,
+          "q90": 13.668548,
+          "weak": true
+         },
+         "tau_s_at_max_rest": {
+          "rest_s": 2700.0,
+          "q10": 306.809757,
+          "q50": 4002.872283,
+          "q90": 61123.175308
+         },
+         "curve_points": [
+          {
+           "rest_s": 0.0,
+           "q10": 21.490855,
+           "q50": 242.479099,
+           "q90": 9066.249609
+          },
+          {
+           "rest_s": 47.784195,
+           "q10": 55.782655,
+           "q50": 499.990748,
+           "q90": 10325.997169
+          },
+          {
+           "rest_s": 103.806043,
+           "q10": 71.273578,
+           "q50": 655.375842,
+           "q90": 11756.310782
+          },
+          {
+           "rest_s": 193.096022,
+           "q10": 89.099831,
+           "q50": 851.16934,
+           "q90": 14095.484392
+          },
+          {
+           "rest_s": 359.189819,
+           "q10": 112.991699,
+           "q50": 1189.798569,
+           "q90": 17944.178115
+          },
+          {
+           "rest_s": 668.151133,
+           "q10": 147.544846,
+           "q50": 1677.945926,
+           "q90": 25055.238719
+          },
+          {
+           "rest_s": 1451.486742,
+           "q10": 211.544228,
+           "q50": 2661.430884,
+           "q90": 38964.398127
+          },
+          {
+           "rest_s": 2700.0,
+           "q10": 306.809757,
+           "q50": 4002.872283,
+           "q90": 61123.175308
+          }
+         ],
+         "analogues": [
+          {
+           "doi": "10.1016/j.cemconcomp.2024.105509",
+           "mix": "M2",
+           "distance": 0.117993,
+           "n_points": 6
+          },
+          {
+           "doi": "10.1016/j.cemconcomp.2024.105509",
+           "mix": "M3",
+           "distance": 0.068322,
+           "n_points": 6
+          },
+          {
+           "doi": "10.1016/j.cemconcomp.2024.105509",
+           "mix": "M4",
+           "distance": 0.115114,
+           "n_points": 6
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\structuration_agent_mix.csv",
+         "note": "선형 Roussel 모델; 실측 곡선(91 믹스) 0–80 분 선형 R² 중앙 0.92",
+         "_elapsed_s": 0.68
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\structuration_agent_mix.png",
+          "kind": "image",
+          "title": "구조화곡선 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\structuration_agent_mix.csv",
+          "kind": "table",
+          "title": "구조화곡선 표 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.69,
+       "is_error": false
+      },
+      {
+       "id": "item_7",
+       "name": "describe_schema",
+       "input": {
+        "db": "master"
+       },
+       "t": 45.35,
+       "result": {
+        "data": {
+         "db": "master",
+         "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\..\\pastemortar_extraction_package_v1.2.2\\master\\master.db",
+         "tables": [
+          {
+           "table": "curve_points",
+           "n_rows": 155211,
+           "hint": null
+          },
+          {
+           "table": "curves",
+           "n_rows": 25721,
+           "hint": "curve_uid, mix_uid, x_quantity, y_quantity, x_unit, y_unit; curve_points: curve_uid, x_canonical, y_canonical"
+          },
+          {
+           "table": "material_chemistry",
+           "n_rows": 59690,
+           "hint": null
+          },
+          {
+           "table": "material_physical",
+           "n_rows": 18431,
+           "hint": null
+          },
+          {
+           "table": "material_psd_points",
+           "n_rows": 13108,
+           "hint": null
+          },
+          {
+           "table": "materials",
+           "n_rows": 21676,
+           "hint": "material_uid, paper_uid, material_class, name_in_paper"
+          },
+          {
+           "table": "measurements",
+           "n_rows": 236199,
+           "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …"
+          },
+          {
+           "table": "mix_components",
+           "n_rows": 145530,
+           "hint": "mix_uid, material_uid, material_class, role, dosage_reported, basis_reported, unit_reported …"
+          },
+          {
+           "table": "mixes",
+           "n_rows": 29626,
+           "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …"
+          },
+          {
+           "table": "mixing_protocols",
+           "n_rows": 3299,
+           "hint": null
+          },
+          {
+           "table": "mixing_steps",
+           "n_rows": 7151,
+           "hint": null
+          },
+          {
+           "table": "papers",
+           "n_rows": 3274,
+           "hint": "paper_uid(=DOI), title, year, journal, is_3dcp_study('1'/'0'), n_mixes …"
+          },
+          {
+           "table": "qa_exceptions",
+           "n_rows": 2046,
+           "hint": null
+          },
+          {
+           "table": "search_log",
+           "n_rows": 3274,
+           "hint": null
+          },
+          {
+           "table": "test_protocols",
+           "n_rows": 37440,
+           "hint": null
+          },
+          {
+           "table": "tests",
+           "n_rows": 15525,
+           "hint": "test_uid, paper_uid, quantity, method_name, rest_time_s, comparability_group …"
+          },
+          {
+           "table": "unmapped_terms",
+           "n_rows": 16593,
+           "hint": null
+          }
+         ],
+         "notes": [
+          "master.db: 모든 컬럼 TEXT, ''=결측, fig_only='1'은 그림에서 읽은 값",
+          "join keys: paper_uid, mix_uid, test_uid",
+          "print_process.db: 논문 저자 판정 기반 라벨; stack_to_failure=1이면 collapsed여도 printable 가능"
+         ],
+         "_elapsed_s": 0.19
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.2,
+       "is_error": false
+      },
+      {
+       "id": "item_8",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "curves"
+       },
+       "t": 49.03,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "curves",
+         "n_rows": 25721,
+         "columns": [
+          {
+           "name": "axis_scale",
+           "type": "TEXT"
+          },
+          {
+           "name": "curve_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "curve_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "digitisation_method",
+           "type": "TEXT"
+          },
+          {
+           "name": "digitisation_uncertainty_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "digitised",
+           "type": "TEXT"
+          },
+          {
+           "name": "extraction_confidence",
+           "type": "TEXT"
+          },
+          {
+           "name": "fig_only",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "n_points",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_panel",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "x_quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "x_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "y_quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "y_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "axis_scale": "x_linear_y_linear",
+           "curve_type": "compressive_strength_vs_age",
+           "curve_uid": "10.1002/app.55212::M1::CV1",
+           "digitisation_method": "printed_data_labels",
+           "digitisation_uncertainty_pct": "1",
+           "digitised": "1",
+           "extraction_confidence": "medium",
+           "fig_only": "1",
+           "mix_uid": "10.1002/app.55212::M1",
+           "n_points": "4",
+           "notes": "Control mortar; printed bar-chart labels at 1/3/7/28 days transcribed exactly (Figure 8).",
+           "paper_uid": "10.1002/app.55212",
+           "source_locator": "Figure 8",
+           "source_panel": null,
+           "source_ref": "8",
+           "source_type": "labeled_figure_series",
+           "test_uid": "10.1002/app.55212::T1",
+           "x_quantity": "age",
+           "x_unit": "d",
+           "y_quantity": "compressive_strength",
+           "y_unit": "MPa",
+           "wave": "26"
+          },
+          {
+           "axis_scale": "x_linear_y_linear",
+           "curve_type": "compressive_strength_vs_age",
+           "curve_uid": "10.1002/app.55212::M2::CV1",
+           "digitisation_method": "printed_data_labels",
+           "digitisation_uncertainty_pct": "1",
+           "digitised": "1",
+           "extraction_confidence": "medium",
+           "fig_only": "1",
+           "mix_uid": "10.1002/app.55212::M2",
+           "n_points": "4",
+           "notes": "GA1 mortar; printed bar-chart labels at 1/3/7/28 days transcribed exactly (Figure 8).",
+           "paper_uid": "10.1002/app.55212",
+           "source_locator": "Figure 8",
+           "source_panel": null,
+           "source_ref": "8",
+           "source_type": "labeled_figure_series",
+           "test_uid": "10.1002/app.55212::T1",
+           "x_quantity": "age",
+           "x_unit": "d",
+           "y_quantity": "compressive_strength",
+           "y_unit": "MPa",
+           "wave": "26"
+          },
+          {
+           "axis_scale": "x_linear_y_linear",
+           "curve_type": "compressive_strength_vs_age",
+           "curve_uid": "10.1002/app.55212::M3::CV1",
+           "digitisation_method": "printed_data_labels",
+           "digitisation_uncertainty_pct": "1",
+           "digitised": "1",
+           "extraction_confidence": "medium",
+           "fig_only": "1",
+           "mix_uid": "10.1002/app.55212::M3",
+           "n_points": "4",
+           "notes": "GA2 mortar; printed bar-chart labels at 1/3/7/28 days transcribed exactly (Figure 8).",
+           "paper_uid": "10.1002/app.55212",
+           "source_locator": "Figure 8",
+           "source_panel": null,
+           "source_ref": "8",
+           "source_type": "labeled_figure_series",
+           "test_uid": "10.1002/app.55212::T1",
+           "x_quantity": "age",
+           "x_unit": "d",
+           "y_quantity": "compressive_strength",
+           "y_unit": "MPa",
+           "wave": "26"
+          }
+         ],
+         "hint": "curve_uid, mix_uid, x_quantity, y_quantity, x_unit, y_unit; curve_points: curve_uid, x_canonical, y_canonical",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_9",
+       "name": "describe_schema",
+       "input": {
+        "db": "master",
+        "table": "curve_points"
+       },
+       "t": 49.06,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "curve_points",
+         "n_rows": 155211,
+         "columns": [
+          {
+           "name": "conversion_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "curve_point_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "curve_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "point_index",
+           "type": "TEXT"
+          },
+          {
+           "name": "x_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "x_conversion_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "x_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "x_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "y_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "y_conversion_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "y_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "y_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "conversion_check": "pass",
+           "curve_point_uid": "10.1002/app.55212::M1::CV1::1",
+           "curve_uid": "10.1002/app.55212::M1::CV1",
+           "notes": null,
+           "point_index": "1",
+           "x_canonical": "1",
+           "x_conversion_id": null,
+           "x_unit": "d",
+           "x_value": "1",
+           "y_canonical": "28.5",
+           "y_conversion_id": null,
+           "y_unit": "MPa",
+           "y_value": "28.5",
+           "wave": "26"
+          },
+          {
+           "conversion_check": "pass",
+           "curve_point_uid": "10.1002/app.55212::M1::CV1::2",
+           "curve_uid": "10.1002/app.55212::M1::CV1",
+           "notes": null,
+           "point_index": "2",
+           "x_canonical": "3",
+           "x_conversion_id": null,
+           "x_unit": "d",
+           "x_value": "3",
+           "y_canonical": "33.1",
+           "y_conversion_id": null,
+           "y_unit": "MPa",
+           "y_value": "33.1",
+           "wave": "26"
+          },
+          {
+           "conversion_check": "pass",
+           "curve_point_uid": "10.1002/app.55212::M1::CV1::3",
+           "curve_uid": "10.1002/app.55212::M1::CV1",
+           "notes": null,
+           "point_index": "3",
+           "x_canonical": "7",
+           "x_conversion_id": null,
+           "x_unit": "d",
+           "x_value": "7",
+           "y_canonical": "43.8",
+           "y_conversion_id": null,
+           "y_unit": "MPa",
+           "y_value": "43.8",
+           "wave": "26"
+          }
+         ],
+         "hint": null,
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_10",
+       "name": "sql_query",
+       "input": {
+        "db": "master",
+        "sql": "SELECT paper_uid, mix_uid, curve_uid, curve_type, x_quantity, x_unit, y_quantity, y_unit, n_points, source_locator, digitisation_method, digitisation_uncertainty_pct FROM curves WHERE (paper_uid='10.1016/j.cemconcomp.2021.104158' AND mix_uid IN ('10.1016/j.cemconcomp.2021.104158::M5','10.1016/j.cemconcomp.2021.104158::M6')) OR (paper_uid='10.3390/buildings16030490' AND mix_uid='10.3390/buildings16030490::M1') OR (paper_uid='10.1016/j.cemconcomp.2024.105509' AND mix_uid IN ('10.1016/j.cemconcomp.2024.105509::M2','10.1016/j.cemconcomp.2024.105509::M3','10.1016/j.cemconcomp.2024.105509::M4'))",
+        "max_rows": 200
+       },
+       "t": 58.09,
+       "result": {
+        "data": {
+         "text": "{\"n_rows\": 27, \"columns\": [\"paper_uid\", \"mix_uid\", \"curve_uid\", \"curve_type\", \"x_quantity\", \"x_unit\", \"y_quantity\", \"y_unit\", \"n_points\", \"source_locator\", \"digitisation_method\", \"digitisation_uncertainty_pct\"], \"rows\": [{\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV1\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"volume_bleeding_rate\", \"y_unit\": \"%\", \"n_points\": \"5\", \"source_locator\": \"Fig. 15\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertainty_pct\": \"5\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV2\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"wet_density_change_rate_after_extrusion\", \"y_unit\": \"%\", \"n_points\": \"5\", \"source_locator\": \"Fig. 16\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertainty_pct\": \"5\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV3\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"flow_table_spread\", \"y_unit\": \"mm\", \"n_points\": \"5\", \"source_locator\": \"Fig. 17\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertainty_pct\": \"3\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV4\", \"curve_type\": \"flow_curve\", \"x_quantity\": \"shear_rate\", \"x_unit\": \"1/s\", \"y_quantity\": \"shear_stress\", \"y_unit\": \"Pa\", \"n_points\": \"6\", \"source_locator\": \"Fig. 20\", \"digitisation_method\": \"printed_data_labels\", \"digitisation_uncertainty_pct\": \"2\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV5\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"dynamic_yield_stress\", \"y_unit\": \"Pa\", \"n_points\": \"5\", \"source_locator\": \"Fig. 21\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertainty_pct\": \"5\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV6\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"plastic_viscosity\", \"y_unit\": \"Pa.s\", \"n_points\": \"5\", \"source_locator\": \"Fig. 22\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertainty_pct\": \"5\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV7\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"extruded_filament_width\", \"y_unit\": \"mm\", \"n_points\": \"5\", \"source_locator\": \"Fig. 23\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertainty_pct\": \"4\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV8\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"direct_print_stack_height\", \"y_unit\": \"mm\", \"n_points\": \"5\", \"source_locator\": \"Fig. 25\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertainty_pct\": \"3\"}, {\"paper_uid\": \"10.1016/j.cemconcomp.2021.104158\", \"mix_uid\": \"10.1016/j.cemconcomp.2021.104158::M5\", \"curve_uid\": \"10.1016/j.cemconcomp.2021.104158::M5::CV9\", \"curve_type\": \"time_series\", \"x_quantity\": \"resting_time\", \"x_unit\": \"min\", \"y_quantity\": \"direct_print_tan_theta\", \"y_unit\": \"dimensionless\", \"n_points\": \"5\", \"source_locator\": \"Fig. 26\", \"digitisation_method\": \"manual_axis_reading\", \"digitisation_uncertain"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_11",
+       "name": "sql_query",
+       "input": {
+        "db": "master",
+        "sql": "SELECT c.paper_uid, c.mix_uid, c.curve_type, c.x_unit, c.y_unit, c.source_locator, COUNT(*) AS n, MIN(CAST(p.x_canonical AS REAL)) AS x_min, MAX(CAST(p.x_canonical AS REAL)) AS x_max, MIN(CAST(p.y_canonical AS REAL)) AS y_min, MAX(CAST(p.y_canonical AS REAL)) AS y_max FROM curves c JOIN curve_points p ON p.curve_uid=c.curve_uid WHERE ((c.paper_uid='10.1016/j.cemconcomp.2021.104158' AND c.mix_uid IN ('10.1016/j.cemconcomp.2021.104158::M5','10.1016/j.cemconcomp.2021.104158::M6')) OR (c.paper_uid='10.3390/buildings16030490' AND c.mix_uid='10.3390/buildings16030490::M1') OR (c.paper_uid='10.1016/j.cemconcomp.2024.105509' AND c.mix_uid IN ('10.1016/j.cemconcomp.2024.105509::M2','10.1016/j.cemconcomp.2024.105509::M3','10.1016/j.cemconcomp.2024.105509::M4'))) AND c.curve_type IN ('flow_curve','structuration_curve') AND p.x_canonical<>'' AND p.y_canonical<>'' GROUP BY c.curve_uid",
+        "max_rows": 100
+       },
+       "t": 68.23,
+       "result": {
+        "data": {
+         "n_rows": 2,
+         "columns": [
+          "paper_uid",
+          "mix_uid",
+          "curve_type",
+          "x_unit",
+          "y_unit",
+          "source_locator",
+          "n",
+          "x_min",
+          "x_max",
+          "y_min",
+          "y_max"
+         ],
+         "rows": [
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M5",
+           "curve_type": "flow_curve",
+           "x_unit": "1/s",
+           "y_unit": "Pa",
+           "source_locator": "Fig. 20",
+           "n": 6,
+           "x_min": 0.0,
+           "x_max": 100.0,
+           "y_min": 50.2,
+           "y_max": 202.2
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M6",
+           "curve_type": "flow_curve",
+           "x_unit": "1/s",
+           "y_unit": "Pa",
+           "source_locator": "Fig. 20",
+           "n": 6,
+           "x_min": 0.0,
+           "x_max": 100.0,
+           "y_min": 74.17,
+           "y_max": 309.17
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\sql_1792138550.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.11,
+         "_elapsed_s": 0.11
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.12,
+       "is_error": false
+      },
+      {
+       "id": "item_12",
+       "name": "sql_query",
+       "input": {
+        "db": "master",
+        "sql": "SELECT c.paper_uid, c.mix_uid, c.curve_uid, c.curve_type, c.x_quantity, c.x_unit, c.y_quantity, c.y_unit, c.source_locator, COUNT(*) AS n, MIN(CAST(p.x_canonical AS REAL)) AS x_min, MAX(CAST(p.x_canonical AS REAL)) AS x_max, MIN(CAST(p.y_canonical AS REAL)) AS y_min, MAX(CAST(p.y_canonical AS REAL)) AS y_max FROM curves c JOIN curve_points p ON p.curve_uid=c.curve_uid WHERE (c.paper_uid='10.3390/buildings16030490' AND c.mix_uid='10.3390/buildings16030490::M1') OR (c.paper_uid='10.1016/j.cemconcomp.2024.105509' AND c.mix_uid IN ('10.1016/j.cemconcomp.2024.105509::M2','10.1016/j.cemconcomp.2024.105509::M3','10.1016/j.cemconcomp.2024.105509::M4')) GROUP BY c.curve_uid",
+        "max_rows": 100
+       },
+       "t": 76.6,
+       "result": {
+        "data": {
+         "n_rows": 7,
+         "columns": [
+          "paper_uid",
+          "mix_uid",
+          "curve_uid",
+          "curve_type",
+          "x_quantity",
+          "x_unit",
+          "y_quantity",
+          "y_unit",
+          "source_locator",
+          "n",
+          "x_min",
+          "x_max",
+          "y_min",
+          "y_max"
+         ],
+         "rows": [
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M2",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M2::CV1",
+           "curve_type": "static_yield_stress_evolution",
+           "x_quantity": "time",
+           "x_unit": "min",
+           "y_quantity": "static_yield_stress",
+           "y_unit": "Pa",
+           "source_locator": "Fig. 8",
+           "n": 6,
+           "x_min": 10.0,
+           "x_max": 60.0,
+           "y_min": 2080.0,
+           "y_max": 3650.0
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M3",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M3::CV1",
+           "curve_type": "static_yield_stress_evolution",
+           "x_quantity": "time",
+           "x_unit": "min",
+           "y_quantity": "static_yield_stress",
+           "y_unit": "Pa",
+           "source_locator": "Fig. 8",
+           "n": 6,
+           "x_min": 10.0,
+           "x_max": 60.0,
+           "y_min": 970.0,
+           "y_max": 2130.0
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M4",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M4::CV1",
+           "curve_type": "static_yield_stress_evolution",
+           "x_quantity": "time",
+           "x_unit": "min",
+           "y_quantity": "static_yield_stress",
+           "y_unit": "Pa",
+           "source_locator": "Fig. 8",
+           "n": 6,
+           "x_min": 10.0,
+           "x_max": 60.0,
+           "y_min": 170.0,
+           "y_max": 1080.0
+          },
+          {
+           "paper_uid": "10.3390/buildings16030490",
+           "mix_uid": "10.3390/buildings16030490::M1",
+           "curve_uid": "10.3390/buildings16030490::M1::CV11",
+           "curve_type": "flow_curve_shear_stress_vs_shear_rate",
+           "x_quantity": "shear_rate",
+           "x_unit": "1/s",
+           "y_quantity": "shear_stress",
+           "y_unit": "Pa",
+           "source_locator": "Figure 6",
+           "n": 5,
+           "x_min": 10.0,
+           "x_max": 100.0,
+           "y_min": 38.0,
+           "y_max": 205.0
+          },
+          {
+           "paper_uid": "10.3390/buildings16030490",
+           "mix_uid": "10.3390/buildings16030490::M1",
+           "curve_uid": "10.3390/buildings16030490::M1::CV12",
+           "curve_type": "flow_curve_shear_stress_vs_shear_rate",
+           "x_quantity": "shear_rate",
+           "x_unit": "1/s",
+           "y_quantity": "shear_stress",
+           "y_unit": "Pa",
+           "source_locator": "Figure 6",
+           "n": 5,
+           "x_min": 10.0,
+           "x_max": 100.0,
+           "y_min": 63.0,
+           "y_max": 207.0
+          },
+          {
+           "paper_uid": "10.3390/buildings16030490",
+           "mix_uid": "10.3390/buildings16030490::M1",
+           "curve_uid": "10.3390/buildings16030490::M1::CV21",
+           "curve_type": "flow_curve_shear_stress_vs_shear_rate",
+           "x_quantity": "shear_rate",
+           "x_unit": "1/s",
+           "y_quantity": "shear_stress",
+           "y_unit": "Pa",
+           "source_locator": "Figure 6",
+           "n": 5,
+           "x_min": 10.0,
+           "x_max": 100.0,
+           "y_min": 50.0,
+           "y_max": 200.0
+          },
+          {
+           "paper_uid": "10.3390/buildings16030490",
+           "mix_uid": "10.3390/buildings16030490::M1",
+           "curve_uid": "10.3390/buildings16030490::M1::CV22",
+           "curve_type": "flow_curve_shear_stress_vs_shear_rate",
+           "x_quantity": "shear_rate",
+           "x_unit": "1/s",
+           "y_quantity": "shear_stress",
+           "y_unit": "Pa",
+           "source_locator": "Figure 6",
+           "n": 5,
+           "x_min": 10.0,
+           "x_max": 100.0,
+           "y_min": 50.0,
+           "y_max": 197.0
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\sql_1792138559.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.12,
+         "_elapsed_s": 0.12
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.13,
+       "is_error": false
+      },
+      {
+       "id": "item_13",
+       "name": "sql_query",
+       "input": {
+        "db": "master",
+        "sql": "SELECT c.paper_uid, c.mix_uid, c.curve_uid, c.x_unit, p.x_canonical, p.y_canonical FROM curves c JOIN curve_points p ON p.curve_uid=c.curve_uid WHERE ((c.paper_uid='10.1016/j.cemconcomp.2024.105509' AND c.mix_uid IN ('10.1016/j.cemconcomp.2024.105509::M2','10.1016/j.cemconcomp.2024.105509::M3','10.1016/j.cemconcomp.2024.105509::M4') AND c.y_quantity='static_yield_stress') OR (c.paper_uid='10.1016/j.cemconcomp.2021.104158' AND c.mix_uid IN ('10.1016/j.cemconcomp.2021.104158::M5','10.1016/j.cemconcomp.2021.104158::M6') AND c.curve_type='flow_curve')) AND (CAST(p.x_canonical AS REAL) IN (0,10,30,40,50,100)) ORDER BY c.paper_uid,c.mix_uid,CAST(p.x_canonical AS REAL)",
+        "max_rows": 100
+       },
+       "t": 83.73,
+       "result": {
+        "data": {
+         "n_rows": 18,
+         "columns": [
+          "paper_uid",
+          "mix_uid",
+          "curve_uid",
+          "x_unit",
+          "x_canonical",
+          "y_canonical"
+         ],
+         "rows": [
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M5",
+           "curve_uid": "10.1016/j.cemconcomp.2021.104158::M5::CV4",
+           "x_unit": "1/s",
+           "x_canonical": "0",
+           "y_canonical": "50.2"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M5",
+           "curve_uid": "10.1016/j.cemconcomp.2021.104158::M5::CV4",
+           "x_unit": "1/s",
+           "x_canonical": "40",
+           "y_canonical": "111.0"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M5",
+           "curve_uid": "10.1016/j.cemconcomp.2021.104158::M5::CV4",
+           "x_unit": "1/s",
+           "x_canonical": "100",
+           "y_canonical": "202.2"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M6",
+           "curve_uid": "10.1016/j.cemconcomp.2021.104158::M6::CV4",
+           "x_unit": "1/s",
+           "x_canonical": "0",
+           "y_canonical": "74.17"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M6",
+           "curve_uid": "10.1016/j.cemconcomp.2021.104158::M6::CV4",
+           "x_unit": "1/s",
+           "x_canonical": "40",
+           "y_canonical": "168.17"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2021.104158",
+           "mix_uid": "10.1016/j.cemconcomp.2021.104158::M6",
+           "curve_uid": "10.1016/j.cemconcomp.2021.104158::M6::CV4",
+           "x_unit": "1/s",
+           "x_canonical": "100",
+           "y_canonical": "309.17"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M2",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M2::CV1",
+           "x_unit": "min",
+           "x_canonical": "10",
+           "y_canonical": "2110"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M2",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M2::CV1",
+           "x_unit": "min",
+           "x_canonical": "30",
+           "y_canonical": "2080"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M2",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M2::CV1",
+           "x_unit": "min",
+           "x_canonical": "40",
+           "y_canonical": "2850"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M2",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M2::CV1",
+           "x_unit": "min",
+           "x_canonical": "50",
+           "y_canonical": "2480"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M3",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M3::CV1",
+           "x_unit": "min",
+           "x_canonical": "10",
+           "y_canonical": "970"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M3",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M3::CV1",
+           "x_unit": "min",
+           "x_canonical": "30",
+           "y_canonical": "1480"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M3",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M3::CV1",
+           "x_unit": "min",
+           "x_canonical": "40",
+           "y_canonical": "1780"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M3",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M3::CV1",
+           "x_unit": "min",
+           "x_canonical": "50",
+           "y_canonical": "1670"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M4",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M4::CV1",
+           "x_unit": "min",
+           "x_canonical": "10",
+           "y_canonical": "170"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M4",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M4::CV1",
+           "x_unit": "min",
+           "x_canonical": "30",
+           "y_canonical": "530"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M4",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M4::CV1",
+           "x_unit": "min",
+           "x_canonical": "40",
+           "y_canonical": "620"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2024.105509",
+           "mix_uid": "10.1016/j.cemconcomp.2024.105509::M4",
+           "curve_uid": "10.1016/j.cemconcomp.2024.105509::M4::CV1",
+           "x_unit": "min",
+           "x_canonical": "50",
+           "y_canonical": "730"
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171442-84a2\\sql_1792138566.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.04,
+         "_elapsed_s": 0.04
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.05,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 381087,
+      "output_tokens": 3255,
+      "cache_read_input_tokens": 349824
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 107.7
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:14:42"
+}

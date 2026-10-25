@@ -1,0 +1,89 @@
+\begin{userbox}
+Assess buildability: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min; material static yield stress 3 kPa, Athix 1 Pa/s.
+\end{userbox}
+\begin{toolbox}{assess\_buildability, 1.9 s}
+\begin{lstlisting}[style=argstyle]
+{"job": {"object_type": "wall", "target_height_mm": 600, "footprint_mm": 1500, "wall_filaments": 2, "nozzle_d_mm": 25, "print_speed_mm_s": 50, "open_time_min": 60}, "material": {"tau_s0_Pa": 3000, "athix_Pa_s": 1}}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll check the wall's buildability using the supplied yield stress and structuration rate, and identify any geometry defaults needed for the calculation.\par
+\textbf{Verdict: non-printable under the assumed free-standing wall conditions.} Elastic buckling governs, and plastic-collapse resistance is also insufficient.\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Check & Calculated result \\
+Schedule & 48 layers, 60 s/layer; 48 min total \\
+Free-wall buckling & Limit approximately \textbf{212.5 mm} (17 layers) \\
+Plastic collapse & Limit approximately \textbf{423 mm}, before applying the safety factor \\
+Open time & Passes: 48 min within 60 min \\
+Feasible cycle-time window & \textbf{None:} stability requires >=160.5 s/layer, but open time permits <=75 s/layer \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+Defaults used: layer height \textbf{12.5 mm}, filament width \textbf{29.61 mm}, density \textbf{2,100 kg/m\textasciicircum{}3}, safety factor \textbf{1.5}, stiffness ratio \textbf{E/tau? = 25}, no dwell, and printing starting immediately after mixing. The buckling estimate is particularly sensitive to the assumed stiffness and wall restraint.\par
+\par
+To reach the target:\par
+\begin{itemize}[nosep,leftmargin=1.2em]
+\item \textbf{Add lateral restraint, return walls, or greater wall thickness} to address buckling.
+\item At the current cycle time, plastic stability requires either initial static yield stress \textbf{>=7.82 kPa} at the supplied Athix, or \textbf{Athix >=2.68 Pa/s} at the supplied initial yield stress. These thresholds \textbf{do not resolve buckling}.
+\item Accelerator, VMA, or lower w/b are candidates for material trials; recheck extrusion and open time after adjustment. Slowing printing alone cannot satisfy the calculated time window.
+\end{itemize}
+These are deterministic physical calculations, not probabilistic material predictions. Confirm fresh stiffness, deposited geometry, and stability experimentally.\par
+\par
+Files: Assessment, cycle plot, cycle data, literature analogues.\par
+\par
+\end{agentbox}
+\begin{userbox}
+Now design a mix for this job with the default 3DCP search space (OPC required) and run without asking.
+\end{userbox}
+\begin{toolbox}{design\_for\_print\_job, 41.8 s}
+\begin{lstlisting}[style=argstyle]
+{"job": {"name": "wall_default_3dcp", "object_type": "wall", "target_height_mm": 600, "footprint_mm": 1500, "wall_filaments": 2, "nozzle_d_mm": 25, "print_speed_mm_s": 50, "open_time_min": 60}}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{retrieve\_literature, 0.2 s}
+\begin{lstlisting}[style=argstyle]
+{"n": 3, "prefer_3dcp": true, "system_type": "mortar", "targets": [{"quantity": "static_yield_stress", "kind": "ge", "lo": 3000, "unit": "Pa"}, {"quantity": "structuration_rate_athix", "kind": "ge", "lo": 2.675206, "unit": "Pa/s"}]}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll run the inverse design with OPC required in the default 3DCP search space, using the same wall geometry and print schedule, then check the candidates against the physical buildability limits.\par
+The default search found no feasible candidate for the unchanged job. The returned fallback candidates also fail the physical buildability checks. I'll retrieve published mixes near the required rheology to provide evidence for the next material trials.\par
+\textbf{The default OPC-required search completed, but found no feasible mix among 4,096 sampled candidates.} The returned fallback candidates fail physical buildability checks; none should be treated as an approved mix for this wall.\par
+\par
+The highest buildability-ranked fallback was:\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Component/ratio & Returned value \\
+OPC binder fraction & 0.78 \\
+Limestone powder binder fraction & 0.22 \\
+w/b & 0.338 \\
+s/b & 1.13 \\
+PCE, \% of binder & 1.42\% \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+Its predicted initial static yield stress is \textbf{351 [19, 10,179] Pa}, expressed as q50 [q10, q90]. The physical calculation indicates plastic collapse around \textbf{36 mm}, far below the target. Its required cycle time is \textbf{474 s}, versus an open-time limit of \textbf{75 s}. Rheology predictions provide order-of-magnitude guidance only.\par
+\par
+A stronger experimental starting point is the published \textbf{SP20-HPMC07-PE1.5} mix: OPC/fly ash/silica fume fractions \textbf{0.50/0.40/0.10}, \textbf{w/b 0.26}, \textbf{s/b 0.20}, PCE \textbf{0.20\%}, VMA \textbf{0.07\%}, and fibre \textbf{1.50 vol\%}. Reported measurements are \textbf{3,810 Pa static yield stress} and \textbf{15.4 Pa/s Athix}. This is a literature analogue, not a validated design for your wall. Source\par
+\par
+The search retained default layer height \textbf{12.5 mm}, filament width \textbf{29.61 mm}, and cycle time \textbf{60 s}. To proceed, address free-wall buckling through restraint or increased thickness, then evaluate a faster-structuring material experimentally. A slower schedule alone cannot rescue the returned fallback.\par
+\par
+Outputs: report, full results, candidates, buildability checks, design literature, Pareto plot, parallel-coordinates plot, additional analogues.\par
+\par
+\end{agentbox}
+\begin{userbox}
+Save a short report of the assessment and the design (markdown and xlsx).
+\end{userbox}
+\begin{toolbox}{save\_report, 0.5 s}
+\begin{lstlisting}[style=argstyle]
+{"title": "Wall buildability assessment and default OPC mix design", "format": "both", "markdown": "# Wall buildability assessment and mix design\n\n## Conclusion\nThe supplied material is non-printable for the specified free-standing wall under the calculator ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll save a short assessment and design report in Markdown and Excel, with tables for the results, fallback mix, and published analogue.\par
+Saved both reports, including assumptions, assessment, unsuccessful design search, fallback mix, and literature analogue:\par
+\par
+\begin{itemize}[nosep,leftmargin=1.2em]
+\item Markdown report
+\item Excel workbook
+\end{itemize}
+\end{agentbox}

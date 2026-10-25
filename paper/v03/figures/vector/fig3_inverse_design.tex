@@ -1,0 +1,86 @@
+% Figure — inverse mix design pipeline (vector).
+\begin{tikzpicture}[
+  font=\sffamily\footnotesize, >=Latex, line cap=round, line join=round,
+  tile/.style={draw=black!60, line width=0.5pt, rounded corners=3pt, fill=orange!10, inner sep=0pt, minimum width=2.3cm, minimum height=3.7cm},
+  outt/.style={draw=black!60, line width=0.5pt, rounded corners=3pt, fill=green!8, inner sep=0pt, minimum width=2.3cm, minimum height=3.7cm},
+  ttl/.style={font=\sffamily\bfseries\scriptsize, anchor=north, align=center, text width=2.15cm, inner sep=3pt},
+  capt/.style={font=\sffamily\scriptsize, anchor=south, align=center, text width=2.15cm, inner sep=3pt, text=black!70},
+  arr/.style={->, line width=0.8pt, black!70},
+  job/.style={draw=black!50, line width=0.4pt, rounded corners=2pt, fill=black!6, inner sep=3pt, align=center, text width=2.2cm, font=\sffamily\scriptsize},
+]
+\colorlet{cB}{blue!60!black}
+\colorlet{cG}{black!35}
+% ---------------- tiles
+\foreach \i/\x in {1/-6.125,2/-3.675,3/-1.225,4/1.225,5/3.675,6/6.125} { \node[tile] (T\i) at (\x,0) {}; }
+\node[ttl] at (T1.north) {targets and\\search space};
+\node[ttl] at (T2.north) {Sobol sample\\of the space};
+\node[ttl] at (T3.north) {predict every\\target with interval};
+\node[ttl] at (T4.north) {probabilistic\\screening};
+\node[ttl] at (T5.north) {non-dominated\\sort};
+\node[ttl] at (T6.north) {differential-evolution\\refinement};
+% 1: sliders + target bar
+\begin{scope}[shift={(T1.center)}, yshift=14pt]
+  \foreach \y/\p in {0.45/-0.3,0.15/0.15,-0.15/-0.05} { \draw[cG, line width=0.8pt] (-0.75,\y) -- (0.75,\y); \fill[cB] (\p,\y) circle (2.2pt); }
+  \draw[cG, line width=1.2pt] (-0.75,-0.65) -- (0.75,-0.65);
+  \fill[cB] (-0.3,-0.65) circle (2pt); \fill[cB] (0.45,-0.65) circle (2pt);
+\end{scope}
+\node[capt] at (T1.south) {$w/b$, $s/b$, binder classes, admixtures};
+% 2: quasi-random points
+\begin{scope}[shift={(T2.center)}, yshift=2pt]
+  \draw[cG] (-0.8,-0.8) rectangle (0.8,0.8);
+  \foreach \p in {(-0.6,0.5),(-0.2,0.7),(0.3,0.55),(0.65,0.2),(-0.7,0.1),(-0.35,0.25),(0.05,0.1),(0.45,-0.15),(-0.55,-0.35),(-0.1,-0.5),(0.25,-0.6),(0.7,-0.5),(-0.35,-0.7),(0.5,0.75),(-0.05,0.4)} { \fill[cB] \p circle (1.5pt); }
+\end{scope}
+\node[capt] at (T2.south) {thousands of candidate mixes};
+% 3: intervals
+\begin{scope}[shift={(T3.center)}, yshift=2pt]
+  \foreach \x/\lo/\mid/\hi in {-0.55/-0.6/0.1/0.7,0/-0.3/0.2/0.55,0.55/-0.8/-0.2/0.3} {
+    \draw[cB, line width=0.8pt] (\x,\lo) -- (\x,\hi); \draw[cB, line width=0.8pt] (\x-0.1,\lo) -- (\x+0.1,\lo); \draw[cB, line width=0.8pt] (\x-0.1,\hi) -- (\x+0.1,\hi);
+    \fill[cB] (\x,\mid) circle (2.2pt); }
+\end{scope}
+\node[capt] at (T3.south) {$q_{50}$ with $q_{10}$--$q_{90}$ per target};
+% 4: screening against a band
+\begin{scope}[shift={(T4.center)}, yshift=2pt]
+  \fill[green!25] (-0.85,-0.1) rectangle (0.85,0.4);
+  \foreach \x/\lo/\mid/\hi/\c in {-0.55/-0.2/0.2/0.55/cB,0/-0.5/0.05/0.5/cB,0.55/-0.9/-0.5/-0.1/cG} {
+    \draw[\c, line width=0.8pt] (\x,\lo) -- (\x,\hi); \fill[\c] (\x,\mid) circle (2.2pt); }
+  \node[font=\sffamily\tiny, text=black!60, anchor=west] at (-0.85,0.6) {target band};
+\end{scope}
+\node[capt] at (T4.south) {keep if $\prod_i P(\text{target}_i)$ is high enough};
+% 5: pareto
+\begin{scope}[shift={(T5.center)}, yshift=12pt]
+  \draw[->, cG] (-0.8,-0.7) -- (0.9,-0.7) node[pos=0.5, below=1pt, font=\sffamily\tiny, text=black!60] {clinker};
+  \draw[->, cG] (-0.8,-0.7) -- (-0.8,0.8) node[pos=0.5, left=1pt, font=\sffamily\tiny, text=black!60, rotate=90, anchor=south] {infeasibility};
+  \foreach \p in {(-0.3,0.5),(0.1,0.6),(0.5,0.3),(0.6,0.0),(0.2,0.2),(0.7,0.55)} { \fill[cG] \p circle (1.4pt); }
+  \draw[cB, line width=0.9pt] (-0.65,0.55) -- (-0.45,0.05) -- (-0.1,-0.25) -- (0.4,-0.45) -- (0.75,-0.5);
+  \foreach \p in {(-0.65,0.55),(-0.45,0.05),(-0.1,-0.25),(0.4,-0.45),(0.75,-0.5)} { \fill[cB] \p circle (2pt); }
+\end{scope}
+\node[capt] at (T5.south) {Pareto front; diverse shortlist};
+% 6: DE refinement
+\begin{scope}[shift={(T6.center)}, yshift=2pt]
+  \draw[cB!40, line width=0.9pt] (-0.65,0.55) -- (-0.45,0.05) -- (-0.1,-0.25) -- (0.4,-0.45) -- (0.75,-0.5);
+  \draw[->, cG, line width=0.6pt] (0.3,0.55) -- (-0.2,-0.05);
+  \draw[->, cG, line width=0.6pt] (0.6,0.35) -- (0.15,-0.3);
+  \draw[->, cG, line width=0.6pt] (0.75,0.1) -- (0.55,-0.4);
+  \fill[cB] (-0.2,-0.05) circle (2.2pt); \fill[cB] (0.15,-0.3) circle (2.2pt); \fill[cB] (0.55,-0.4) circle (2.2pt);
+\end{scope}
+\node[capt] at (T6.south) {local search over the forward models};
+% ---------------- output card
+\node[outt, minimum width=2.7cm] (O) at (8.85,0) {};
+\node[ttl, text width=2.7cm] at (O.north) {ranked candidates};
+\node[font=\sffamily\scriptsize, align=left, text width=2.6cm, anchor=center] at ($(O.center)+(0,-0.15)$) {composition and $w/b$\\predicted targets with intervals\\$P(\text{feasible})$\\applicability-domain distance\\closest published mixes};
+% ---------------- arrows between tiles
+\foreach \i/\j in {1/2,2/3,3/4,4/5,5/6} { \draw[arr] (T\i.east) -- (T\j.west); }
+\draw[arr] (T6.east) -- (O.west);
+\draw[arr, rounded corners=4pt] (T6.north) -- ++(0,0.45) -| (T3.north) node[pos=0.25, above, font=\sffamily\scriptsize, text=black!65] {refined candidates re-predicted};
+% ---------------- job-based variant lane
+\fill[black!5, rounded corners=3pt] (-7.6,-3.0) rectangle (10.3,-2.1);
+\node[font=\sffamily\bfseries\scriptsize, text=black!70, anchor=west] at (-7.5,-2.55) {job-based variant};
+\node[job] (J1) at (-4.9,-2.55) {required $\tau_s$ at the end of the print $\ge s_f\,\rho g H/\sqrt{3}$ added as a target};
+\node[job] (J2) at (-1.225,-2.55) {extrudability window of the nozzle class as caution flags};
+\node[job] (J3) at (3.675,-2.55) {objective favours higher $A_{\mathrm{thix}}$};
+\node[job] (J4) at (8.0,-2.55) {each candidate re-assessed against the job};
+\draw[arr] (J1.north) -- (T1.south);
+\draw[arr] (J2.north) -- (T4.south);
+\draw[arr] (J3.north) -- (T5.south);
+\draw[arr] (J4.north) -- (O.south);
+\end{tikzpicture}

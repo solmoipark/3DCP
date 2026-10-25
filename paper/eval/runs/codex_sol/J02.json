@@ -1,0 +1,601 @@
+{
+ "id": "J02",
+ "group": "job_design",
+ "provider": "codex_sol",
+ "backend": "codex",
+ "model": "gpt-6-sol",
+ "sessions": [
+  {
+   "session_id": "20261016-174132-3869",
+   "turns": [
+    {
+     "user": "Assess buildability: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min; material static yield stress 3 kPa, Athix 1 Pa/s.",
+     "text": "I’ll run the buildability calculation with the supplied geometry, printing speed, open time, and material properties. I’ll state any geometry or material defaults the calculator uses.\n**Verdict: non-printable for an unbraced, straight wall.** The calculator predicts free-wall buckling at layer 17 of 48, around 213 mm high. Plastic collapse is also expected before the 600 mm target. The 48-minute print fits within the 60-minute open time, but that does not resolve the stability failures.\n\nThe calculation used your measured static yield stress of **3 kPa** and Athix of **1 Pa/s**. Because layer dimensions were unspecified, it assumed a **12.5 mm layer height** and **29.61 mm width**; it also used a density of **2100 kg/m³**, an elastic-modulus-to-yield-stress ratio of **25**, and a **1.5** safety factor. The two 1.5 m filaments give a **60 s layer cycle** at 50 mm/s.\n\nAt that cycle time, the calculator estimates that avoiding *plastic collapse* would require either an initial static yield stress of about **7.82 kPa** or Athix of about **2.68 Pa/s**, with the other supplied property held fixed. These thresholds do **not** clear the separate buckling check. Bracing or a closed wall path, a thicker wall, or a shorter unsupported height would address buckling; an accelerator, VMA, or lower water-to-binder ratio could be investigated for faster strength gain. Recheck extrusion after changing the material.\n\nA comparable database example is a straight wall printed at 50 mm/s with a 30 mm nozzle: it reached **450 mm** with **3.035 kPa** static yield stress and **1.952 Pa/s** Athix. It does not establish that this 600 mm wall will succeed. Verify the final geometry and mix in a print trial.\n\nCalculator files: [assessment](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/assessment_job.md>), [cycle sweep](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/cycle_sweep_job.png>), [cycle data](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/cycle_sweep_job.csv>), [similar prints](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/similar_prints_job.csv>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "assess_buildability",
+       "input": {
+        "job": {
+         "object_type": "wall",
+         "target_height_mm": 600,
+         "footprint_mm": 1500,
+         "wall_filaments": 2,
+         "nozzle_d_mm": 25,
+         "print_speed_mm_s": 50,
+         "open_time_min": 60
+        },
+        "material": {
+         "tau_s0_Pa": 3000,
+         "athix_Pa_s": 1
+        }
+       },
+       "t": 8.03,
+       "result": {
+        "data": {
+         "text": "{\"job\": {\"name\": \"job\", \"object_type\": \"wall\", \"target_height_mm\": 600, \"nozzle_eq_mm\": 25.0, \"layer_height_mm\": 12.5, \"layer_width_mm\": 29.61, \"n_layers\": 48, \"layer_cycle_time_s\": 60.0, \"print_speed_mm_s\": 50, \"open_time_min\": 60, \"safety_factor\": 1.5}, \"material\": {\"tau_s0_Pa\": 3000.0, \"tau_s0_band\": null, \"athix_Pa_s\": 1.0, \"athix_band\": null, \"rho_kg_m3\": 2100.0, \"E_over_tau\": 25.0, \"source\": \"measured (user)\"}, \"verdict\": {\"label\": \"non_printable\", \"governing\": \"elastic_buckling\", \"reasons\": [\"plastic collapse expected at layer 34 of 48 (H_max 423 mm < 600 mm)\", \"self-weight buckling of a free straight wall expected at layer 17 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)\"], \"n_target\": 48, \"layer_height_mm\": 12.5, \"layer_cycle_time_s\": 60.0, \"print_time_min\": 48.0, \"tau_s0_Pa\": 3000.0, \"athix_Pa_s\": 1.0, \"tau_s_end_Pa\": 5880.0, \"n_max_plastic\": 33.831441, \"n_max_plastic_sf\": 18.403512, \"n_max_buckling\": 17.0, \"H_max_mm\": 212.5, \"margin\": 0.704822, \"R_static\": 2.378799, \"p_collapse_empirical\": 0.705479, \"p_stable_physics\": null, \"tau0_required_Pa\": 7824.593606, \"athix_required_Pa_s\": 2.675206, \"min_cycle_time_s\": 160.512367, \"critical_cycle_time_s\": 148.674911, \"open_time_ok\": true, \"extrudability\": {\"static_yield_stress\": {\"value\": 3000.0, \"p10\": 195.0, \"p50\": 1120.0, \"p90\": 4701.078, \"scope\": \"nozzle 15-30 mm\", \"status\": \"inside\"}}, \"defaults_used\": [\"layer_height_mm = 12.5 (0.5 x nozzle, printable median)\", \"layer_width_mm = 29.61 (1.2 x nozzle, printable median)\", \"layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)\"], \"warnings\": []}, \"schedule\": {\"n_layers\": 48, \"layer_height_mm\": 12.5, \"t_c_min_s\": 160.512367, \"t_c_min_no_sf_s\": 86.174911, \"t_c_max_s\": 75.0, \"t_c_max_basis\": \"open time 60 min - start 0 min over 48 layers\", \"t_c_current_s\": 60.0, \"t_c_recommended_s\": null, \"feasible\": false, \"print_time_recommended_min\": null, \"critical_cycle_time_s\": 148.674911, \"tau0_required_at_current_Pa\": 7824.593606, \"athix_required_at_current_Pa_s\": 2.675206, \"defaults_used\": [\"layer_height_mm = 12.5 (0.5 x nozzle, printable median)\", \"layer_width_mm = 29.61 (1.2 x nozzle, printable median)\", \"layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)\"], \"speed\": {\"v_min_mm_s\": 40.0, \"v_max_mm_s\": 18.690149, \"current_mm_s\": 50, \"v_recommended_mm_s\": null}}, \"similar_prints\": [{\"paper_uid\": \"10.1016/j.rineng.2024.102112\", \"mix_name_in_paper\": \"CR\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_time_s\": null, \"print_speed_mm_s\": 60.0, \"n_layers_achieved\": 59.0, \"H_mm\": 590.0, \"stack_to_failure\": 1, \"outcome\": \"extrusion_failure\", \"failure_mode\": \"discontinuous_extrusion\", \"printability_label\": \"borderline\", \"static_yield_stress\": 2650.0, \"structuration_rate_athix\": 0.45, \"R\": 2.648097, \"distance\": 0.111119}, {\"paper_uid\": \"10.1016/j.heliyon.2022.e11598\", \"mix_name_in_paper\": \"PCM-3DPC\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_time_s\": 13.1, \"print_speed_mm_s\": 60.0, \"n_layers_achieved\": 74.0, \"H_mm\": 740.0, \"stack_to_failure\": 1, \"outcome\": \"collapsed\", \"failure_mode\": \"plastic_collapse\", \"printability_label\": \"printable\", \"static_yield_stress\": 3050.7, \"structuration_rate_athix\": 0.573, \"R\": 2.885094, \"distance\": 0.133192}, {\"paper_uid\": \"10.1016/j.rineng.2024.102112\", \"mix_name_in_paper\": \"C\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_time_s\": null, \"print_speed_mm_s\": 60.0, \"n_layers_achieved\": 46.0, \"H_mm\": 460.0, \"stack_to_failure\": 1, \"outcome\": \"collapsed\", \"failure_mode\": \"plastic_collapse\", \"printability_label\": \"printable\", \"static_yield_stress\": 2965.0, \"structuration_rate_athix\": 0.19, \"R\": 1.845274, \"distance\": 0.150775}, {\"paper_uid\": \"10.1016/j.rineng.2024.102112\", \"mix_name_in_paper\": \"LC\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_time_s\": null, \"print_"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.98,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 88716,
+      "output_tokens": 961,
+      "cache_read_input_tokens": 73088
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 23.4
+    },
+    {
+     "user": "Now design a mix for this job with the default 3DCP search space (OPC required) and run without asking.",
+     "text": "I’ll run the inverse design for the same wall using the default 3DCP search space with OPC required. I’ll check the candidates against the wall’s physical buildability criteria.\nThe search found no mix that meets the full job criteria. I’ll check published analogue mixes to put the two returned candidates in context, since the rheology models have wide uncertainty.\n**No mix in the default OPC-required 3DCP search met this wall’s buildability criteria.** The engine screened 4,096 mixes and found none feasible for the 600 mm wall at the specified speed and 60-minute open time.\n\nIts highest-ranked buildability candidate is **100% Portland cement, w/b 0.335, s/b 2.93**. The calculator still rates it **non-printable**, predicting plastic collapse at layer **7 of 48** and free-wall buckling at layer **12**. Its estimated initial static yield stress is **630 [22, 10,908] Pa (q50 [q10, q90])**. That very wide interval makes the rheology estimate order-of-magnitude guidance.\n\nPublished mixes provide stronger rheology evidence for a trial formulation. For example, the 3DCP mortar **SP20-HPMC07-PE1.5** (DOI: 10.1016/j.cemconcomp.2024.105599) reports measured static yield stress of **3.81 kPa** and Athix of **15.4 Pa/s**. Its reported composition is OPC/fly ash/silica fume **0.50/0.40/0.10**, w/b **0.26**, s/b **0.20**, PCE **0.20%**, VMA **0.07%**, and fibre **1.50 vol%**. These measurements make it a useful experimental analogue, but they do not establish buildability for your unbraced wall.\n\nThe search used the calculator’s defaults of **12.5 mm layer height**, **29.61 mm layer width**, **60 s layer cycle**, and **1.5 safety factor**. The next design step is to change the wall support or geometry and rerun the search; any candidate then needs a print trial.\n\nFiles: [design report](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/printdesign_job/report.md>), [candidates](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/printdesign_job/candidates_buildability.csv>), [literature matches](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/literature.csv>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "design_for_print_job",
+       "input": {
+        "job": {
+         "object_type": "wall",
+         "target_height_mm": 600,
+         "footprint_mm": 1500,
+         "wall_filaments": 2,
+         "nozzle_d_mm": 25,
+         "print_speed_mm_s": 50,
+         "open_time_min": 60
+        },
+        "space": {
+         "is_3dcp": true,
+         "binder": {
+          "portland_cement": {
+           "required": true
+          }
+         }
+        }
+       },
+       "t": 25.93,
+       "result": {
+        "data": {
+         "requirement": {
+          "n_layers": 48,
+          "layer_cycle_time_s": 60.0,
+          "print_time_s": 2880.0,
+          "tau_s_required_end_Pa": 10704.593606,
+          "tau_s0_window": {
+           "p10": 195.0,
+           "p25": 520.0,
+           "p50": 1120.0,
+           "p75": 2075.4,
+           "p90": 4701.078,
+           "n": 457,
+           "scope": "nozzle 15-30 mm"
+          },
+          "viscosity_cap": {
+           "p10": 2.33,
+           "p25": 6.965,
+           "p50": 13.36,
+           "p75": 24.8075,
+           "p90": 65.36,
+           "n": 378,
+           "scope": "nozzle 15-30 mm"
+          },
+          "defaults_used": [
+           "layer_height_mm = 12.5 (0.5 x nozzle, printable median)",
+           "layer_width_mm = 29.61 (1.2 x nozzle, printable median)",
+           "layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)"
+          ]
+         },
+         "diagnostics": {
+          "n_sampled": 4096,
+          "n_feasible": 0,
+          "relaxation": [
+           {
+            "threshold_scale": 0.9,
+            "ad_max": 1.0,
+            "n_feasible": 0
+           },
+           {
+            "threshold_scale": 0.8,
+            "ad_max": 1.0,
+            "n_feasible": 149
+           }
+          ],
+          "p_min_used": {
+           "static_yield_stress_at_rest@2880s": 0.4,
+           "static_yield_stress": 0.32,
+           "plastic_viscosity": 0.32,
+           "compressive_strength": 0.48
+          }
+         },
+         "candidates": [
+          {
+           "buildability_rank": 1,
+           "rank": 2,
+           "mix": "portland_cement 1.00; w/b 0.335; s/b 2.93",
+           "P_design": 0.18,
+           "AD": 0.36,
+           "tau_s0_Pa": 630,
+           "tau_s0_band": [
+            22,
+            10908
+           ],
+           "athix_Pa_s": 0.895,
+           "verdict": "non_printable",
+           "governing": "plastic_collapse",
+           "n_max": 7,
+           "n_target": 48,
+           "p_stable": 0.4365,
+           "p_collapse_emp": 0.945205,
+           "t_c_min_s": 235,
+           "t_c_max_s": 75,
+           "t_c_recommended_s": null,
+           "v_recommended_mm_s": null,
+           "reasons": "plastic collapse expected at layer 7 of 48 (H_max 83 mm < 600 mm) | self-weight buckling of a free straight wall expected at layer 12 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          },
+          {
+           "buildability_rank": 2,
+           "rank": 1,
+           "mix": "portland_cement 1.00; w/b 0.336; s/b 1.06",
+           "P_design": 0.17,
+           "AD": 0.2,
+           "tau_s0_Pa": 421,
+           "tau_s0_band": [
+            24,
+            5492
+           ],
+           "athix_Pa_s": 0.603,
+           "verdict": "non_printable",
+           "governing": "plastic_collapse",
+           "n_max": 4,
+           "n_target": 48,
+           "p_stable": 0.3245,
+           "p_collapse_emp": 0.965753,
+           "t_c_min_s": 355,
+           "t_c_max_s": 75,
+           "t_c_recommended_s": null,
+           "v_recommended_mm_s": null,
+           "reasons": "plastic collapse expected at layer 4 of 48 (H_max 47 mm < 600 mm) | self-weight buckling of a free straight wall expected at layer 10 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          }
+         ],
+         "warnings": [],
+         "note": "유변 모델 구간이 넓어 P(안정)이 0.3 수준으로 낮은 것이 정상. 판정이 모두 non_printable이면 스케줄(사이클 시간) 쪽 답을 우선 제시.",
+         "_elapsed_s": 13.34
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\result.json",
+          "kind": "json",
+          "title": "result (job)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\report.md",
+          "kind": "markdown",
+          "title": "report (job)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\candidates.csv",
+          "kind": "table",
+          "title": "candidates (job)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\literature.csv",
+          "kind": "table",
+          "title": "literature (job)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\pareto.png",
+          "kind": "image",
+          "title": "pareto (job)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\parallel_coords.png",
+          "kind": "image",
+          "title": "parallel (job)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\candidates_buildability.csv",
+          "kind": "table",
+          "title": "candidates_buildability (job)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 13.36,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "retrieve_literature",
+       "input": {
+        "prefer_3dcp": true,
+        "n": 5,
+        "targets": [
+         {
+          "quantity": "static_yield_stress",
+          "kind": "ge",
+          "lo": 3000,
+          "unit": "Pa"
+         },
+         {
+          "quantity": "structuration_rate_athix",
+          "kind": "ge",
+          "lo": 2.68,
+          "unit": "Pa/s"
+         }
+        ]
+       },
+       "t": 45.15,
+       "result": {
+        "data": {
+         "n_hits": 5,
+         "tiers": {
+          "exact": 5,
+          "near": 0
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.cemconcomp.2024.105599",
+           "title": "Printability region for 3D-printable engineered cementitious composites (3DP-ECC)",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "SP20-HPMC07-PE1.5",
+           "system_type": "mortar",
+           "composition": "opc 0.50 / fly_ash_f 0.40 / silica_fume 0.10; w/b 0.26; s/b 0.20; sp_pce 0.20%, vma 0.07%; fibre 1.50 vol%",
+           "measured": [
+            "static_yield_stress=3.81e+03Pa",
+            "structuration_rate_athix=15.4Pa/s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.cemconres.2022.106764",
+           "title": "A comparison of indirect and direct methods for characterizing buildability of 3D printable mortars and concretes",
+           "year": 2022,
+           "is_3dcp": 1,
+           "mix": "2-NA",
+           "system_type": "mortar",
+           "composition": "opc 0.55 / other_powder 0.30 / silica_fume 0.15; w/b 0.34; s/b 1.77; sp_pce 1.36%",
+           "measured": [
+            "static_yield_stress=4.52e+03Pa",
+            "static_yield_stress=4.1e+03Pa",
+            "structuration_rate_athix=7.83Pa/s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.72,
+           "doi": "10.1016/j.cemconcomp.2024.105599",
+           "title": "Printability region for 3D-printable engineered cementitious composites (3DP-ECC)",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "SP26-HPMC10-PE1.5",
+           "system_type": "mortar",
+           "composition": "opc 0.50 / fly_ash_f 0.40 / silica_fume 0.10; w/b 0.26; s/b 0.20; sp_pce 0.26%, vma 0.10%; fibre 1.50 vol%",
+           "measured": [
+            "static_yield_stress=2.11e+03Pa",
+            "static_yield_stress=5.4e+03Pa",
+            "structuration_rate_athix=5.48Pa/s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.72,
+           "doi": "10.1016/j.cemconres.2022.106764",
+           "title": "A comparison of indirect and direct methods for characterizing buildability of 3D printable mortars and concretes",
+           "year": 2022,
+           "is_3dcp": 1,
+           "mix": "2-StF0.75",
+           "system_type": "mortar",
+           "composition": "opc 0.55 / other_powder 0.30 / silica_fume 0.15; w/b 0.35; s/b 1.75; sp_pce 1.36%; fibre 0.76 vol%",
+           "measured": [
+            "static_yield_stress=4.59e+03Pa",
+            "static_yield_stress=9.33e+03Pa",
+            "structuration_rate_athix=13.2Pa/s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.432,
+           "doi": "10.1016/j.cemconres.2022.106764",
+           "title": "A comparison of indirect and direct methods for characterizing buildability of 3D printable mortars and concretes",
+           "year": 2022,
+           "is_3dcp": 1,
+           "mix": "2-PF0.5",
+           "system_type": "mortar",
+           "composition": "opc 0.55 / other_powder 0.30 / silica_fume 0.15; w/b 0.35; s/b 1.77; sp_pce 1.49%; fibre 0.52 vol%",
+           "measured": [
+            "static_yield_stress=4.09e+03Pa",
+            "static_yield_stress=5.33e+03Pa",
+            "structuration_rate_athix=6.5Pa/s"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\literature.csv",
+         "_elapsed_s": 0.15
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.16,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 197866,
+      "output_tokens": 2399,
+      "cache_read_input_tokens": 177792
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 60.1
+    },
+    {
+     "user": "Save a short report of the assessment and the design (markdown and xlsx).",
+     "text": "I’ll save a short English report covering the buildability verdict, the unsuccessful design search, the leading candidate, and the measured literature analogue, with an XLSX summary table.\nSaved the short assessment and mix-design report in both formats:\n\n- [Markdown report](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/reports/Buildability_assessment_and_default_3DCP_mix_design.md>)\n- [XLSX report](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-174132-3869/reports/Buildability_assessment_and_default_3DCP_mix_design.xlsx>)\n\nThe report records the non-printable wall verdict, the search’s zero feasible mixes, the leading candidate, its uncertainty, and a measured literature analogue.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "save_report",
+       "input": {
+        "title": "Buildability assessment and default 3DCP mix design",
+        "format": "both",
+        "markdown": "# Buildability assessment and mix-design search\n\n## Job and assumptions\nStraight, unbraced wall: target height 600 mm; length 1,500 mm; two filaments; 25 mm nozzle; print speed 50 mm/s; open time 60 min. Calculator defaults: layer height 12.5 mm, layer width 29.61 mm, 48 layers, 60 s layer cycle, density 2,100 kg/m³, elastic-modulus-to-yield-stress ratio 25, and safety factor 1.5.\n\n## Assessment of supplied material\nMeasured initial static yield stress 3,000 Pa and Athix 1 Pa/s. Physical verdict: **non-printable**. Free-wall buckling governs at layer 17 (about 213 mm); plastic collapse is also expected before the 600 mm target. The 48 min print fits within the 60 min open time. At the current cycle time, avoiding plastic collapse alone would require approximately 7,825 Pa initial static yield stress or 2.675 Pa/s Athix, holding the other property fixed. These thresholds do not clear the buckling check.\n\n## Default 3DCP inverse design, OPC required\nThe engine sampled 4,096 mixes and found **no feasible mix** for this job. Its leading buildability candidate is Portland cement 1.00, w/b 0.335, s/b 2.93. It is **non-printable**: predicted plastic collapse at layer 7 and buckling at layer 12, against 48 required layers. Predicted initial static yield stress is q50 [q10, q90] = 630 [22, 10,908] Pa. Rheology predictions are order-of-magnitude guidance because the model interval is wide.\n\nA published 3DCP rheology analogue, SP20-HPMC07-PE1.5 (DOI 10.1016/j.cemconcomp.2024.105599), reports measured static yield stress 3.81 kPa and Athix 15.4 Pa/s. Its composition is OPC/fly ash/silica fume 0.50/0.40/0.10, w/b 0.26, s/b 0.20, PCE 0.20%, VMA 0.07%, and fibre 1.50 vol%. This is evidence for a trial formulation, not verification of this wall.\n\n## Recommendation\nRevise wall support or geometry and rerun buildability and design. Verify rheology, extrusion, and the full-height print experimentally before adopting a mix.\n",
+        "tables": {
+         "Assessment": [
+          {
+           "item": "Target height",
+           "value": 600,
+           "unit": "mm"
+          },
+          {
+           "item": "Wall length",
+           "value": 1500,
+           "unit": "mm"
+          },
+          {
+           "item": "Wall filaments",
+           "value": 2,
+           "unit": "count"
+          },
+          {
+           "item": "Nozzle diameter",
+           "value": 25,
+           "unit": "mm"
+          },
+          {
+           "item": "Print speed",
+           "value": 50,
+           "unit": "mm/s"
+          },
+          {
+           "item": "Open time",
+           "value": 60,
+           "unit": "min"
+          },
+          {
+           "item": "Layer height (default)",
+           "value": 12.5,
+           "unit": "mm"
+          },
+          {
+           "item": "Layer width (default)",
+           "value": 29.61,
+           "unit": "mm"
+          },
+          {
+           "item": "Layer cycle (default)",
+           "value": 60,
+           "unit": "s"
+          },
+          {
+           "item": "Initial static yield stress (measured)",
+           "value": 3000,
+           "unit": "Pa"
+          },
+          {
+           "item": "Athix (measured)",
+           "value": 1,
+           "unit": "Pa/s"
+          },
+          {
+           "item": "Physical verdict",
+           "value": "non_printable",
+           "unit": ""
+          },
+          {
+           "item": "Governing mode",
+           "value": "elastic_buckling",
+           "unit": ""
+          },
+          {
+           "item": "Buckling layer",
+           "value": 17,
+           "unit": "layer"
+          },
+          {
+           "item": "Plastic collapse layer (reported)",
+           "value": 34,
+           "unit": "layer"
+          },
+          {
+           "item": "Print time",
+           "value": 48,
+           "unit": "min"
+          },
+          {
+           "item": "Required initial yield for plastic stability at current cycle",
+           "value": 7824.593606,
+           "unit": "Pa"
+          },
+          {
+           "item": "Required Athix for plastic stability at current cycle",
+           "value": 2.675206,
+           "unit": "Pa/s"
+          }
+         ],
+         "Design": [
+          {
+           "item": "Mixes sampled",
+           "value": 4096,
+           "unit": "count"
+          },
+          {
+           "item": "Feasible mixes",
+           "value": 0,
+           "unit": "count"
+          },
+          {
+           "item": "Best candidate OPC fraction",
+           "value": 1,
+           "unit": "binder mass fraction"
+          },
+          {
+           "item": "Best candidate w/b",
+           "value": 0.335,
+           "unit": "mass ratio"
+          },
+          {
+           "item": "Best candidate s/b",
+           "value": 2.93,
+           "unit": "mass ratio"
+          },
+          {
+           "item": "Candidate verdict",
+           "value": "non_printable",
+           "unit": ""
+          },
+          {
+           "item": "Candidate plastic collapse layer",
+           "value": 7,
+           "unit": "layer"
+          },
+          {
+           "item": "Candidate buckling layer",
+           "value": 12,
+           "unit": "layer"
+          },
+          {
+           "item": "Candidate static yield q10",
+           "value": 22,
+           "unit": "Pa"
+          },
+          {
+           "item": "Candidate static yield q50",
+           "value": 630,
+           "unit": "Pa"
+          },
+          {
+           "item": "Candidate static yield q90",
+           "value": 10908,
+           "unit": "Pa"
+          },
+          {
+           "item": "Analogue DOI",
+           "value": "10.1016/j.cemconcomp.2024.105599",
+           "unit": ""
+          },
+          {
+           "item": "Analogue measured static yield",
+           "value": 3810,
+           "unit": "Pa"
+          },
+          {
+           "item": "Analogue measured Athix",
+           "value": 15.4,
+           "unit": "Pa/s"
+          }
+         ]
+        },
+        "include_artifacts": [
+         "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\assessment_job.md",
+         "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\report.md",
+         "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\printdesign_job\\candidates_buildability.csv"
+        ]
+       },
+       "t": 18.28,
+       "result": {
+        "data": {
+         "files": [
+          "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\reports\\Buildability_assessment_and_default_3DCP_mix_design.md",
+          "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\reports\\Buildability_assessment_and_default_3DCP_mix_design.xlsx"
+         ],
+         "attached": [
+          "assessment_job.md",
+          "report.md",
+          "candidates_buildability.csv"
+         ],
+         "_elapsed_s": 0.34
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\reports\\Buildability_assessment_and_default_3DCP_mix_design.md",
+          "kind": "markdown",
+          "title": "Buildability assessment and default 3DCP mix design"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-174132-3869\\reports\\Buildability_assessment_and_default_3DCP_mix_design.xlsx",
+          "kind": "file",
+          "title": "Buildability assessment and default 3DCP mix design (xlsx)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.35,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 277214,
+      "output_tokens": 3951,
+      "cache_read_input_tokens": 254208
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 22.9
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:41:32"
+}

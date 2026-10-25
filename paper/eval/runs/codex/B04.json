@@ -1,0 +1,370 @@
+{
+ "id": "B04",
+ "group": "buildability",
+ "provider": "codex",
+ "model": "",
+ "sessions": [
+  {
+   "session_id": "20261016-171254-1a95",
+   "turns": [
+    {
+     "user": "Is my 3DCP mortar (w/b 0.30, s/b 1.5, 90 % OPC + 10 % silica fume, 0.6 % PCE, 0.2 % cellulose VMA) buildable for a 400 mm high, 1 m long single-filament wall printed with a 30 mm nozzle at 40 mm/s?",
+     "text": "I’ll check the buildability model and its required inputs, including layer height and the time between successive layers.\n**The model classifies your wall as non-printable under the assumed printing schedule, with plastic collapse governing.** This is a screening result, not an experimentally established failure height.\n\nAssumptions: **15 mm layer height, 35.53 mm filament width, 25 s layer cycle with no dwell**, fresh density **2,100 kg/m³**, load safety factor **1.5**, and a free-standing straight wall. Admixture percentages were interpreted as product mass relative to binder. Open time was unspecified.\n\n| Physical check | Result |\n|---|---|\n| Target build | 27 layers; 11.25 min |\n| Plastic collapse with structuration | Expected around layer 4, approximately 59 mm, before applying the safety factor |\n| Free-wall buckling | Expected around layer 6, assuming elastic modulus/static yield stress = 25 |\n| Open time | Cannot be checked without a measured value |\n\nThe rheology predictions are very uncertain: static yield stress **645 [28, 6,568] Pa** and structuration rate **0.586 [0.024, 14.518] Pa/s**, expressed as q50 [q10, q90]. Structuration is a **weak model: use it only as order-of-magnitude guidance**. Neither prediction exceeds the reported training ranges.\n\nPublished analogues provide firmer experimental context: [MK10 and MK5](https://doi.org/10.1016/j.conbuildmat.2022.128808), printed using a **30 mm nozzle and 15 mm layers**, collapsed in stack-to-failure tests at **339 and 311 mm**, respectively. These were hollow cylinders with different mixes, so they do not validate your straight wall.\n\nTo improve feasibility:\n\n- **Increase material resistance:** at the current schedule, the calculator requires initial static yield stress of approximately **6,830 Pa**, holding structuration fixed, **or** structuration of **9.75 Pa/s**, holding initial yield stress fixed. These are alternative calculated requirements.\n- **Slow the build:** the calculated minimum cycle is approximately **416 s**. A usable cycle-time window remains unconfirmed because open time is unknown, and buckling still needs checking.\n- **Change geometry or formulation:** use thinner layers, widen or brace the wall, or trial an accelerator/VMA adjustment or lower w/b while checking extrusion.\n\nMeasure post-extrusion static yield stress, structuration and open time, then reassess with your actual layer dimensions. The final mix needs experimental verification.\n\nGenerated files: [assessment](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171254-1a95/assessment_job.md>), [cycle plot](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171254-1a95/cycle_sweep_job.png>), [cycle CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171254-1a95/cycle_sweep_job.csv>), [analogues](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171254-1a95/similar_prints_job.csv>), [prediction CSV](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171254-1a95/predictions_agent_mix.csv>), [prediction plot](<C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171254-1a95/predictions_agent_mix.png>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {},
+       "t": 8.8,
+       "result": {
+        "data": {
+         "text": "{\"classes\": {\"powder\": [{\"material_class\": \"anhydrite\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"basalt_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"belite_calcium_sulfoaluminate\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"belite_rich_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"biochar\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"bottom_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"calcined_clay\", \"group\": \"calcined_clay\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"calcium_aluminate_cement\", \"group\": \"cac\", \"sg\": 3.2, \"solid_content\": null}, {\"material_class\": \"calcium_hydroxide\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"calcium_sulfate_hemihydrate\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"calcium_sulfoaluminate_cement\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"carbide_slag\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"carbon_black\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"ceramic_waste_powder\", \"group\": \"recycled_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"coal_gangue\", \"group\": \"industrial_residue\", \"sg\": 2.8, \"solid_content\": null}, {\"material_class\": \"copper_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"diatomaceous_earth\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"dolomite_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"expansive_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"ferronickel_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_C\", \"group\": \"fly_ash_c\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_F\", \"group\": \"fly_ash_f\", \"sg\": 2.3, \"solid_content\": null}, {\"material_class\": \"ggbfs\", \"group\": \"ggbfs\", \"sg\": 2.9, \"solid_content\": null}, {\"material_class\": \"glass_powder\", \"group\": \"glass_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"granite_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"gypsum\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"ladle_furnace_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"limestone_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"magnesium_oxychloride_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"magnesium_phosphate_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"marble_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"metakaolin\", \"group\": \"metakaolin\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"municipal_solid_waste_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"natural_pozzolan\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"oil_well_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"palm_oil_fuel_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"phosphorus_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"portland_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_composite_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_limestone_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"quartz_powder\", \"group\": \"quartz_powder"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "assess_buildability",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.3,
+         "s_b": 1.5,
+         "binder": {
+          "portland_cement": 0.9,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.6,
+          "vma_cellulose": 0.2
+         },
+         "conditions": {
+          "is_3dcp": true
+         }
+        },
+        "job": {
+         "object_type": "wall",
+         "target_height_mm": 400,
+         "footprint_mm": 1000,
+         "path_length_mm": 1000,
+         "nozzle_d_mm": 30,
+         "print_speed_mm_s": 40,
+         "wall_filaments": 1
+        },
+        "n_similar": 3
+       },
+       "t": 14.43,
+       "result": {
+        "data": {
+         "job": {
+          "name": "job",
+          "object_type": "wall",
+          "target_height_mm": 400,
+          "nozzle_eq_mm": 30.0,
+          "layer_height_mm": 15.0,
+          "layer_width_mm": 35.53,
+          "n_layers": 27,
+          "layer_cycle_time_s": 25.0,
+          "print_speed_mm_s": 40,
+          "open_time_min": null,
+          "safety_factor": 1.5
+         },
+         "material": {
+          "tau_s0_Pa": 645.403535,
+          "tau_s0_band": [
+           28.044698,
+           6567.694215
+          ],
+          "athix_Pa_s": 0.585914,
+          "athix_band": [
+           0.023558,
+           14.517888
+          ],
+          "rho_kg_m3": 2100.0,
+          "E_over_tau": 25.0,
+          "source": "pmpredict (static_yield_stress, structuration_rate_athix)"
+         },
+         "verdict": {
+          "label": "non_printable",
+          "governing": "plastic_collapse",
+          "reasons": [
+           "plastic collapse expected at layer 4 of 27 (H_max 59 mm < 400 mm)",
+           "self-weight buckling of a free straight wall expected at layer 6 (thickness 36 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          ],
+          "n_target": 27,
+          "layer_height_mm": 15.0,
+          "layer_cycle_time_s": 25.0,
+          "print_time_min": 11.25,
+          "tau_s0_Pa": 645.403535,
+          "athix_Pa_s": 0.585914,
+          "tau_s_end_Pa": 1040.895243,
+          "n_max_plastic": 3.941106,
+          "n_max_plastic_sf": 2.551335,
+          "n_max_buckling": 6.0,
+          "H_max_mm": 59.116583,
+          "margin": 0.145967,
+          "R_static": 7.463652,
+          "p_collapse_empirical": 0.924658,
+          "p_stable_physics": 0.299,
+          "tau0_required_Pa": 6830.108976,
+          "athix_required_Pa_s": 9.74844,
+          "min_cycle_time_s": 415.950387,
+          "critical_cycle_time_s": 304.498617,
+          "open_time_ok": null,
+          "extrudability": {
+           "static_yield_stress": {
+            "value": 645.403535,
+            "p10": 358.84,
+            "p50": 1462.1,
+            "p90": 3985.1,
+            "scope": "nozzle 30-60 mm",
+            "status": "inside"
+           },
+           "dynamic_yield_stress": {
+            "value": 296.953708,
+            "p10": 74.84,
+            "p50": 138.9,
+            "p90": 608.8,
+            "scope": "nozzle 30-60 mm",
+            "status": "inside"
+           },
+           "plastic_viscosity": {
+            "value": 8.992769,
+            "p10": 7.5,
+            "p50": 8.15,
+            "p90": 24.181,
+            "scope": "nozzle 30-60 mm",
+            "status": "inside"
+           }
+          },
+          "defaults_used": [
+           "layer_height_mm = 15.0 (0.5 x nozzle, printable median)",
+           "layer_width_mm = 35.53 (1.2 x nozzle, printable median)",
+           "layer_cycle_time_s = 25.0 (path 1000 mm / 40 mm/s + dwell 0 s)"
+          ],
+          "warnings": []
+         },
+         "schedule": {
+          "n_layers": 27,
+          "layer_height_mm": 15.0,
+          "t_c_min_s": 415.950387,
+          "t_c_min_no_sf_s": 263.701078,
+          "t_c_max_s": 1200.0,
+          "t_c_max_basis": "p90 layer cycle time of printable runs (1200 s); give open_time_min for a hard bound",
+          "t_c_current_s": 25.0,
+          "t_c_recommended_s": 499.140464,
+          "feasible": true,
+          "print_time_recommended_min": 224.613209,
+          "critical_cycle_time_s": 304.498617,
+          "tau0_required_at_current_Pa": 6830.108976,
+          "athix_required_at_current_Pa_s": 9.74844,
+          "defaults_used": [
+           "layer_height_mm = 15.0 (0.5 x nozzle, printable median)",
+           "layer_width_mm = 35.53 (1.2 x nozzle, printable median)",
+           "layer_cycle_time_s = 25.0 (path 1000 mm / 40 mm/s + dwell 0 s)"
+          ],
+          "speed": {
+           "v_min_mm_s": 0.833333,
+           "v_max_mm_s": 2.404133,
+           "current_mm_s": 40,
+           "v_recommended_mm_s": 2.003444
+          }
+         },
+         "similar_prints": [
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2022.128808",
+           "mix_name_in_paper": "MK10",
+           "object": "hollow cylinder",
+           "noz_eq_mm": 30.0,
+           "layer_height_mm": 15.0,
+           "layer_cycle_time_s": null,
+           "print_speed_mm_s": 50.0,
+           "n_layers_achieved": 23.0,
+           "H_mm": 339.0,
+           "stack_to_failure": 1,
+           "outcome": "collapsed",
+           "failure_mode": "other",
+           "printability_label": "printable",
+           "static_yield_stress": 697.9,
+           "structuration_rate_athix": null,
+           "R": 5.777423,
+           "distance": 0.079482
+          },
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2022.128808",
+           "mix_name_in_paper": "MK5",
+           "object": "hollow cylinder",
+           "noz_eq_mm": 30.0,
+           "layer_height_mm": 15.0,
+           "layer_cycle_time_s": null,
+           "print_speed_mm_s": 50.0,
+           "n_layers_achieved": 21.0,
+           "H_mm": 311.0,
+           "stack_to_failure": 1,
+           "outcome": "collapsed",
+           "failure_mode": "other",
+           "printability_label": "printable",
+           "static_yield_stress": 445.12,
+           "structuration_rate_athix": null,
+           "R": 8.31019,
+           "distance": 0.194889
+          },
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2022.127614",
+           "mix_name_in_paper": "M1 (GU binder) - Group I printing trial (500 mm dia x 500 mm height hollow cylinder)",
+           "object": "hollow cylinder",
+           "noz_eq_mm": 20.0,
+           "layer_height_mm": 20.0,
+           "layer_cycle_time_s": null,
+           "print_speed_mm_s": 85.0,
+           "n_layers_achieved": 21.0,
+           "H_mm": 420.0,
+           "stack_to_failure": 1,
+           "outcome": "collapsed",
+           "failure_mode": "plastic_collapse",
+           "printability_label": "non_printable",
+           "static_yield_stress": 658.0,
+           "structuration_rate_athix": 14.1667,
+           "R": 7.59191,
+           "distance": 0.217111
+          }
+         ],
+         "warnings": [],
+         "_elapsed_s": 2.61
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171254-1a95\\assessment_job.md",
+          "kind": "markdown",
+          "title": "빌더빌리티 평가 job"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171254-1a95\\cycle_sweep_job.png",
+          "kind": "image",
+          "title": "사이클 시간 스윕 job"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171254-1a95\\cycle_sweep_job.csv",
+          "kind": "table",
+          "title": "스윕 표"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171254-1a95\\similar_prints_job.csv",
+          "kind": "table",
+          "title": "유사 문헌 프린트"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.62,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.3,
+         "s_b": 1.5,
+         "binder": {
+          "portland_cement": 0.9,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.6,
+          "vma_cellulose": 0.2
+         },
+         "conditions": {
+          "is_3dcp": true
+         }
+        },
+        "targets": [
+         "static_yield_stress",
+         "structuration_rate_athix"
+        ]
+       },
+       "t": 22.42,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "q10": 28.044698,
+           "q50": 645.403535,
+           "q90": 6567.694215,
+           "unit": "Pa",
+           "model": "static_yield_stress",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 1728,
+           "cv_r2": -0.043676
+          },
+          {
+           "target": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "q10": 0.023558,
+           "q50": 0.585914,
+           "q90": 14.517888,
+           "unit": "Pa/s",
+           "model": "structuration_rate_athix",
+           "weak_model": true,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 692,
+           "cv_r2": -0.055962
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171254-1a95\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 1
+         },
+         "_elapsed_s": 0.45
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171254-1a95\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171254-1a95\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.47,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 156737,
+      "output_tokens": 1047,
+      "cache_read_input_tokens": 133888
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 47.4
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:12:54"
+}

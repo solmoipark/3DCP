@@ -1,0 +1,1054 @@
+{
+ "id": "L02",
+ "group": "retrieve",
+ "provider": "codex",
+ "model": "",
+ "sessions": [
+  {
+   "session_id": "20261016-170417-b23a",
+   "turns": [
+    {
+     "user": "Which published cement pastes have a plastic viscosity of 20 Pa.s or less together with a mini-slump flow diameter of at least 180 mm?",
+     "text": "I’ll check the literature database for cement pastes with both reported properties meeting your limits.\nThe search found qualifying published mixes. The broader database check timed out; I’m simplifying that query. Some mixes have measurements at different elapsed times, so a match by mix name alone does not establish that both limits were met simultaneously.\n**Published examples meeting both limits** in the literature database include the following. Values are extracted measurements, not model predictions.\n\n| Published mix | Binder description | w/b | Plastic viscosity (Pa·s) | Mini-slump diameter (mm) | Source |\n|---|---|---:|---:|---:|---|\n| No.1 | Portland cement | 0.30 | 1.16 | 260 | [Rheological behavior of CSA cement pastes](https://doi.org/10.1016/j.conbuildmat.2020.118234) |\n| No.10 | CSA cement with silica fume | 0.24 | 2.97 | 245 | [Same study](https://doi.org/10.1016/j.conbuildmat.2020.118234) |\n| REF, w/b=0.35 | Portland cement–limestone powder | 0.35 | 0.57 | 330 | [Nanoclays in SCC pastes](https://doi.org/10.1016/j.conbuildmat.2020.118285) |\n| PCPA00 | Portland cement with PCE | 0.29 | 1.19 | 250 | [PCE and APAM in cement paste](https://doi.org/10.1016/j.cscm.2024.e03895) |\n| OPC0.3 | Portland cement | 0.30 | 1.16 | 260 | [SCMs and water/binder ratios in CSA pastes](https://doi.org/10.1016/j.powtec.2021.04.027) |\n| M1 | Portland cement–fly ash | 0.30 | 1.14 | 268 | [Nano-silica modified cement-based materials](https://doi.org/10.3389/fmats.2021.712551) |\n\nThese are representative matches. The broader search also returned alkali-activated and hydraulic-lime pastes, which are excluded from this cement-paste shortlist.\n\n**Qualification:** the database matches both properties to the same mix; it does not necessarily establish identical elapsed time or conditioning for the two tests. Check the original protocols before using a mix as an experimental benchmark.\n\nFiles: [literature search results](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170417-b23a/literature.csv>) · [broader matching mix list by paper](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170417-b23a/sql_1792137920.csv>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_schema",
+       "input": {
+        "db": "master"
+       },
+       "t": 11.45,
+       "result": {
+        "data": {
+         "db": "master",
+         "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\..\\pastemortar_extraction_package_v1.2.2\\master\\master.db",
+         "tables": [
+          {
+           "table": "curve_points",
+           "n_rows": 155211,
+           "hint": null
+          },
+          {
+           "table": "curves",
+           "n_rows": 25721,
+           "hint": "curve_uid, mix_uid, x_quantity, y_quantity, x_unit, y_unit; curve_points: curve_uid, x_canonical, y_canonical"
+          },
+          {
+           "table": "material_chemistry",
+           "n_rows": 59690,
+           "hint": null
+          },
+          {
+           "table": "material_physical",
+           "n_rows": 18431,
+           "hint": null
+          },
+          {
+           "table": "material_psd_points",
+           "n_rows": 13108,
+           "hint": null
+          },
+          {
+           "table": "materials",
+           "n_rows": 21676,
+           "hint": "material_uid, paper_uid, material_class, name_in_paper"
+          },
+          {
+           "table": "measurements",
+           "n_rows": 236199,
+           "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …"
+          },
+          {
+           "table": "mix_components",
+           "n_rows": 145530,
+           "hint": "mix_uid, material_uid, material_class, role, dosage_reported, basis_reported, unit_reported …"
+          },
+          {
+           "table": "mixes",
+           "n_rows": 29626,
+           "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …"
+          },
+          {
+           "table": "mixing_protocols",
+           "n_rows": 3299,
+           "hint": null
+          },
+          {
+           "table": "mixing_steps",
+           "n_rows": 7151,
+           "hint": null
+          },
+          {
+           "table": "papers",
+           "n_rows": 3274,
+           "hint": "paper_uid(=DOI), title, year, journal, is_3dcp_study('1'/'0'), n_mixes …"
+          },
+          {
+           "table": "qa_exceptions",
+           "n_rows": 2046,
+           "hint": null
+          },
+          {
+           "table": "search_log",
+           "n_rows": 3274,
+           "hint": null
+          },
+          {
+           "table": "test_protocols",
+           "n_rows": 37440,
+           "hint": null
+          },
+          {
+           "table": "tests",
+           "n_rows": 15525,
+           "hint": "test_uid, paper_uid, quantity, method_name, rest_time_s, comparability_group …"
+          },
+          {
+           "table": "unmapped_terms",
+           "n_rows": 16593,
+           "hint": null
+          }
+         ],
+         "notes": [
+          "master.db: 모든 컬럼 TEXT, ''=결측, fig_only='1'은 그림에서 읽은 값",
+          "join keys: paper_uid, mix_uid, test_uid",
+          "print_process.db: 논문 저자 판정 기반 라벨; stack_to_failure=1이면 collapsed여도 printable 가능"
+         ],
+         "_elapsed_s": 0.2
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.21,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "retrieve_literature",
+       "input": {
+        "system_type": "paste",
+        "prefer_3dcp": false,
+        "n": 30,
+        "targets": [
+         {
+          "quantity": "plastic_viscosity",
+          "kind": "le",
+          "hi": 20,
+          "unit": "Pa.s"
+         },
+         {
+          "quantity": "mini_slump_flow_diameter",
+          "kind": "ge",
+          "lo": 180,
+          "unit": "mm"
+         }
+        ]
+       },
+       "t": 11.67,
+       "result": {
+        "data": {
+         "n_hits": 30,
+         "tiers": {
+          "exact": 25,
+          "near": 5
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2020.118234",
+           "title": "Rheological behavior of calcium sulfoaluminate cement paste with supplementary cementitious materials",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "No.1",
+           "system_type": "paste",
+           "composition": "opc 1.00; w/b 0.30; sp_pce 0.20%",
+           "measured": [
+            "mini_slump_flow_diameter=260mm",
+            "plastic_viscosity=1.16Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2020.118285",
+           "title": "Influence of nanoclays on flowability and rheology of SCC pastes",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "REF, w/b=0.35",
+           "system_type": "paste",
+           "composition": "opc 0.67 / limestone_powder 0.33; w/b 0.35; sp_pce 0.33%",
+           "measured": [
+            "mini_slump_flow_diameter=330mm",
+            "plastic_viscosity=0.57Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2020.120381",
+           "title": "Rheology behavior of one-part alkali activated slag/glass powder (AASG) pastes",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "AASG-4",
+           "system_type": "paste",
+           "composition": "ggbfs 0.50 / glass_powder 0.40 / cac 0.10; w/b 0.35; activator 0.15/b",
+           "measured": [
+            "mini_slump_flow_diameter=190mm",
+            "plastic_viscosity=1.18Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2024.137190",
+           "title": "Influence of ground granulated blast furnace slag on recycled concrete powder-based geopolymer cured at ambient temperat",
+           "year": 2024,
+           "is_3dcp": 0,
+           "mix": "AAR",
+           "system_type": "paste",
+           "composition": "recycled_powder 1.00; w/b 0.08; activator 0.34/b",
+           "measured": [
+            "mini_slump_flow_diameter=184mm",
+            "plastic_viscosity=7.13Pa.s",
+            "plastic_viscosity=7.64Pa.s",
+            "plastic_viscosity=10.3Pa.s",
+            "plastic_viscosity=11.3Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2025.141380",
+           "title": "Effect of kaolinite calcination and mechanosynthesis on the rheological, mechanical, and microstructural properties of s",
+           "year": 2025,
+           "is_3dcp": 0,
+           "mix": "K",
+           "system_type": "paste",
+           "composition": "quartz_powder 0.62 / opc 0.21 / other_powder 0.18; w/b 0.30; sp_pce 0.20%",
+           "measured": [
+            "mini_slump_flow_diameter=265mm",
+            "mini_slump_flow_diameter=220mm",
+            "plastic_viscosity=4.3Pa.s",
+            "plastic_viscosity=0.61Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.cscm.2024.e03895",
+           "title": "Synergistic effect of PCE and APAM on the rheology and hydration of cement paste",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "PCPA00",
+           "system_type": "paste",
+           "composition": "opc 1.00; w/b 0.29; sp_pce 0.10%",
+           "measured": [
+            "mini_slump_flow_diameter=250mm",
+            "plastic_viscosity=1.19Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.mtcomm.2022.105064",
+           "title": "Effect of superabsorbent polymer on the rheological and internal curing properties of natural hydraulic lime paste",
+           "year": 2022,
+           "is_3dcp": 0,
+           "mix": "A_0.6S1_0.65",
+           "system_type": "paste",
+           "composition": "other_powder 1.00; w/b 0.65; sp_pce 0.01%, sap 0.01%",
+           "measured": [
+            "mini_slump_flow_diameter=224mm",
+            "plastic_viscosity=10Pa.s",
+            "plastic_viscosity=3Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.powtec.2021.04.027",
+           "title": "Effects of supplementary cementitious materials and water to binder ratios on the pore characteristics of calcium sulfoa",
+           "year": 2021,
+           "is_3dcp": 0,
+           "mix": "OPC0.3",
+           "system_type": "paste",
+           "composition": "opc 1.00; w/b 0.30; sp_pce 0.20%",
+           "measured": [
+            "mini_slump_flow_diameter=260mm",
+            "plastic_viscosity=1.16Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.powtec.2023.118561",
+           "title": "A new multiscale approach to control rheology of self-consolidating earth concrete (SCEC)",
+           "year": 2023,
+           "is_3dcp": 0,
+           "mix": "P6",
+           "system_type": "paste",
+           "composition": "opc 0.54 / other_powder 0.46; w/b 1.31",
+           "measured": [
+            "mini_slump_flow_diameter=286mm",
+            "mini_slump_flow_diameter=272mm",
+            "mini_slump_flow_diameter=267mm",
+            "plastic_viscosity=0.42Pa.s",
+            "plastic_viscosity=0.42Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.21809/rilemtechlett.2020.123",
+           "title": "Evolution of flow properties, plastic viscosity, and yield stress of alkali-activated fly ash/slag pastes",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "Ms1.5",
+           "system_type": "paste",
+           "composition": "fly_ash_f 0.75 / ggbfs 0.25; w/b 0.09; activator 0.45/b",
+           "measured": [
+            "mini_slump_flow_diameter=240mm",
+            "plastic_viscosity=9.7Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.3389/fmats.2021.712551",
+           "title": "Multi-Objective Optimization of Nano-Silica Modified Cement-Based Materials Mixed With Supplementary Cementitious Materi",
+           "year": 2021,
+           "is_3dcp": 0,
+           "mix": "M1",
+           "system_type": "paste",
+           "composition": "opc 0.85 / fly_ash_f 0.15; w/b 0.30; sp_pce 0.50%",
+           "measured": [
+            "mini_slump_flow_diameter=268mm",
+            "plastic_viscosity=1.14Pa.s"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.6,
+           "doi": "10.1016/j.conbuildmat.2020.118234",
+           "title": "Rheological behavior of calcium sulfoaluminate cement paste with supplementary cementitious materials",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "No.10",
+           "system_type": "paste",
+           "composition": "csa 0.90 / silica_fume 0.10; w/b 0.24; sp_pce 0.80%",
+           "measured": [
+            "mini_slump_flow_diameter=245mm",
+            "plastic_viscosity=2.97Pa.s"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170417-b23a\\literature.csv",
+         "_elapsed_s": 1.95
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170417-b23a\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.96,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "describe_schema",
+       "input": {
+        "table": "mixes"
+       },
+       "t": 17.28,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "mixes",
+         "n_rows": 29626,
+         "columns": [
+          {
+           "name": "binder_total_basis_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "binder_total_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_regime",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_rh_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_temp_C",
+           "type": "TEXT"
+          },
+          {
+           "name": "fresh_density_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "is_control_mix",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "name_in_paper",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "protocol_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "system_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_source",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_c_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "1700",
+           "is_control_mix": "0",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M1",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "name_in_paper": "DE-infused concrete (DE/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "2100",
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M2",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "name_in_paper": "Cement-only control (DE/binder = 0)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": null,
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M3",
+           "mix_uid": "10.1002/adfm.202509259::M3",
+           "name_in_paper": "Silica-fume control (SF/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "describe_schema",
+       "input": {
+        "table": "measurements"
+       },
+       "t": 17.3,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "measurements",
+         "n_rows": 236199,
+         "columns": [
+          {
+           "name": "age_norm_d",
+           "type": "TEXT"
+          },
+          {
+           "name": "age_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "age_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "condition_note",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "derivation_formula",
+           "type": "TEXT"
+          },
+          {
+           "name": "derived_from_obs_uids",
+           "type": "TEXT"
+          },
+          {
+           "name": "digitisation_uncertainty_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "extraction_confidence",
+           "type": "TEXT"
+          },
+          {
+           "name": "fig_only",
+           "type": "TEXT"
+          },
+          {
+           "name": "mapping_status",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "obs_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "proposed_quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "provenance",
+           "type": "TEXT"
+          },
+          {
+           "name": "quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "quantity_family",
+           "type": "TEXT"
+          },
+          {
+           "name": "replicate_n",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_norm_s",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "semantic_transform",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_panel",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "term_as_printed",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "uncertainty",
+           "type": "TEXT"
+          },
+          {
+           "name": "uncertainty_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "unit_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "unit_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_kind",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "age_norm_d": "28",
+           "age_unit": "d",
+           "age_value": "28",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": null,
+           "obs_uid": "10.1002/adfm.202509259::M1::T1::001",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.12",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "23.4",
+           "value_kind": "reported",
+           "value_reported": "23.4",
+           "wave": "26"
+          },
+          {
+           "age_norm_d": "90",
+           "age_unit": "d",
+           "age_value": "90",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": "Peak strength; DE mix continues to gain strength beyond 28 days unlike the two control mixes.",
+           "obs_uid": "10.1002/adfm.202509259::M1::T1::002",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength (peak)",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.57",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "30.5",
+           "value_kind": "reported",
+           "value_reported": "30.5",
+           "wave": "26"
+          },
+          {
+           "age_norm_d": "28",
+           "age_unit": "d",
+           "age_value": "28",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "notes": "Strength plateaus at 28 days for this control (does not continue rising like M1).",
+           "obs_uid": "10.1002/adfm.202509259::M2::T1::001",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.69",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "13.4",
+           "value_kind": "reported",
+           "value_reported": "13.4",
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …",
+         "_elapsed_s": 0.08
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.09,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "describe_schema",
+       "input": {
+        "table": "papers"
+       },
+       "t": 17.39,
+       "result": {
+        "data": {
+         "text": "{\"db\": \"master\", \"table\": \"papers\", \"n_rows\": 3274, \"columns\": [{\"name\": \"audit_topics_covered\", \"type\": \"TEXT\"}, {\"name\": \"authors\", \"type\": \"TEXT\"}, {\"name\": \"binder_system_tag\", \"type\": \"TEXT\"}, {\"name\": \"doc_type\", \"type\": \"TEXT\"}, {\"name\": \"doi\", \"type\": \"TEXT\"}, {\"name\": \"extraction_confidence_overall\", \"type\": \"TEXT\"}, {\"name\": \"extraction_date\", \"type\": \"TEXT\"}, {\"name\": \"extraction_notes\", \"type\": \"TEXT\"}, {\"name\": \"figure_scalar_presence_status\", \"type\": \"TEXT\"}, {\"name\": \"figure_series_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"figure_series_status\", \"type\": \"TEXT\"}, {\"name\": \"is_3dcp_study\", \"type\": \"TEXT\"}, {\"name\": \"journal\", \"type\": \"TEXT\"}, {\"name\": \"language\", \"type\": \"TEXT\"}, {\"name\": \"materials_status\", \"type\": \"TEXT\"}, {\"name\": \"metadata_status\", \"type\": \"TEXT\"}, {\"name\": \"mix_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"mixes_status\", \"type\": \"TEXT\"}, {\"name\": \"n_figure_series_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_figure_series_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_mixes_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_mixes_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_outcomes_extracted\", \"type\": \"TEXT\"}, {\"name\": \"n_outcomes_reported\", \"type\": \"TEXT\"}, {\"name\": \"n_unmapped_numeric\", \"type\": \"TEXT\"}, {\"name\": \"oa_status\", \"type\": \"TEXT\"}, {\"name\": \"outcome_count_evidence\", \"type\": \"TEXT\"}, {\"name\": \"paper_uid\", \"type\": \"TEXT\"}, {\"name\": \"protocols_status\", \"type\": \"TEXT\"}, {\"name\": \"qa_status\", \"type\": \"TEXT\"}, {\"name\": \"retrieval_route\", \"type\": \"TEXT\"}, {\"name\": \"screening_exclusion_reason\", \"type\": \"TEXT\"}, {\"name\": \"screening_status\", \"type\": \"TEXT\"}, {\"name\": \"search_query_block\", \"type\": \"TEXT\"}, {\"name\": \"system_types_present\", \"type\": \"TEXT\"}, {\"name\": \"tabulated_outcomes_status\", \"type\": \"TEXT\"}, {\"name\": \"title\", \"type\": \"TEXT\"}, {\"name\": \"unmapped_review_status\", \"type\": \"TEXT\"}, {\"name\": \"vocab_version\", \"type\": \"TEXT\"}, {\"name\": \"year\", \"type\": \"TEXT\"}, {\"name\": \"wave\", \"type\": \"TEXT\"}], \"sample\": [{\"audit_topics_covered\": \"T1;T2;T3;T4;T5;T6;T7;T8;T9\", \"authors\": \"Yu K.-H.; Teng T.; Nah S.H.; Chai H.; Zhi Y.; Wang K.-Y.; Chi Y.; Psarras P.; Akbarzadeh M.; Yang S.\", \"binder_system_tag\": \"portland_diatomaceous_earth\", \"doc_type\": \"journal_article\", \"doi\": \"10.1002/adfm.202509259\", \"extraction_confidence_overall\": \"medium\", \"extraction_date\": \"2026-09-10\", \"extraction_notes\": \"T1 Three binder compositions are reported on a weight-ratio-to-binder basis: a DE-infused mix with cement to DE at seven to three, a cement-only control, and a silica-fume control at the same SF to binder ratio, all sharing a water to binder ratio of zero point eight seven and a sand to binder ratio of two. T2 No quantity is measured by more than one route; compression, and each of the four merged other-family sub-methods, stay within their own comparability group. T3 Ambiguities: no kg per cubic metre batch quantities are printed anywhere in the accessible main text, only weight ratios, because the detailed batch tables live in an inaccessible supplementary Table S1/S2; the variable-DE-ratio water formula is printed but only the fixed zero point eight seven ratio used for the three named mixes is modelled here. T4 No contradictions were found between the results text and the figures it describes; the 142 percent carbonation increase and 178 percent interfacial-ratio increase are both relative claims with only one side's absolute value printed, so the other side is deliberately left unstated rather than back-calculated. T5 No figure-only scalar presence rows were needed: every quantitative claim used here from Figures 1, 3, 5 and 6 is also stated as a printed number in the body text. T6 No figure series were digitised: the rheology thixotropy and shear-thinning curves, the micro-indentation force-displacement curves, and the CO2-concentration-versus-time curves are all described only in relative or qualitative terms in the text (percent recovery, relative stiffness) without a companion table of point values, and attempting to read"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_6",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT p.doi, p.title, m.name_in_paper AS mix, m.w_b_reported AS w_b, v.value_canonical AS viscosity_Pa_s, f.value_canonical AS mini_slump_mm, v.condition_note AS viscosity_condition, f.condition_note AS slump_condition, v.fig_only AS viscosity_figure_only, f.fig_only AS slump_figure_only FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid JOIN measurements v ON v.mix_uid=m.mix_uid JOIN measurements f ON f.mix_uid=m.mix_uid WHERE m.system_type='paste' AND v.quantity='plastic_viscosity' AND f.quantity='mini_slump_flow_diameter' AND NULLIF(v.value_canonical,'') IS NOT NULL AND NULLIF(f.value_canonical,'') IS NOT NULL AND CAST(v.value_canonical AS REAL)>0 AND CAST(v.value_canonical AS REAL)<=20 AND CAST(f.value_canonical AS REAL)>=180 ORDER BY p.doi,m.name_in_paper",
+        "max_rows": 2000
+       },
+       "t": 25.94,
+       "result": {
+        "data": {
+         "text": "{\"n_rows\": 319, \"columns\": [\"doi\", \"title\", \"mix\", \"w_b\", \"viscosity_Pa_s\", \"mini_slump_mm\", \"viscosity_condition\", \"slump_condition\", \"viscosity_figure_only\", \"slump_figure_only\"], \"rows\": [{\"doi\": \"10.1016/j.cemconcomp.2022.104686\", \"title\": \"Synergistic effect of shrinkage mitigating materials on rheological properties of flowable and thixotropic cement paste\", \"mix\": \"10EA\", \"w_b\": \"0.4\", \"viscosity_Pa_s\": \"0.6\", \"mini_slump_mm\": \"200\", \"viscosity_condition\": \"sample kept undisturbed in the cylinder between the 20/40/60/90 min runs (damp cloth cover); explicit rest duration before each run not stated (R-18)\", \"slump_condition\": \"elapsed time 20 min after water addition\", \"viscosity_figure_only\": \"0\", \"slump_figure_only\": \"0\"}, {\"doi\": \"10.1016/j.cemconcomp.2022.104686\", \"title\": \"Synergistic effect of shrinkage mitigating materials on rheological properties of flowable and thixotropic cement paste\", \"mix\": \"10EA\", \"w_b\": \"0.4\", \"viscosity_Pa_s\": \"0.6\", \"mini_slump_mm\": \"195\", \"viscosity_condition\": \"sample kept undisturbed in the cylinder between the 20/40/60/90 min runs (damp cloth cover); explicit rest duration before each run not stated (R-18)\", \"slump_condition\": \"elapsed time 40 min after water addition\", \"viscosity_figure_only\": \"0\", \"slump_figure_only\": \"0\"}, {\"doi\": \"10.1016/j.cemconcomp.2022.104686\", \"title\": \"Synergistic effect of shrinkage mitigating materials on rheological properties of flowable and thixotropic cement paste\", \"mix\": \"10EA\", \"w_b\": \"0.4\", \"viscosity_Pa_s\": \"0.6\", \"mini_slump_mm\": \"180\", \"viscosity_condition\": \"sample kept undisturbed in the cylinder between the 20/40/60/90 min runs (damp cloth cover); explicit rest duration before each run not stated (R-18)\", \"slump_condition\": \"elapsed time 60 min after water addition\", \"viscosity_figure_only\": \"0\", \"slump_figure_only\": \"0\"}, {\"doi\": \"10.1016/j.cemconcomp.2022.104686\", \"title\": \"Synergistic effect of shrinkage mitigating materials on rheological properties of flowable and thixotropic cement paste\", \"mix\": \"10EA\", \"w_b\": \"0.4\", \"viscosity_Pa_s\": \"0.98\", \"mini_slump_mm\": \"200\", \"viscosity_condition\": \"sample kept undisturbed in the cylinder between the 20/40/60/90 min runs (damp cloth cover); explicit rest duration before each run not stated (R-18)\", \"slump_condition\": \"elapsed time 20 min after water addition\", \"viscosity_figure_only\": \"0\", \"slump_figure_only\": \"0\"}, {\"doi\": \"10.1016/j.cemconcomp.2022.104686\", \"title\": \"Synergistic effect of shrinkage mitigating materials on rheological properties of flowable and thixotropic cement paste\", \"mix\": \"10EA\", \"w_b\": \"0.4\", \"viscosity_Pa_s\": \"0.98\", \"mini_slump_mm\": \"195\", \"viscosity_condition\": \"sample kept undisturbed in the cylinder between the 20/40/60/90 min runs (damp cloth cover); explicit rest duration before each run not stated (R-18)\", \"slump_condition\": \"elapsed time 40 min after water addition\", \"viscosity_figure_only\": \"0\", \"slump_figure_only\": \"0\"}, {\"doi\": \"10.1016/j.cemconcomp.2022.104686\", \"title\": \"Synergistic effect of shrinkage mitigating materials on rheological properties of flowable and thixotropic cement paste\", \"mix\": \"10EA\", \"w_b\": \"0.4\", \"viscosity_Pa_s\": \"0.98\", \"mini_slump_mm\": \"180\", \"viscosity_condition\": \"sample kept undisturbed in the cylinder between the 20/40/60/90 min runs (damp cloth cover); explicit rest duration before each run not stated (R-18)\", \"slump_condition\": \"elapsed time 60 min after water addition\", \"viscosity_figure_only\": \"0\", \"slump_figure_only\": \"0\"}, {\"doi\": \"10.1016/j.cemconcomp.2022.104686\", \"title\": \"Synergistic effect of shrinkage mitigating materials on rheological properties of flowable and thixotropic cement paste\", \"mix\": \"10EA2SRA\", \"w_b\": \"0.4\", \"viscosity_Pa_s\": \"1.05\", \"mini_slump_mm\": \"190\", \"viscosity_condition\": \"sample kept undisturbed in the cylinder between the 20/40/60/90 min runs (damp cloth cover); explicit rest duration before each run not stated (R-18)\", \"slump_condition\": \"elapsed time 20 min after water addition\", \"viscosi"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.25,
+       "is_error": false
+      },
+      {
+       "id": "item_7",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT p.doi, GROUP_CONCAT(DISTINCT m.name_in_paper) AS mixes, COUNT(DISTINCT m.mix_uid) AS mix_count FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid WHERE m.system_type='paste' AND EXISTS (SELECT 1 FROM measurements v WHERE v.mix_uid=m.mix_uid AND v.quantity='plastic_viscosity' AND NULLIF(v.value_canonical,'') IS NOT NULL AND CAST(v.value_canonical AS REAL)>0 AND CAST(v.value_canonical AS REAL)<=20) AND EXISTS (SELECT 1 FROM measurements f WHERE f.mix_uid=m.mix_uid AND f.quantity='mini_slump_flow_diameter' AND NULLIF(f.value_canonical,'') IS NOT NULL AND CAST(f.value_canonical AS REAL)>=180) GROUP BY p.doi ORDER BY p.doi",
+        "max_rows": 200
+       },
+       "t": 33.91,
+       "result": {
+        "data": {
+         "error": "DatabaseError: Execution failed on sql 'SELECT * FROM (SELECT p.doi, GROUP_CONCAT(DISTINCT m.name_in_paper) AS mixes, COUNT(DISTINCT m.mix_uid) AS mix_count FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid WHERE m.system_type='paste' AND EXISTS (SELECT 1 FROM measurements v WHERE v.mix_uid=m.mix_uid AND v.quantity='plastic_viscosity' AND NULLIF(v.value_canonical,'') IS NOT NULL AND CAST(v.value_canonical AS REAL)>0 AND CAST(v.value_canonical AS REAL)<=20) AND EXISTS (SELECT 1 FROM measurements f WHERE f.mix_uid=m.mix_uid AND f.quantity='mini_slump_flow_diameter' AND NULLIF(f.value_canonical,'') IS NOT NULL AND CAST(f.value_canonical AS REAL)>=180) GROUP BY p.doi ORDER BY p.doi) AS q LIMIT 201': interrupted",
+         "traceback_tail": "User\\3D Printing Concrete Prediction\\pmpredict\\agent\\tools\\sql_tools.py\", line 65, in run_query\n    df = pd.read_sql_query(f\"SELECT * FROM ({s}) AS q LIMIT {int(max_rows) + 1}\", con)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\pandas\\io\\sql.py\", line 497, in read_sql_query\n    return pandas_sql.read_query(\n           ^^^^^^^^^^^^^^^^^^^^^^\npandas.errors.DatabaseError: Execution failed on sql 'SELECT * FROM (SELECT p.doi, GROUP_CONCAT(DISTINCT m.name_in_paper) AS mixes, COUNT(DISTINCT m.mix_uid) AS mix_count FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid WHERE m.system_type='paste' AND EXISTS (SELECT 1 FROM measurements v WHERE v.mix_uid=m.mix_uid AND v.quantity='plastic_viscosity' AND NULLIF(v.value_canonical,'') IS NOT NULL AND CAST(v.value_canonical AS REAL)>0 AND CAST(v.value_canonical AS REAL)<=20) AND EXISTS (SELECT 1 FROM measurements f WHERE f.mix_uid=m.mix_uid AND f.quantity='mini_slump_flow_diameter' AND NULLIF(f.value_canonical,'') IS NOT NULL AND CAST(f.value_canonical AS REAL)>=180) GROUP BY p.doi ORDER BY p.doi) AS q LIMIT 201': interrupted\n"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": true
+       },
+       "elapsed_s": 20.02,
+       "is_error": true
+      },
+      {
+       "id": "item_9",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT p.doi, GROUP_CONCAT(DISTINCT m.name_in_paper) AS mixes, COUNT(DISTINCT m.mix_uid) AS mix_count FROM mixes m JOIN papers p ON p.paper_uid=m.paper_uid JOIN measurements v ON v.mix_uid=m.mix_uid JOIN measurements f ON f.mix_uid=m.mix_uid WHERE m.system_type='paste' AND v.quantity='plastic_viscosity' AND f.quantity='mini_slump_flow_diameter' AND NULLIF(v.value_canonical,'') IS NOT NULL AND NULLIF(f.value_canonical,'') IS NOT NULL AND CAST(v.value_canonical AS REAL)>0 AND CAST(v.value_canonical AS REAL)<=20 AND CAST(f.value_canonical AS REAL)>=180 GROUP BY p.doi ORDER BY p.doi",
+        "max_rows": 200
+       },
+       "t": 62.72,
+       "result": {
+        "data": {
+         "n_rows": 12,
+         "columns": [
+          "doi",
+          "mixes",
+          "mix_count"
+         ],
+         "rows": [
+          {
+           "doi": "10.1016/j.cemconcomp.2022.104686",
+           "mixes": "REF,10EA,2SRA,10EA2SRA,5EA1SRA0.25SAP,1SRA,3.33EA1SRA0.167SAP,3.33EA1.33SRA0.167SAP,3.33EA2SRA0.334SAP,8.33EA2SRA0.167SAP",
+           "mix_count": 11
+          },
+          {
+           "doi": "10.1016/j.conbuildmat.2020.118234",
+           "mixes": "No.1,No.2,No.3,No.4,No.5,No.6,No.7,No.8,No.9,No.10,No.11,No.12,No.13,No.14,No.15,No.16",
+           "mix_count": 16
+          },
+          {
+           "doi": "10.1016/j.conbuildmat.2020.118285",
+           "mixes": "REF, w/b=0.35,ATT, w/b=0.35,BE, w/b=0.35,SEP, w/b=0.35,SEW, w/b=0.35,REF, w/b=0.45,ATT, w/b=0.45,BE, w/b=0.45,SEP, w/b=0.45,SEW, w/b=0.45",
+           "mix_count": 10
+          },
+          {
+           "doi": "10.1016/j.conbuildmat.2020.120381",
+           "mixes": "AASG-4",
+           "mix_count": 1
+          },
+          {
+           "doi": "10.1016/j.conbuildmat.2024.137190",
+           "mixes": "AAR",
+           "mix_count": 1
+          },
+          {
+           "doi": "10.1016/j.conbuildmat.2025.141380",
+           "mixes": "K,K-OH,K-HMP,CK,CK-OH,CK-HMP,GCK,GCK-OH,GCK-HMP",
+           "mix_count": 9
+          },
+          {
+           "doi": "10.1016/j.cscm.2024.e03895",
+           "mixes": "PCPA00",
+           "mix_count": 1
+          },
+          {
+           "doi": "10.1016/j.mtcomm.2022.105064",
+           "mixes": "A_0.6S1_0.65,B_0.6S2_0.65",
+           "mix_count": 2
+          },
+          {
+           "doi": "10.1016/j.powtec.2021.04.027",
+           "mixes": "OPC0.3,CSA0.3,CSA0.3-FA,CSA0.3-SF,CSA0.3-SF+FA,CSA0.3-SF+FA+GBFS,CSA0.24-Ref,CSA0.24-SF,CSA0.47-Ref,CSA0.42-FA,CSA0.73-Ref,CSA0.62-1.5FA",
+           "mix_count": 12
+          },
+          {
+           "doi": "10.1016/j.powtec.2023.118561",
+           "mixes": "P6,P10,P11,P12,P15,P16,P17,P18,P22,P23,P24,P25,P26,P32,P37,P44,P45,P49",
+           "mix_count": 18
+          },
+          {
+           "doi": "10.21809/rilemtechlett.2020.123",
+           "mixes": "S20,Ms1.5",
+           "mix_count": 2
+          },
+          {
+           "doi": "10.3389/fmats.2021.712551",
+           "mixes": "M1,M2,M3,M4,M5,M6,M7,M8,M9,M10,M11,M12,M13,M14,M15,M16,M17",
+           "mix_count": 17
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170417-b23a\\sql_1792137920.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.19,
+         "_elapsed_s": 0.19
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.2,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 251635,
+      "output_tokens": 1493,
+      "cache_read_input_tokens": 225536
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 81.0
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:04:17"
+}

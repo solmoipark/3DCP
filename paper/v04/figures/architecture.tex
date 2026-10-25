@@ -1,0 +1,22 @@
+% Five-layer system architecture.
+\begin{tikzpicture}[
+  font=\small,
+  row/.style={draw=black!55, rounded corners=2pt, align=center,
+    text width=12cm, minimum height=1.15cm, inner sep=6pt},
+  link/.style={->, >=Latex, thick, black!65}
+]
+\node[row, fill=blue!6] (interfaces)
+  {Interfaces\\Web interface \quad Terminal \quad MCP client};
+\node[row, fill=orange!8, below=0.45cm of interfaces] (agent)
+  {Agent core\\Request interpretation \quad Tool selection \quad Session context};
+\node[row, fill=green!7, below=0.45cm of agent] (registry)
+  {Tool registry\\Argument schemas \quad Function dispatch \quad Structured results};
+\node[row, fill=red!5, below=0.45cm of registry] (computation)
+  {Computational layer\\Property prediction \quad Inverse design \quad Buildability\\Literature retrieval \quad Read-only queries};
+\node[row, fill=gray!10, below=0.45cm of computation] (data)
+  {Data layer\\Literature database \quad Print-process database};
+\draw[link] (interfaces.south) -- (agent.north);
+\draw[link] (agent.south) -- (registry.north);
+\draw[link] (registry.south) -- (computation.north);
+\draw[link] (computation.south) -- (data.north);
+\end{tikzpicture}

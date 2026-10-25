@@ -1,0 +1,856 @@
+{
+ "id": "J02",
+ "group": "job_design",
+ "provider": "codex_56sol",
+ "backend": "codex",
+ "model": "gpt-5.6-sol",
+ "sessions": [
+  {
+   "session_id": "20261017-015214-8dfa",
+   "turns": [
+    {
+     "user": "Assess buildability: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min; material static yield stress 3 kPa, Athix 1 Pa/s.",
+     "text": "I’ll run the physical buildability assessment with the supplied geometry, printing rate, open time, and rheology, then report the governing failure mode and feasible adjustments if needed.\nThe wall is **non-printable** under the stated conditions. The governing mode is **elastic buckling**, with plastic collapse also predicted.\n\n- Assumed defaults: 12.5 mm layer height, 29.61 mm filament width, density 2,100 kg/m³, safety factor 1.5, and no dwell time.\n- 48 layers; 3,000 mm path per layer.\n- Cycle time: 60 s; total printing time: 48 min.\n- Buckling predicted at layer 17, approximately 212.5 mm high.\n- Plastic-collapse capacity: about 34 layers, approximately 423 mm without the safety factor.\n- Open time itself is adequate, but no feasible cycle-time window exists: required ≥160.5 s/layer versus ≤75 s/layer.\n- Secondary empirical collapse probability: 70.5%.\n\nAt the current 60 s cycle, the material would require approximately either:\n\n- Initial static yield stress ≥7.82 kPa, or\n- Athix ≥2.68 Pa/s.\n\nThe straight wall should also be braced, changed to a closed path, or made thicker by adding filaments to address buckling. Merely reducing speed is insufficient because the required slower cycle would exceed the 60-minute open-time constraint.\n\nA similar published straight-wall case reached 450 mm using about 3.04 kPa static yield stress but a substantially higher Athix of 1.95 Pa/s, supporting increased structuration as an important adjustment. Experimental verification remains necessary.\n\nGenerated files:\n\n- `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\assessment_600 mm two-filament wall.md`\n- `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\cycle_sweep_600 mm two-filament wall.png`\n- `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\cycle_sweep_600 mm two-filament wall.csv`\n- `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\similar_prints_600 mm two-filament wall.csv`\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "assess_buildability",
+       "input": {
+        "job": {
+         "name": "600 mm two-filament wall",
+         "object_type": "wall",
+         "target_height_mm": 600,
+         "footprint_mm": 1500,
+         "wall_filaments": 2,
+         "nozzle_d_mm": 25,
+         "print_speed_mm_s": 50,
+         "open_time_min": 60
+        },
+        "material": {
+         "tau_s0_Pa": 3000,
+         "athix_Pa_s": 1
+        },
+        "n_similar": 5
+       },
+       "t": 11.06,
+       "result": {
+        "data": {
+         "job": {
+          "name": "600 mm two-filament wall",
+          "object_type": "wall",
+          "target_height_mm": 600,
+          "nozzle_eq_mm": 25.0,
+          "layer_height_mm": 12.5,
+          "layer_width_mm": 29.61,
+          "n_layers": 48,
+          "layer_cycle_time_s": 60.0,
+          "print_speed_mm_s": 50,
+          "open_time_min": 60,
+          "safety_factor": 1.5
+         },
+         "material": {
+          "tau_s0_Pa": 3000.0,
+          "tau_s0_band": null,
+          "athix_Pa_s": 1.0,
+          "athix_band": null,
+          "rho_kg_m3": 2100.0,
+          "E_over_tau": 25.0,
+          "source": "measured (user)"
+         },
+         "verdict": {
+          "label": "non_printable",
+          "governing": "elastic_buckling",
+          "reasons": [
+           "plastic collapse expected at layer 34 of 48 (H_max 423 mm < 600 mm)",
+           "self-weight buckling of a free straight wall expected at layer 17 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          ],
+          "n_target": 48,
+          "layer_height_mm": 12.5,
+          "layer_cycle_time_s": 60.0,
+          "print_time_min": 48.0,
+          "tau_s0_Pa": 3000.0,
+          "athix_Pa_s": 1.0,
+          "tau_s_end_Pa": 5880.0,
+          "n_max_plastic": 33.831441,
+          "n_max_plastic_sf": 18.403512,
+          "n_max_buckling": 17.0,
+          "H_max_mm": 212.5,
+          "margin": 0.704822,
+          "R_static": 2.378799,
+          "p_collapse_empirical": 0.705479,
+          "p_stable_physics": null,
+          "tau0_required_Pa": 7824.593606,
+          "athix_required_Pa_s": 2.675206,
+          "min_cycle_time_s": 160.512367,
+          "critical_cycle_time_s": 148.674911,
+          "open_time_ok": true,
+          "extrudability": {
+           "static_yield_stress": {
+            "value": 3000.0,
+            "p10": 195.0,
+            "p50": 1120.0,
+            "p90": 4701.078,
+            "scope": "nozzle 15-30 mm",
+            "status": "inside"
+           }
+          },
+          "defaults_used": [
+           "layer_height_mm = 12.5 (0.5 x nozzle, printable median)",
+           "layer_width_mm = 29.61 (1.2 x nozzle, printable median)",
+           "layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)"
+          ],
+          "warnings": []
+         },
+         "schedule": {
+          "n_layers": 48,
+          "layer_height_mm": 12.5,
+          "t_c_min_s": 160.512367,
+          "t_c_min_no_sf_s": 86.174911,
+          "t_c_max_s": 75.0,
+          "t_c_max_basis": "open time 60 min - start 0 min over 48 layers",
+          "t_c_current_s": 60.0,
+          "t_c_recommended_s": null,
+          "feasible": false,
+          "print_time_recommended_min": null,
+          "critical_cycle_time_s": 148.674911,
+          "tau0_required_at_current_Pa": 7824.593606,
+          "athix_required_at_current_Pa_s": 2.675206,
+          "defaults_used": [
+           "layer_height_mm = 12.5 (0.5 x nozzle, printable median)",
+           "layer_width_mm = 29.61 (1.2 x nozzle, printable median)",
+           "layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)"
+          ],
+          "speed": {
+           "v_min_mm_s": 40.0,
+           "v_max_mm_s": 18.690149,
+           "current_mm_s": 50,
+           "v_recommended_mm_s": null
+          }
+         },
+         "similar_prints": [
+          {
+           "paper_uid": "10.1016/j.rineng.2024.102112",
+           "mix_name_in_paper": "CR",
+           "object": "hollow cylinder",
+           "noz_eq_mm": 25.0,
+           "layer_height_mm": 10.0,
+           "layer_cycle_time_s": null,
+           "print_speed_mm_s": 60.0,
+           "n_layers_achieved": 59.0,
+           "H_mm": 590.0,
+           "stack_to_failure": 1,
+           "outcome": "extrusion_failure",
+           "failure_mode": "discontinuous_extrusion",
+           "printability_label": "borderline",
+           "static_yield_stress": 2650.0,
+           "structuration_rate_athix": 0.45,
+           "R": 2.648097,
+           "distance": 0.111119
+          },
+          {
+           "paper_uid": "10.1016/j.heliyon.2022.e11598",
+           "mix_name_in_paper": "PCM-3DPC",
+           "object": "hollow cylinder",
+           "noz_eq_mm": 25.0,
+           "layer_height_mm": 10.0,
+           "layer_cycle_time_s": 13.1,
+           "print_speed_mm_s": 60.0,
+           "n_layers_achieved": 74.0,
+           "H_mm": 740.0,
+           "stack_to_failure": 1,
+           "outcome": "collapsed",
+           "failure_mode": "plastic_collapse",
+           "printability_label": "printable",
+           "static_yield_stress": 3050.7,
+           "structuration_rate_athix": 0.573,
+           "R": 2.885094,
+           "distance": 0.133192
+          },
+          {
+           "paper_uid": "10.1016/j.rineng.2024.102112",
+           "mix_name_in_paper": "C",
+           "object": "hollow cylinder",
+           "noz_eq_mm": 25.0,
+           "layer_height_mm": 10.0,
+           "layer_cycle_time_s": null,
+           "print_speed_mm_s": 60.0,
+           "n_layers_achieved": 46.0,
+           "H_mm": 460.0,
+           "stack_to_failure": 1,
+           "outcome": "collapsed",
+           "failure_mode": "plastic_collapse",
+           "printability_label": "printable",
+           "static_yield_stress": 2965.0,
+           "structuration_rate_athix": 0.19,
+           "R": 1.845274,
+           "distance": 0.150775
+          },
+          {
+           "paper_uid": "10.1016/j.rineng.2024.102112",
+           "mix_name_in_paper": "LC",
+           "object": "hollow cylinder",
+           "noz_eq_mm": 25.0,
+           "layer_height_mm": 10.0,
+           "layer_cycle_time_s": null,
+           "print_speed_mm_s": 60.0,
+           "n_layers_achieved": 74.0,
+           "H_mm": 740.0,
+           "stack_to_failure": 1,
+           "outcome": "collapsed",
+           "failure_mode": "elastic_buckling",
+           "printability_label": "printable",
+           "static_yield_stress": 2400.0,
+           "structuration_rate_athix": 1.96,
+           "R": 3.667314,
+           "distance": 0.164556
+          },
+          {
+           "paper_uid": "10.1016/j.cemconres.2026.108265",
+           "mix_name_in_paper": "DG-H",
+           "object": "straight wall",
+           "noz_eq_mm": 30.0,
+           "layer_height_mm": 15.0,
+           "layer_cycle_time_s": null,
+           "print_speed_mm_s": 50.0,
+           "n_layers_achieved": 30.0,
+           "H_mm": 450.0,
+           "stack_to_failure": 0,
+           "outcome": "printable",
+           "failure_mode": "none",
+           "printability_label": "printable",
+           "static_yield_stress": 3035.0,
+           "structuration_rate_athix": 1.9517,
+           "R": 1.763524,
+           "distance": 0.167852
+          }
+         ],
+         "warnings": [],
+         "_elapsed_s": 1.58
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\assessment_600 mm two-filament wall.md",
+          "kind": "markdown",
+          "title": "빌더빌리티 평가 600 mm two-filament wall"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\cycle_sweep_600 mm two-filament wall.png",
+          "kind": "image",
+          "title": "사이클 시간 스윕 600 mm two-filament wall"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\cycle_sweep_600 mm two-filament wall.csv",
+          "kind": "table",
+          "title": "스윕 표"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\similar_prints_600 mm two-filament wall.csv",
+          "kind": "table",
+          "title": "유사 문헌 프린트"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.59,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 87311,
+      "output_tokens": 1204,
+      "cache_read_input_tokens": 71936
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 26.7
+    },
+    {
+     "user": "Now design a mix for this job with the default 3DCP search space (OPC required) and run without asking.",
+     "text": "I’ll run the print-job inverse design immediately using the default 3DCP space with required Portland cement, keeping the same wall geometry and 60-minute open time.\nThe search completed with no feasible mix at the specified geometry and schedule. I’m checking the closest published 3DCP analogue mixes because the governing rheology models are weak and should only be treated as order-of-magnitude screening.\nI’m rerunning once with the full default binder/admixture ranges enabled; the initial explicit OPC-only constraint narrowed the search more than “default space with OPC required” intends.\nNo feasible mix was found for the specified job among 4,096 candidates in the default OPC-required 3DCP search space.\n\nBest screening candidate:\n\n- 100% Portland cement\n- w/b = 0.335\n- s/b = 2.93\n- Predicted initial static yield stress: 0.630 kPa [0.022, 10.908 kPa]\n- Predicted Athix: 0.895 Pa/s\n- Verdict: non-printable\n- Plastic collapse: approximately layer 7 of 48\n- Buckling: approximately layer 12\n- Required cycle time: ≥235 s/layer\n- Open-time limit: ≤75 s/layer\n\nThe job requires approximately 10.705 kPa static yield stress at the end of the 48-minute build. Because the rheology models are weak, these predictions are order-of-magnitude guidance.\n\nA relevant published OPC analogue is CK0-C: 100% OPC, w/b 0.35, s/b 1.00, and PCE 0.25%, with database-reported static yield stress at 48 minutes of 6.72 MPa. This unusually high reported value should be checked against the original paper before adoption.\n\nThe present geometry therefore requires structural or process changes—additional filaments, bracing/closed geometry, greater open time, or a much faster-structuring system—before a defensible mix can be selected. Experimental printing trials remain essential.\n\nFinal output directory:\n\n`C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\`\n\nFiles: `report.md`, `result.json`, `candidates.csv`, `candidates_buildability.csv`, `literature.csv`, `pareto.png`, and `parallel_coords.png`.\n\nAdditional analogue search:\n\n`C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\literature.csv`\n\nThe superseded initial narrow-search outputs are under:\n\n`C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\`\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "design_for_print_job",
+       "input": {
+        "job": {
+         "name": "600 mm two-filament wall",
+         "object_type": "wall",
+         "target_height_mm": 600,
+         "footprint_mm": 1500,
+         "wall_filaments": 2,
+         "nozzle_d_mm": 25,
+         "print_speed_mm_s": 50,
+         "open_time_min": 60
+        },
+        "space": {
+         "is_3dcp": true,
+         "binder": {
+          "portland_cement": {
+           "required": true
+          }
+         }
+        }
+       },
+       "t": 9.02,
+       "result": {
+        "data": {
+         "requirement": {
+          "n_layers": 48,
+          "layer_cycle_time_s": 60.0,
+          "print_time_s": 2880.0,
+          "tau_s_required_end_Pa": 10704.593606,
+          "tau_s0_window": {
+           "p10": 195.0,
+           "p25": 520.0,
+           "p50": 1120.0,
+           "p75": 2075.4,
+           "p90": 4701.078,
+           "n": 457,
+           "scope": "nozzle 15-30 mm"
+          },
+          "viscosity_cap": {
+           "p10": 2.33,
+           "p25": 6.965,
+           "p50": 13.36,
+           "p75": 24.8075,
+           "p90": 65.36,
+           "n": 378,
+           "scope": "nozzle 15-30 mm"
+          },
+          "defaults_used": [
+           "layer_height_mm = 12.5 (0.5 x nozzle, printable median)",
+           "layer_width_mm = 29.61 (1.2 x nozzle, printable median)",
+           "layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)"
+          ]
+         },
+         "diagnostics": {
+          "n_sampled": 4096,
+          "n_feasible": 0,
+          "relaxation": [
+           {
+            "threshold_scale": 0.9,
+            "ad_max": 1.0,
+            "n_feasible": 0
+           },
+           {
+            "threshold_scale": 0.8,
+            "ad_max": 1.0,
+            "n_feasible": 149
+           }
+          ],
+          "p_min_used": {
+           "static_yield_stress_at_rest@2880s": 0.4,
+           "static_yield_stress": 0.32,
+           "plastic_viscosity": 0.32,
+           "compressive_strength": 0.48
+          }
+         },
+         "candidates": [
+          {
+           "buildability_rank": 1,
+           "rank": 2,
+           "mix": "portland_cement 1.00; w/b 0.335; s/b 2.93",
+           "P_design": 0.18,
+           "AD": 0.36,
+           "tau_s0_Pa": 630,
+           "tau_s0_band": [
+            22,
+            10908
+           ],
+           "athix_Pa_s": 0.895,
+           "verdict": "non_printable",
+           "governing": "plastic_collapse",
+           "n_max": 7,
+           "n_target": 48,
+           "p_stable": 0.4365,
+           "p_collapse_emp": 0.945205,
+           "t_c_min_s": 235,
+           "t_c_max_s": 75,
+           "t_c_recommended_s": null,
+           "v_recommended_mm_s": null,
+           "reasons": "plastic collapse expected at layer 7 of 48 (H_max 83 mm < 600 mm) | self-weight buckling of a free straight wall expected at layer 12 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          },
+          {
+           "buildability_rank": 2,
+           "rank": 1,
+           "mix": "portland_cement 1.00; w/b 0.336; s/b 1.06",
+           "P_design": 0.17,
+           "AD": 0.2,
+           "tau_s0_Pa": 421,
+           "tau_s0_band": [
+            24,
+            5492
+           ],
+           "athix_Pa_s": 0.603,
+           "verdict": "non_printable",
+           "governing": "plastic_collapse",
+           "n_max": 4,
+           "n_target": 48,
+           "p_stable": 0.3245,
+           "p_collapse_emp": 0.965753,
+           "t_c_min_s": 355,
+           "t_c_max_s": 75,
+           "t_c_recommended_s": null,
+           "v_recommended_mm_s": null,
+           "reasons": "plastic collapse expected at layer 4 of 48 (H_max 47 mm < 600 mm) | self-weight buckling of a free straight wall expected at layer 10 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          }
+         ],
+         "warnings": [],
+         "note": "유변 모델 구간이 넓어 P(안정)이 0.3 수준으로 낮은 것이 정상. 판정이 모두 non_printable이면 스케줄(사이클 시간) 쪽 답을 우선 제시.",
+         "_elapsed_s": 12.78
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\result.json",
+          "kind": "json",
+          "title": "result (600 mm two-filament wall)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\report.md",
+          "kind": "markdown",
+          "title": "report (600 mm two-filament wall)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\candidates.csv",
+          "kind": "table",
+          "title": "candidates (600 mm two-filament wall)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\literature.csv",
+          "kind": "table",
+          "title": "literature (600 mm two-filament wall)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\pareto.png",
+          "kind": "image",
+          "title": "pareto (600 mm two-filament wall)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\parallel_coords.png",
+          "kind": "image",
+          "title": "parallel (600 mm two-filament wall)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall\\candidates_buildability.csv",
+          "kind": "table",
+          "title": "candidates_buildability (600 mm two-filament wall)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 12.8,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "retrieve_literature",
+       "input": {
+        "prefer_3dcp": true,
+        "n": 5,
+        "targets": [
+         {
+          "quantity": "static_yield_stress_at_rest",
+          "kind": "ge",
+          "lo": 10704.593606,
+          "unit": "Pa",
+          "rest_time_s": 2880
+         }
+        ]
+       },
+       "t": 27.95,
+       "result": {
+        "data": {
+         "n_hits": 5,
+         "tiers": {
+          "exact": 5,
+          "near": 0
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.cemconcomp.2021.104060",
+           "title": "Effect of precursor and activator on the printability and hardened properties of a 3D-printable one-part geopolymer mort",
+           "year": 2021,
+           "is_3dcp": 1,
+           "mix": "M5",
+           "system_type": "mortar",
+           "composition": "ggbfs 0.50 / fly_ash_f 0.50; w/b 0.36; s/b 1.50; retarder 0.50%; activator 0.10/b",
+           "measured": [
+            "static_yield_stress_at_rest@2880s=2.91e+04Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1080/21650373.2026.2657017",
+           "title": "Fresh and hardened properties of 3D printed concrete with cement kiln dust and CO2",
+           "year": 2026,
+           "is_3dcp": 1,
+           "mix": "CK10",
+           "system_type": "mortar",
+           "composition": "opc 0.90 / other_powder 0.10; w/b 0.35; s/b 1.00; sp_pce 0.25%",
+           "measured": [
+            "static_yield_stress_at_rest@2880s=8.69e+06Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.2,
+           "doi": "10.1016/j.jobe.2025.114919",
+           "title": "Effects of short fiber type and content on the rheology, green strength, and buildability of 3D-printed ultra-high perfo",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "PP0.5",
+           "system_type": "mortar",
+           "composition": "opc 0.50 / ggbfs 0.50; w/b 0.20; s/b 0.60; fibre 0.50 vol%",
+           "measured": [
+            "static_yield_stress_at_rest@2880s=3.72e+04Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.72,
+           "doi": "10.1080/21650373.2026.2657017",
+           "title": "Fresh and hardened properties of 3D printed concrete with cement kiln dust and CO2",
+           "year": 2026,
+           "is_3dcp": 1,
+           "mix": "CK10-C",
+           "system_type": "mortar",
+           "composition": "opc 0.90 / other_powder 0.10; w/b 0.35; s/b 1.00; sp_pce 0.25%",
+           "measured": [
+            "static_yield_stress_at_rest@2880s=1.15e+07Pa"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.432,
+           "doi": "10.1080/21650373.2026.2657017",
+           "title": "Fresh and hardened properties of 3D printed concrete with cement kiln dust and CO2",
+           "year": 2026,
+           "is_3dcp": 1,
+           "mix": "CK0-C",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.35; s/b 1.00; sp_pce 0.25%",
+           "measured": [
+            "static_yield_stress_at_rest@2880s=6.72e+06Pa"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\literature.csv",
+         "_elapsed_s": 0.35
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.36,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "design_for_print_job",
+       "input": {
+        "job": {
+         "name": "600 mm two-filament wall default 3DCP",
+         "object_type": "wall",
+         "target_height_mm": 600,
+         "footprint_mm": 1500,
+         "wall_filaments": 2,
+         "nozzle_d_mm": 25,
+         "print_speed_mm_s": 50,
+         "open_time_min": 60
+        },
+        "space": {
+         "is_3dcp": true
+        }
+       },
+       "t": 35.36,
+       "result": {
+        "data": {
+         "requirement": {
+          "n_layers": 48,
+          "layer_cycle_time_s": 60.0,
+          "print_time_s": 2880.0,
+          "tau_s_required_end_Pa": 10704.593606,
+          "tau_s0_window": {
+           "p10": 195.0,
+           "p25": 520.0,
+           "p50": 1120.0,
+           "p75": 2075.4,
+           "p90": 4701.078,
+           "n": 457,
+           "scope": "nozzle 15-30 mm"
+          },
+          "viscosity_cap": {
+           "p10": 2.33,
+           "p25": 6.965,
+           "p50": 13.36,
+           "p75": 24.8075,
+           "p90": 65.36,
+           "n": 378,
+           "scope": "nozzle 15-30 mm"
+          },
+          "defaults_used": [
+           "layer_height_mm = 12.5 (0.5 x nozzle, printable median)",
+           "layer_width_mm = 29.61 (1.2 x nozzle, printable median)",
+           "layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)"
+          ]
+         },
+         "diagnostics": {
+          "n_sampled": 4096,
+          "n_feasible": 0,
+          "relaxation": [
+           {
+            "threshold_scale": 0.9,
+            "ad_max": 1.0,
+            "n_feasible": 0
+           },
+           {
+            "threshold_scale": 0.8,
+            "ad_max": 1.0,
+            "n_feasible": 149
+           }
+          ],
+          "p_min_used": {
+           "static_yield_stress_at_rest@2880s": 0.4,
+           "static_yield_stress": 0.32,
+           "plastic_viscosity": 0.32,
+           "compressive_strength": 0.48
+          }
+         },
+         "candidates": [
+          {
+           "buildability_rank": 1,
+           "rank": 2,
+           "mix": "portland_cement 1.00; w/b 0.335; s/b 2.93",
+           "P_design": 0.18,
+           "AD": 0.36,
+           "tau_s0_Pa": 630,
+           "tau_s0_band": [
+            22,
+            10908
+           ],
+           "athix_Pa_s": 0.895,
+           "verdict": "non_printable",
+           "governing": "plastic_collapse",
+           "n_max": 7,
+           "n_target": 48,
+           "p_stable": 0.4365,
+           "p_collapse_emp": 0.945205,
+           "t_c_min_s": 235,
+           "t_c_max_s": 75,
+           "t_c_recommended_s": null,
+           "v_recommended_mm_s": null,
+           "reasons": "plastic collapse expected at layer 7 of 48 (H_max 83 mm < 600 mm) | self-weight buckling of a free straight wall expected at layer 12 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          },
+          {
+           "buildability_rank": 2,
+           "rank": 1,
+           "mix": "portland_cement 1.00; w/b 0.336; s/b 1.06",
+           "P_design": 0.17,
+           "AD": 0.2,
+           "tau_s0_Pa": 421,
+           "tau_s0_band": [
+            24,
+            5492
+           ],
+           "athix_Pa_s": 0.603,
+           "verdict": "non_printable",
+           "governing": "plastic_collapse",
+           "n_max": 4,
+           "n_target": 48,
+           "p_stable": 0.3245,
+           "p_collapse_emp": 0.965753,
+           "t_c_min_s": 355,
+           "t_c_max_s": 75,
+           "t_c_recommended_s": null,
+           "v_recommended_mm_s": null,
+           "reasons": "plastic collapse expected at layer 4 of 48 (H_max 47 mm < 600 mm) | self-weight buckling of a free straight wall expected at layer 10 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)"
+          }
+         ],
+         "warnings": [],
+         "note": "유변 모델 구간이 넓어 P(안정)이 0.3 수준으로 낮은 것이 정상. 판정이 모두 non_printable이면 스케줄(사이클 시간) 쪽 답을 우선 제시.",
+         "_elapsed_s": 9.92
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\result.json",
+          "kind": "json",
+          "title": "result (600 mm two-filament wall default 3DCP)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\report.md",
+          "kind": "markdown",
+          "title": "report (600 mm two-filament wall default 3DCP)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\candidates.csv",
+          "kind": "table",
+          "title": "candidates (600 mm two-filament wall default 3DCP)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\literature.csv",
+          "kind": "table",
+          "title": "literature (600 mm two-filament wall default 3DCP)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\pareto.png",
+          "kind": "image",
+          "title": "pareto (600 mm two-filament wall default 3DCP)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\parallel_coords.png",
+          "kind": "image",
+          "title": "parallel (600 mm two-filament wall default 3DCP)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\candidates_buildability.csv",
+          "kind": "table",
+          "title": "candidates_buildability (600 mm two-filament wall default 3DCP)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 9.93,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 236760,
+      "output_tokens": 3507,
+      "cache_read_input_tokens": 214144
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 63.8
+    },
+    {
+     "user": "Save a short report of the assessment and the design (markdown and xlsx).",
+     "text": "I’ll save a concise combined report covering the physical assessment, the unsuccessful inverse-design search, the best screening candidate, and the literature analogue, in both Markdown and Excel formats.\nSaved the combined short report in both formats:\n\n- [Markdown report](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\reports\\3DCP_Wall_Buildability_Assessment_and_Mix_Design.md>)\n- [Excel report](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\reports\\3DCP_Wall_Buildability_Assessment_and_Mix_Design.xlsx>)\n\nThe supporting assessment, cycle-sweep figure, candidate table, and Pareto figure were also attached to the report package.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "save_report",
+       "input": {
+        "title": "3DCP Wall Buildability Assessment and Mix Design",
+        "format": "both",
+        "markdown": "# 3DCP Wall Buildability Assessment and Mix Design\n\n## Job\nA 600 mm-high, 1.5 m-long straight wall with two filaments was assessed using a 25 mm nozzle, 50 mm/s print speed, and 60 min open time. Default geometry was 12.5 mm layer height and 29.61 mm layer width, giving 48 layers and a 60 s layer cycle. Default density was 2,100 kg/m³ and the safety factor was 1.5.\n\n## Assessment of supplied material\nMeasured fresh properties were static yield stress 3.0 kPa and Athix 1.0 Pa/s. The physical verdict was **non-printable**, governed by elastic buckling. Buckling was predicted at layer 17 (212.5 mm). Plastic collapse was predicted at about layer 34 (approximately 423 mm, without the safety factor). The empirical collapse probability was 70.5%, used only as secondary evidence.\n\nThe current 60 s cycle would require approximately 7.825 kPa initial static yield stress or 2.675 Pa/s Athix. No schedule window was feasible: the required cycle was at least 160.5 s/layer, while the 60 min open time allowed at most 75 s/layer.\n\n## Default 3DCP inverse design\nThe OPC-required default search evaluated 4,096 candidates and found no feasible mix. The best screening candidate was 100% Portland cement, w/b 0.335, and s/b 2.93. Its predicted initial static yield stress was 0.630 kPa [0.022, 10.908 kPa], with Athix 0.895 Pa/s. It remained non-printable, with predicted plastic collapse at layer 7 and buckling at layer 12.\n\nThe job requires approximately 10.705 kPa static yield stress at the end of the 48 min build. Because the rheology models are weak, candidate predictions are order-of-magnitude guidance.\n\n## Published analogue\nThe database returned the CK0-C 3DCP mortar as an OPC analogue: 100% OPC, w/b 0.35, s/b 1.00, and PCE 0.25%. Its database-reported static yield stress at 48 min was 6.72 MPa; this unusually high value should be verified against the original paper.\n\n## Conclusion\nNo defensible mix was identified for the unchanged job. Add filaments, brace or close the wall geometry, extend open time, or develop a faster-structuring mixture before experimental printing trials. Model results are correlations from published data and do not replace laboratory verification.",
+        "tables": {
+         "Assessment": [
+          {
+           "verdict": "non_printable",
+           "governing_mode": "elastic_buckling",
+           "target_height_mm": 600,
+           "layers": 48,
+           "cycle_time_s": 60,
+           "print_time_min": 48,
+           "tau_s0_kPa": 3,
+           "athix_Pa_s": 1,
+           "buckling_layer": 17,
+           "buckling_height_mm": 212.5,
+           "plastic_collapse_layer": 34,
+           "empirical_collapse_probability": 0.705,
+           "required_tau_s0_kPa": 7.825,
+           "required_athix_Pa_s": 2.675,
+           "minimum_cycle_s": 160.5,
+           "maximum_cycle_s": 75
+          }
+         ],
+         "Best candidate": [
+          {
+           "binder": "portland_cement 1.00",
+           "w_b": 0.335,
+           "s_b": 2.93,
+           "verdict": "non_printable",
+           "tau_s0_q50_kPa": 0.63,
+           "tau_s0_q10_kPa": 0.022,
+           "tau_s0_q90_kPa": 10.908,
+           "athix_Pa_s": 0.895,
+           "plastic_collapse_layer": 7,
+           "buckling_layer": 12,
+           "required_cycle_s": 235,
+           "maximum_cycle_s": 75
+          }
+         ],
+         "Literature analogue": [
+          {
+           "mix": "CK0-C",
+           "doi": "10.1080/21650373.2026.2657017",
+           "binder": "portland_cement 1.00",
+           "w_b": 0.35,
+           "s_b": 1,
+           "superplasticiser_pce_pct": 0.25,
+           "static_yield_at_2880s_Pa": 6720000,
+           "note": "Verify unusually high database-reported value against the source paper"
+          }
+         ]
+        },
+        "include_artifacts": [
+         "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\assessment_600 mm two-filament wall.md",
+         "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\cycle_sweep_600 mm two-filament wall.png",
+         "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\candidates_buildability.csv",
+         "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\printdesign_600 mm two-filament wall default 3DCP\\pareto.png"
+        ]
+       },
+       "t": 19.24,
+       "result": {
+        "data": {
+         "files": [
+          "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\reports\\3DCP_Wall_Buildability_Assessment_and_Mix_Design.md",
+          "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\reports\\3DCP_Wall_Buildability_Assessment_and_Mix_Design.xlsx"
+         ],
+         "attached": [
+          "assessment_600 mm two-filament wall.md",
+          "cycle_sweep_600 mm two-filament wall.png",
+          "candidates_buildability.csv",
+          "pareto.png"
+         ],
+         "_elapsed_s": 0.27
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\reports\\3DCP_Wall_Buildability_Assessment_and_Mix_Design.md",
+          "kind": "markdown",
+          "title": "3DCP Wall Buildability Assessment and Mix Design"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-015214-8dfa\\reports\\3DCP_Wall_Buildability_Assessment_and_Mix_Design.xlsx",
+          "kind": "file",
+          "title": "3DCP Wall Buildability Assessment and Mix Design (xlsx)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.29,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 320691,
+      "output_tokens": 5058,
+      "cache_read_input_tokens": 294912
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 23.5
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:52:14"
+}

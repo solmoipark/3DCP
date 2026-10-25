@@ -1,0 +1,61 @@
+{
+ "id": "B01",
+ "group": "buildability",
+ "provider": "codex_luna",
+ "backend": "codex",
+ "model": "gpt-6-luna",
+ "sessions": [
+  {
+   "session_id": "20261017-014011-ffaf",
+   "turns": [
+    {
+     "user": "I want to print a 600 mm high, 1.5 m long wall with two filaments across the thickness, 25 mm nozzle, 50 mm/s, open time 60 min. The material has a static yield stress of 3 kPa and Athix of 1 Pa/s. Is it printable, and what is the layer cycle-time window?",
+     "text": "I’ll check the available pmpredict buildability and print-job tools, then evaluate the wall using the stated dimensions, extrusion setup, open time, and rheology.\n**No, not under the assessed setup.** The physical verdict is **non_printable**: the model predicts free-wall buckling at layer 17 and plastic collapse around layer 34, before the 48 layers needed for 600 mm. It estimates a maximum height of 212.5 mm after accounting for buckling.\n\nThe cycle-time window is **not feasible**: about **161 seconds minimum** for stability, but **75 seconds maximum** to finish within the 60-minute open time. Your specified 50 mm/s gives a 60-second cycle for the 3 m layer path, below the stability minimum. The assessment estimates that, at this cycle, the material would need roughly **7.8 kPa static yield stress** and **2.68 Pa/s Athix**.\n\nI used the tool’s default layer height of 12.5 mm (half the nozzle diameter) and layer width of 29.61 mm (1.2 times nozzle diameter); it assumes no dwell. The empirical collapse probability is secondary to the physical verdict. These calculations are screening guidance, so verify any revised setup experimentally.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "assess_buildability",
+       "input": {
+        "job": {
+         "name": "600 mm high, 1.5 m wall",
+         "object_type": "wall",
+         "target_height_mm": 600,
+         "footprint_mm": 1500,
+         "wall_filaments": 2,
+         "nozzle_d_mm": 25,
+         "print_speed_mm_s": 50,
+         "open_time_min": 60
+        },
+        "material": {
+         "tau_s0_Pa": 3000,
+         "athix_Pa_s": 1
+        }
+       },
+       "t": 6.67,
+       "result": {
+        "data": {
+         "text": "{\"job\": {\"name\": \"600 mm high, 1.5 m wall\", \"object_type\": \"wall\", \"target_height_mm\": 600, \"nozzle_eq_mm\": 25.0, \"layer_height_mm\": 12.5, \"layer_width_mm\": 29.61, \"n_layers\": 48, \"layer_cycle_time_s\": 60.0, \"print_speed_mm_s\": 50, \"open_time_min\": 60, \"safety_factor\": 1.5}, \"material\": {\"tau_s0_Pa\": 3000.0, \"tau_s0_band\": null, \"athix_Pa_s\": 1.0, \"athix_band\": null, \"rho_kg_m3\": 2100.0, \"E_over_tau\": 25.0, \"source\": \"measured (user)\"}, \"verdict\": {\"label\": \"non_printable\", \"governing\": \"elastic_buckling\", \"reasons\": [\"plastic collapse expected at layer 34 of 48 (H_max 423 mm < 600 mm)\", \"self-weight buckling of a free straight wall expected at layer 17 (thickness 59 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)\"], \"n_target\": 48, \"layer_height_mm\": 12.5, \"layer_cycle_time_s\": 60.0, \"print_time_min\": 48.0, \"tau_s0_Pa\": 3000.0, \"athix_Pa_s\": 1.0, \"tau_s_end_Pa\": 5880.0, \"n_max_plastic\": 33.831441, \"n_max_plastic_sf\": 18.403512, \"n_max_buckling\": 17.0, \"H_max_mm\": 212.5, \"margin\": 0.704822, \"R_static\": 2.378799, \"p_collapse_empirical\": 0.705479, \"p_stable_physics\": null, \"tau0_required_Pa\": 7824.593606, \"athix_required_Pa_s\": 2.675206, \"min_cycle_time_s\": 160.512367, \"critical_cycle_time_s\": 148.674911, \"open_time_ok\": true, \"extrudability\": {\"static_yield_stress\": {\"value\": 3000.0, \"p10\": 195.0, \"p50\": 1120.0, \"p90\": 4701.078, \"scope\": \"nozzle 15-30 mm\", \"status\": \"inside\"}}, \"defaults_used\": [\"layer_height_mm = 12.5 (0.5 x nozzle, printable median)\", \"layer_width_mm = 29.61 (1.2 x nozzle, printable median)\", \"layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)\"], \"warnings\": []}, \"schedule\": {\"n_layers\": 48, \"layer_height_mm\": 12.5, \"t_c_min_s\": 160.512367, \"t_c_min_no_sf_s\": 86.174911, \"t_c_max_s\": 75.0, \"t_c_max_basis\": \"open time 60 min - start 0 min over 48 layers\", \"t_c_current_s\": 60.0, \"t_c_recommended_s\": null, \"feasible\": false, \"print_time_recommended_min\": null, \"critical_cycle_time_s\": 148.674911, \"tau0_required_at_current_Pa\": 7824.593606, \"athix_required_at_current_Pa_s\": 2.675206, \"defaults_used\": [\"layer_height_mm = 12.5 (0.5 x nozzle, printable median)\", \"layer_width_mm = 29.61 (1.2 x nozzle, printable median)\", \"layer_cycle_time_s = 60.0 (path 3000 mm / 50 mm/s + dwell 0 s)\"], \"speed\": {\"v_min_mm_s\": 40.0, \"v_max_mm_s\": 18.690149, \"current_mm_s\": 50, \"v_recommended_mm_s\": null}}, \"similar_prints\": [{\"paper_uid\": \"10.1016/j.rineng.2024.102112\", \"mix_name_in_paper\": \"CR\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_time_s\": null, \"print_speed_mm_s\": 60.0, \"n_layers_achieved\": 59.0, \"H_mm\": 590.0, \"stack_to_failure\": 1, \"outcome\": \"extrusion_failure\", \"failure_mode\": \"discontinuous_extrusion\", \"printability_label\": \"borderline\", \"static_yield_stress\": 2650.0, \"structuration_rate_athix\": 0.45, \"R\": 2.648097, \"distance\": 0.111119}, {\"paper_uid\": \"10.1016/j.heliyon.2022.e11598\", \"mix_name_in_paper\": \"PCM-3DPC\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_time_s\": 13.1, \"print_speed_mm_s\": 60.0, \"n_layers_achieved\": 74.0, \"H_mm\": 740.0, \"stack_to_failure\": 1, \"outcome\": \"collapsed\", \"failure_mode\": \"plastic_collapse\", \"printability_label\": \"printable\", \"static_yield_stress\": 3050.7, \"structuration_rate_athix\": 0.573, \"R\": 2.885094, \"distance\": 0.133192}, {\"paper_uid\": \"10.1016/j.rineng.2024.102112\", \"mix_name_in_paper\": \"C\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_time_s\": null, \"print_speed_mm_s\": 60.0, \"n_layers_achieved\": 46.0, \"H_mm\": 460.0, \"stack_to_failure\": 1, \"outcome\": \"collapsed\", \"failure_mode\": \"plastic_collapse\", \"printability_label\": \"printable\", \"static_yield_stress\": 2965.0, \"structuration_rate_athix\": 0.19, \"R\": 1.845274, \"distance\": 0.150775}, {\"paper_uid\": \"10.1016/j.rineng.2024.102112\", \"mix_name_in_paper\": \"LC\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 25.0, \"layer_height_mm\": 10.0, \"layer_cycle_ti"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.6,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 88756,
+      "output_tokens": 427,
+      "cache_read_input_tokens": 66944
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 13.1
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:40:11"
+}

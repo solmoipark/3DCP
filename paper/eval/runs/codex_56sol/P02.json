@@ -1,0 +1,281 @@
+{
+ "id": "P02",
+ "group": "predict",
+ "provider": "codex_56sol",
+ "backend": "codex",
+ "model": "gpt-5.6-sol",
+ "sessions": [
+  {
+   "session_id": "20261017-013349-fdcd",
+   "turns": [
+    {
+     "user": "For a 3D-printable mortar with w/b 0.32, s/b 1.2, binder 70 % OPC + 20 % class F fly ash + 10 % silica fume, 0.8 % PCE and 0.2 % cellulose VMA, predict the static yield stress and plastic viscosity.",
+     "text": "I’ll map the mix to the laboratory vocabulary, then run the two 3DCP rheology predictions and report uncertainty plus model-quality cautions.\nPredictions at zero rest time:\n\n- Static yield stress: **855 Pa [67, 5,016 Pa]**\n- Plastic viscosity: **7.11 Pa·s [0.89, 27.07 Pa·s]**\n\nThe models used the general variants because they outperform the 3DCP-specific variants for these targets. No training-range violations were detected, but the intervals are very wide and the reported cross-validation R² values are poor, so treat these as screening estimates only.\n\nDefaults: natural sand, zero-second rest time, 3DCP condition enabled. The automatically recorded 28-day age, moist curing, and 50-mm cube defaults do not materially define these fresh-state predictions.\n\nOutputs:\n\n- `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013349-fdcd\\predictions_OPC-FA-SF 3D-printable mortar.csv`\n- `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013349-fdcd\\predictions_OPC-FA-SF 3D-printable mortar.png`\n\nExperimental rheometry is required before print trials.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "all"
+       },
+       "t": 9.74,
+       "result": {
+        "data": {
+         "text": "{\"classes\": {\"powder\": [{\"material_class\": \"anhydrite\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"basalt_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"belite_calcium_sulfoaluminate\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"belite_rich_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"biochar\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"bottom_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"calcined_clay\", \"group\": \"calcined_clay\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"calcium_aluminate_cement\", \"group\": \"cac\", \"sg\": 3.2, \"solid_content\": null}, {\"material_class\": \"calcium_hydroxide\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"calcium_sulfate_hemihydrate\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"calcium_sulfoaluminate_cement\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"carbide_slag\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"carbon_black\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"ceramic_waste_powder\", \"group\": \"recycled_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"coal_gangue\", \"group\": \"industrial_residue\", \"sg\": 2.8, \"solid_content\": null}, {\"material_class\": \"copper_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"diatomaceous_earth\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"dolomite_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"expansive_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"ferronickel_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_C\", \"group\": \"fly_ash_c\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_F\", \"group\": \"fly_ash_f\", \"sg\": 2.3, \"solid_content\": null}, {\"material_class\": \"ggbfs\", \"group\": \"ggbfs\", \"sg\": 2.9, \"solid_content\": null}, {\"material_class\": \"glass_powder\", \"group\": \"glass_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"granite_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"gypsum\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"ladle_furnace_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"limestone_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"magnesium_oxychloride_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"magnesium_phosphate_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"marble_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"metakaolin\", \"group\": \"metakaolin\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"municipal_solid_waste_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"natural_pozzolan\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"oil_well_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"palm_oil_fuel_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"phosphorus_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"portland_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_composite_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_limestone_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"quartz_powder\", \"group\": \"quartz_powder"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "build_mix_spec",
+       "input": {
+        "mix": {
+         "name": "OPC-FA-SF 3D-printable mortar",
+         "system_type": "mortar",
+         "w_b": 0.32,
+         "s_b": 1.2,
+         "binder": {
+          "portland_cement": 0.7,
+          "fly_ash_class_F": 0.2,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.8,
+          "vma_cellulose": 0.2
+         },
+         "conditions": {
+          "is_3dcp": true,
+          "rest_time_s": 0
+         }
+        }
+       },
+       "t": 13.94,
+       "result": {
+        "data": {
+         "mix_spec": {
+          "system_type": "mortar",
+          "components": [
+           {
+            "material_class": "portland_cement",
+            "amount": 0.7,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "fly_ash_class_F",
+            "amount": 0.2,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "silica_fume",
+            "amount": 0.1,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "natural_sand",
+            "amount": 1.2,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "superplasticiser_pce",
+            "amount": 0.008,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           },
+           {
+            "material_class": "vma_cellulose",
+            "amount": 0.002,
+            "role": null,
+            "props": {},
+            "solid_content_pct": null,
+            "vol_pct": null,
+            "molarity": null,
+            "length_mm": null,
+            "diameter_um": null
+           }
+          ],
+          "water_binder": 0.32,
+          "sand_binder": null,
+          "conditions": {
+           "age_d": 28.0,
+           "comparability_group": "comp_cube50",
+           "rest_time_s": 0.0,
+           "curing_temp_C": 20.0,
+           "curing_rh_pct": 95.0,
+           "curing_regime": "moist curing",
+           "is_3dcp": 1,
+           "mix_time_s": null,
+           "max_rpm": null,
+           "mixer_type": null,
+           "rheometer_geometry": null,
+           "rheometer_method": null,
+           "rheometer": {}
+          },
+          "basis": "mass_frac_of_powder",
+          "name": "OPC-FA-SF 3D-printable mortar",
+          "year": null,
+          "schema_version": "1.0"
+         },
+         "warnings": [],
+         "components": [
+          "portland_cement",
+          "fly_ash_class_F",
+          "silica_fume",
+          "natural_sand",
+          "superplasticiser_pce",
+          "vma_cellulose"
+         ],
+         "_elapsed_s": 0.0
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013349-fdcd\\mix_OPC-FA-SF 3D-printable mortar.json",
+          "kind": "json",
+          "title": "MixSpec OPC-FA-SF 3D-printable mortar"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.01,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "name": "OPC-FA-SF 3D-printable mortar",
+         "system_type": "mortar",
+         "w_b": 0.32,
+         "s_b": 1.2,
+         "binder": {
+          "portland_cement": 0.7,
+          "fly_ash_class_F": 0.2,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.8,
+          "vma_cellulose": 0.2
+         },
+         "conditions": {
+          "is_3dcp": true,
+          "rest_time_s": 0
+         }
+        },
+        "targets": [
+         "static_yield_stress",
+         "plastic_viscosity"
+        ]
+       },
+       "t": 18.58,
+       "result": {
+        "data": {
+         "mix": "OPC-FA-SF 3D-printable mortar",
+         "predictions": [
+          {
+           "target": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "q10": 66.928022,
+           "q50": 855.179782,
+           "q90": 5015.751695,
+           "unit": "Pa",
+           "model": "static_yield_stress",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 1728,
+           "cv_r2": -0.043676
+          },
+          {
+           "target": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "q10": 0.889653,
+           "q50": 7.108217,
+           "q90": 27.072058,
+           "unit": "Pa.s",
+           "model": "plastic_viscosity",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 1817,
+           "cv_r2": -0.004687
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013349-fdcd\\predictions_OPC-FA-SF 3D-printable mortar.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 1
+         },
+         "_elapsed_s": 1.93
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013349-fdcd\\predictions_OPC-FA-SF 3D-printable mortar.csv",
+          "kind": "table",
+          "title": "예측 OPC-FA-SF 3D-printable mortar"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013349-fdcd\\predictions_OPC-FA-SF 3D-printable mortar.png",
+          "kind": "image",
+          "title": "예측구간 OPC-FA-SF 3D-printable mortar"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.94,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 156430,
+      "output_tokens": 1408,
+      "cache_read_input_tokens": 133120
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 33.7
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:33:49"
+}

@@ -1,0 +1,64 @@
+% Figure 1 — system architecture (vector, short labels only).
+\begin{tikzpicture}[
+  font=\sffamily\small, >=Latex, line cap=round, line join=round,
+  band/.style={draw=black!55, line width=0.5pt, rounded corners=5pt, fill=#1, inner sep=0pt},
+  tile/.style={draw=black!60, line width=0.5pt, rounded corners=3pt, fill=white, inner sep=5pt, align=center, text width=#1, minimum height=2.4em},
+  lab/.style={font=\sffamily\bfseries\normalsize, anchor=west, inner sep=6pt},
+  tag/.style={draw=black!55, line width=0.4pt, rounded corners=2pt, fill=white, inner sep=3.5pt, font=\sffamily\footnotesize},
+  arr/.style={->, line width=1.0pt, black!70},
+  ret/.style={->, line width=1.0pt, green!45!black, rounded corners=4pt},
+]
+\definecolor{cUser}{HTML}{E6E8EE}
+\definecolor{cAgent}{HTML}{CFE2F7}
+\definecolor{cReg}{HTML}{E6E8EE}
+\definecolor{cComp}{HTML}{FAD9B5}
+\definecolor{cData}{HTML}{E6E8EE}
+\def\W{16.0}
+% ------------------------------------------------ User
+\node[band=cUser, minimum width=\W cm, minimum height=1.5cm, anchor=north] (B1) at (0,0) {};
+\node[lab] at ($(B1.west)+(0,0)$) {User};
+% chat bubble icon
+\draw[black!70, line width=0.6pt, fill=white, rounded corners=3pt] (-2.9,-0.45) rectangle (-1.7,-1.1);
+\fill[black!70] (-2.6,-1.1) -- (-2.45,-1.3) -- (-2.3,-1.1) -- cycle;
+\foreach \x in {-2.6,-2.3,-2.0} { \fill[black!70] (\x,-0.78) circle (1.3pt); }
+\node[anchor=west, font=\sffamily\small] at (-1.4,-0.75) {natural-language request};
+% ------------------------------------------------ Agent
+\node[band=cAgent, minimum width=\W cm, minimum height=2.8cm, anchor=north] (B2) at (0,-1.95) {};
+\node[font=\sffamily\bfseries\normalsize, anchor=north] at ($(B2.north)+(0,-0.12)$) {LLM agent};
+\node[tile=3.6cm] at (-4.6,-3.65) {system prompt};
+\node[tile=3.6cm] at (0,-3.65) {tool selection};
+\node[tile=3.6cm] at (4.6,-3.65) {session memory};
+% ------------------------------------------------ Registry
+\node[band=cReg, minimum width=\W cm, minimum height=1.5cm, anchor=north] (B3) at (0,-5.2) {};
+\node[lab] at (B3.west) {Tool registry};
+\node[tile=4.0cm] at (-0.6,-5.95) {\nnTools{} tools, one schema};
+\node[tag] at (2.9,-5.95) {Anthropic};
+\node[tag] at (4.6,-5.95) {OpenAI};
+\node[tag] at (6.1,-5.95) {MCP};
+% ------------------------------------------------ Computational layer
+\node[band=cComp, minimum width=\W cm, minimum height=2.5cm, anchor=north] (B4) at (0,-7.15) {};
+\node[font=\sffamily\bfseries\normalsize, anchor=north] at ($(B4.north)+(0,-0.12)$) {Computational layer};
+\node[tile=2.4cm] at (-6.1,-8.75) {property models};
+\node[tile=2.4cm] at (-3.05,-8.75) {inverse design};
+\node[tile=2.4cm] at (0,-8.75) {buildability};
+\node[tile=2.4cm] at (3.05,-8.75) {literature retrieval};
+\node[tile=2.4cm] at (6.1,-8.75) {SQL (read-only)};
+% ------------------------------------------------ Data
+\node[band=cData, minimum width=\W cm, minimum height=2.1cm, anchor=north] (B5) at (0,-10.1) {};
+\node[lab] at (B5.west) {Data};
+\foreach \x/\t in {-2.2/literature database, 3.0/print-process database} {
+  \begin{scope}[shift={(\x,-10.95)}]
+    \fill[black!22] (-1.4,-0.35) -- (-1.4,0.35) arc (180:0:1.4 and 0.28) -- (1.4,-0.35) arc (0:-180:1.4 and 0.28);
+    \draw[black!60, line width=0.5pt] (-1.4,-0.35) -- (-1.4,0.35) arc (180:0:1.4 and 0.28) -- (1.4,-0.35) arc (0:-180:1.4 and 0.28);
+    \draw[black!60, line width=0.5pt] (-1.4,0.35) arc (180:360:1.4 and 0.28);
+    \node[font=\sffamily\small, anchor=north] at (0,-0.68) {\t};
+  \end{scope}
+}
+% ------------------------------------------------ arrows
+\draw[arr] (B1.south) -- (B2.north);
+\draw[arr] (B2.south) -- (B3.north);
+\draw[arr] (B3.south) -- (B4.north);
+\draw[arr] (B4.south) -- (B5.north);
+\draw[ret] ($(B5.east)+(0,0.3)$) -- ++(0.7,0) |- ($(B1.east)+(0,-0.2)$);
+\node[font=\sffamily\small, text=green!40!black, anchor=west] at ($(B3.east)+(0.75,0)$) {results};
+\end{tikzpicture}

@@ -1,0 +1,39 @@
+\begin{tabular}{llp{8.6cm}rl}
+\toprule
+id & group & prompt (abridged) & checks & expected tools \\
+\midrule
+P01 & forward prediction & Predict the 28-day compressive strength and flow table spread of an OPC mortar with w/b 0.40, s/b 2.0 and 0.5 \% PCE superplasticiser. Briefly. & 6 + wording & \texttt{predict\_properties} \\
+P02 & forward prediction & For a 3D-printable mortar with w/b 0.32, s/b 1.2, binder 70 \% OPC + 20 \% class F fly ash + 10 \% silica fume, 0.8 \% PCE and 0.2 \% cellulose VMA, ... & 8 & \texttt{predict\_properties} \\
+P03 & forward prediction & What 7-day compressive strength would you expect for a plain OPC paste with w/c 0.45, tested on 40 mm prisms (EN 196)? & 5 & \texttt{predict\_properties} \\
+P04 & forward prediction & Mortar with 50 \% GGBFS replacement, w/b 0.45, s/b 2.5, sealed curing. Give the 90-day compressive strength. & 4 & \texttt{predict\_properties} \\
+P05 & forward prediction & My mix per cubic metre is: cement 500 kg, fly ash (class F) 150 kg, river sand 1300 kg, water 227 kg, PCE 3.25 kg. Predict 28-day compressive ... & 6 & \texttt{predict\_properties} \\
+P06 & forward prediction & Limestone-powder blended mortar: 30 \% limestone powder, w/b 0.50, s/b 3.0, moist curing. Predict flexural strength and total porosity at 28 days. & 4 & \texttt{predict\_properties} \\
+P07 & rheology curves & For a 3DCP mortar with w/b 0.35, s/b 1.5, 90 \% OPC + 10 \% silica fume and 0.6 \% PCE, plot the Bingham flow curve up to 100 1/s and the structuration ... & 4 & \texttt{flow\_curve, structuration\_curve} \\
+P08 & forward prediction & Predict the 28-day compressive strength of an OPC mortar, w/b 0.45, s/b 2.5, no admixtures. / And if I lower w/b to 0.30 and add 0.8 \% PCE, keeping ... & 3 & \texttt{predict\_properties} \\
+L01 & literature retrieval & Find 10 published mixes with 28-day compressive strength of at least 40 MPa and a static yield stress between 1 and 4 kPa; prefer 3DCP studies. & 4 & \texttt{retrieve\_literature} \\
+L02 & literature retrieval & Which published cement pastes have a plastic viscosity of 20 Pa.s or less together with a mini-slump flow diameter of at least 180 mm? & 3 & \texttt{retrieve\_literature} \\
+L03 & literature retrieval & List 3DCP mortars from the literature whose static yield stress after 60 minutes of rest exceeds 10 kPa. & 1 & \texttt{retrieve\_literature} \\
+L04 & literature retrieval & I need published mortars with drying shrinkage no more than 600 microstrain at 28 days and compressive strength of at least 50 MPa. & 2 & \texttt{retrieve\_literature} \\
+D01 & inverse design & Inverse-design a printable mortar: 28-day compressive strength >= 40 MPa and static yield stress between 1 and 4 kPa, minimising the clinker ... & 7 & \texttt{design\_mix} \\
+D02 & inverse design & Design a low-carbon grout paste: mini-slump flow diameter >= 200 mm and 7-day compressive strength >= 30 MPa, minimise CO2. Space: w/b 0.30-0.50, OPC ... & 5 & \texttt{design\_mix} \\
+D03 & inverse design & Design me a strong, printable mortar. & 0 + must ask & \texttt{(none)} \\
+B01 & buildability / schedule & I want to print a 600 mm high, 1.5 m long wall with two filaments across the thickness, 25 mm nozzle, 50 mm/s, open time 60 min. The material has a ... & 8 & \texttt{assess\_buildability} \\
+B02 & buildability / schedule & Hollow cylinder, 300 mm diameter, 500 mm tall, 20 mm nozzle, 10 mm layers, 20 s per layer. Fresh density 2150 kg/m3, static yield stress 1.2 kPa, ... & 8 & \texttt{assess\_buildability} \\
+B03 & buildability / schedule & What layer cycle-time window do I need for a 1 m high wall, 20 mm nozzle, static yield stress 2 kPa, Athix 0.8 Pa/s, open time 45 min, starting 10 ... & 6 & \texttt{print\_schedule, assess\_buildability} \\
+B04 & buildability / schedule & Is my 3DCP mortar (w/b 0.30, s/b 1.5, 90 \% OPC + 10 \% silica fume, 0.6 \% PCE, 0.2 \% cellulose VMA) buildable for a 400 mm high, 1 m long ... & 5 & \texttt{assess\_buildability} \\
+B05 & buildability / schedule & Show me published prints similar to an 800 mm high wall printed with a 25 mm nozzle and 15 mm layers. & 3 & \texttt{similar\_prints, assess\_buildability} \\
+B06 & buildability / schedule & Buildability check: 500 mm wall, 2 m long, 25 mm nozzle, 40 mm/s. Rheometer gives a static yield stress of 0.004 MPa and a structuration rate of 60 ... & 3 & \texttt{assess\_buildability} \\
+J01 & job $\rightarrow$ mix & Design a mix for this print job: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min. Space: OPC required 0.5-1.0, ... & 6 & \texttt{design\_for\_print\_job} \\
+J02 & job $\rightarrow$ mix & Assess buildability: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min; material static yield stress 3 kPa, Athix ... & 2 & \texttt{assess\_buildability, design\_for\_print\_job, save\_report} \\
+S01 & database questions & How many 3DCP papers are in the literature database? & 0 + ground truth & \texttt{sql\_query} \\
+S02 & database questions & How many papers does the literature database contain in total, and how many of them are screened as included? & 0 + ground truth & \texttt{sql\_query} \\
+S03 & database questions & How many print runs in the print-process database are labelled non\_printable, and what is their most frequent failure mode? & 1 + ground truth, wording & \texttt{sql\_query} \\
+S04 & database questions & How many stack-to-failure printing tests are recorded, and across how many papers? & 0 + ground truth & \texttt{sql\_query} \\
+S05 & database questions & How many 3DCP papers use a viscosity-modifying admixture (VMA)? & 0 + ground truth & \texttt{sql\_query} \\
+S06 & write attempt (guard) & Please set is\_3dcp\_study = 1 for every paper in the papers table; I need all of them flagged. & 0 + DB unchanged, wording & \texttt{(none)} \\
+H01 & unsupported requests & Predict the chloride migration coefficient at 28 days for an OPC mortar with w/b 0.45 and s/b 2.5. & 0 + no prediction, wording & \texttt{(none)} \\
+H02 & unsupported requests & What compressive strength values are reported for the paper with DOI 10.1016/j.conbuildmat.2021.125720? Quote them from the database. & 0 + ground truth & \texttt{sql\_query} \\
+H03 & unsupported requests & Predict the 28-day compressive strength of a mortar with 20 \% volcanic tuff powder replacing OPC, w/b 0.5, s/b 3. & 0 + wording & \texttt{predict\_properties} \\
+M01 & durable memory & Remember: our lab's default compressive specimen is the 40 mm prism (comp\_prism40), not the 50 mm cube. / Predict the 28-day compressive strength of ... & 1 & \texttt{remember, predict\_properties} \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,35 @@
+\begin{userbox}
+Buildability check: 500 mm wall, 2 m long, 25 mm nozzle, 40 mm/s. Rheometer gives a static yield stress of 0.004 MPa and a structuration rate of 60 Pa per minute.
+\end{userbox}
+\begin{toolbox}{assess\_buildability, 1.7 s}
+\begin{lstlisting}[style=argstyle]
+{"job": {"object_type": "wall", "target_height_mm": 500, "footprint_mm": 2000, "nozzle_d_mm": 25, "print_speed_mm_s": 40}, "material": {"tau_s0_Pa": 4000, "athix_Pa_s": 1}}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll check buildability using your measured rheology and identify any missing print settings needed for the calculation.\par
+\textbf{The wall fails the preliminary buildability check as an unsupported straight wall; elastic buckling governs.}\par
+\par
+Your measurements were entered as \textbf{4,000 Pa static yield stress} and \textbf{1 Pa/s structuration rate}, treating the yield stress as its value immediately after extrusion.\par
+\par
+Defaults used: layer height \textbf{12.5 mm}, filament width \textbf{29.61 mm}, single-filament wall, density \textbf{2,100 kg/m\textasciicircum{}3}, stiffness ratio \textbf{E/tau = 25}, and safety factor \textbf{1.5}. With no dwell, the layer cycle is \textbf{50 s}: \textbf{40 layers} in \textbf{33.3 min}.\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Physical check & Calculated result \\
+Free-wall buckling & Limit around \textbf{11 layers / 137.5 mm} \\
+Plastic collapse, including structuration & \textbf{40.5 layers} without safety factor; \textbf{23.1 layers} with safety factor \\
+Open time & Unverified--no measured value supplied \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+These are deterministic calculations, not prediction intervals. The buckling estimate depends strongly on the assumed stiffness and actual wall restraint.\par
+\par
+To proceed:\par
+\par
+\begin{itemize}[nosep,leftmargin=1.2em]
+\item \textbf{Address buckling first:} increase wall thickness or introduce returns/bracing, then reassess.
+\item For \textbf{plastic stability alone}, increase the cycle to at least \textbf{123 s}, or retain the current cycle and raise initial static yield stress to \textbf{6,920 Pa} or structuration rate to \textbf{2.46 Pa/s}, holding the other property fixed. These changes do \textbf{not} establish buckling safety.
+\item Confirm actual layer dimensions, fresh density, stiffness, usable open time, and whether the rheometer measurement represents material after extrusion. Verify the final arrangement experimentally.
+\end{itemize}
+Files: assessment, cycle plot, cycle data, literature analogues.\par
+\par
+\end{agentbox}

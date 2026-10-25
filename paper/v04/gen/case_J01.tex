@@ -1,0 +1,64 @@
+\begin{userbox}
+Design a mix for this print job: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min. Space: OPC required 0.5-1.0, silica fume 0-0.15, limestone powder 0-0.3, w/b 0.28-0.42, s/b 0.8-1.8, PCE 0.1-1.2 \%, cellulose VMA 0-0.4 \%. The mix must also reach 30 MPa at 28 days. Run without asking.
+\end{userbox}
+\begin{toolbox}{describe\_vocabulary, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"family": "all"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{design\_for\_print\_job, 42.0 s}
+\begin{lstlisting}[style=argstyle]
+{"job": {"object_type": "wall", "target_height_mm": 600, "footprint_mm": 1500, "wall_filaments": 2, "nozzle_d_mm": 25, "print_speed_mm_s": 50, "open_time_min": 60}, "space": {"system_type": "mortar", "binder": {"portland_cement": {"lo": 0.5, "hi": 1, "required ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{retrieve\_literature, 0.6 s}
+\begin{lstlisting}[style=argstyle]
+{"system_type": "mortar", "prefer_3dcp": true, "n": 3, "targets": [{"quantity": "compressive_strength", "kind": "ge", "lo": 30, "unit": "MPa", "age_d": 28, "comparability_group": "comp_cube50"}]}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{predict\_properties, 1.0 s}
+\begin{lstlisting}[style=argstyle]
+{"mix": {"system_type": "mortar", "binder": {"portland_cement": 0.78, "limestone_powder": 0.22}, "w_b": 0.286, "s_b": 1.73, "admixtures_pct": {"superplasticiser_pce": 1.02}, "conditions": {"age_d": 28, "comparability_group": "comp_cube50", "curing": "moist", " ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{assess\_buildability, 0.6 s}
+\begin{lstlisting}[style=argstyle]
+{"job": {"object_type": "wall", "target_height_mm": 600, "footprint_mm": 1500, "wall_filaments": 2, "nozzle_d_mm": 25, "print_speed_mm_s": 50, "open_time_min": 60}, "mix": {"system_type": "mortar", "binder": {"portland_cement": 0.78, "limestone_powder": 0.22}, ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll run the print-job design within your specified mix limits, then check buildability and the strength target. I'll report any defaults used for unspecified printing or test conditions.\par
+The search found no candidate meeting the original screening criteria. Its best buildability candidate fails both plastic-collapse and free-wall buckling checks, and the required delay between layers exceeds the open-time allowance. I'm checking that candidate's strength and the material improvements needed before presenting it as a trial mix.\par
+\textbf{No feasible mix was found for the specified job.} The search evaluated 4,096 mixes; candidates returned after automatic screening relaxation still failed physical buildability checks.\par
+\par
+The best-ranked buildability candidate, rounded and independently reassessed, is a \textbf{laboratory trial mix--not an approved printing mix}:\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Component or ratio & Trial value \\
+OPC, binder mass fraction & 0.78 \\
+Limestone powder, binder mass fraction & 0.22 \\
+Silica fume & Omitted \\
+w/b & 0.286 \\
+s/b & 1.73 \\
+PCE, product mass/binder mass & 1.02\% \\
+\multicolumn{1}{l}{\textit{\ldots 1 further rows in the transcript}} \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+Predictions are q50 [q10, q90]:\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Property & Prediction \\
+Compressive strength, 28 days & \textbf{55.0 [34.2, 96.7] MPa} \\
+Initial static yield stress & 563 [40, 9,654] Pa \\
+Structuration rate & 0.778 [0.016, 14.605] Pa/s \\
+Plastic viscosity & 6.73 [0.99, 48.03] Pa.s \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+Strength is promising, but \textbf{plastic collapse governs}. The reassessment indicates collapse around layer 6 and free-wall buckling around layer 11, against 48 required layers. The minimum stability cycle is approximately \textbf{272 s}, while open time permits at most \textbf{75 s}: there is no feasible cycle-time window.\par
+\par
+Defaults used: layer height \textbf{12.5 mm}, filament width \textbf{29.61 mm}, \textbf{60 s} cycle, no dwell, printing immediately after mixing, density \textbf{2,100 kg/m\textasciicircum{}3}, safety factor \textbf{1.5}, and stiffness/yield-stress ratio \textbf{25}. Strength assumes moist curing and \texttt{comp\_cube50}.\par
+\par
+To progress, experimentally target \textbf{Athix >=3.52 Pa/s} at the predicted initial yield stress, or \textbf{initial static yield stress >=8,464 Pa} at the predicted structuration rate. These are alternative plastic-collapse requirements; buckling still needs bracing, returns, or greater wall thickness. VMA adjustment within your range is worth testing; an accelerator would require expanding the search space.\par
+\par
+[...]\par
+\end{agentbox}

@@ -1,0 +1,588 @@
+{
+ "id": "D02",
+ "group": "design",
+ "provider": "codex_luna",
+ "backend": "codex",
+ "model": "gpt-6-luna",
+ "sessions": [
+  {
+   "session_id": "20261017-013804-3ed5",
+   "turns": [
+    {
+     "user": "Design a low-carbon grout paste: mini-slump flow diameter >= 200 mm and 7-day compressive strength >= 30 MPa, minimise CO2. Space: w/b 0.30-0.50, OPC required, class F fly ash 0-0.5. Run without asking.",
+     "text": "I’ll run the inverse design over the requested ranges, with OPC required and Class F fly ash capped at 0.5, and prioritize the lowest modeled CO₂ among mixes meeting both targets.\n**No candidate met both constraints.** The inverse-design search screened 8,192 mixes and returned three candidates, but each had a median mini-slump flow below 200 mm. Since flow is a weak model, treat its estimate as order-of-magnitude guidance; the 80% interval for each candidate was wide.\n\nThe lowest-CO₂ candidate returned was **50% OPC / 50% Class F fly ash, w/b 0.388**. Its estimates were:\n\n- Mini-slump flow: **179.1 [90.6, 292.3] mm**; estimated chance of meeting 200 mm: **0.41**\n- 7-day compressive strength: **26.0 [16.6, 56.7] MPa**; estimated chance of meeting 30 MPa: **0.43**\n- CO₂: **0.433 kg/kg powder** and **555.3 kg/m³**\n\nThis is a low-carbon lead for further trials, not a qualifying design. The solver’s reported joint feasibility was **0.176**; it assumes the target probabilities are independent. A published exact-tier analogue, M1, used OPC/Class F fly ash at **85/15**, w/b **0.30**, and PCE **0.50%** (DOI: [10.3389/fmats.2021.712551](https://doi.org/10.3389/fmats.2021.712551)); it is a reference mix, not evidence that the requested thresholds are met.\n\nDefaults used: paste system; 7-day strength; comp_cube50 specimens; moist curing; no aggregate. The tool did not state an admixture dosage for the candidates, so none is reported here. Experimental verification is needed, especially for flow.\n\nGenerated files: `result.json`, `report.md`, `candidates.csv`, `literature.csv`, `pareto.png`, and `parallel_coords.png` in `C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste`.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "powder",
+        "query": "fly_ash"
+       },
+       "t": 10.14,
+       "result": {
+        "data": {
+         "classes": {
+          "powder": [
+           {
+            "material_class": "fly_ash_class_C",
+            "group": "fly_ash_c",
+            "sg": 2.6,
+            "solid_content": null
+           },
+           {
+            "material_class": "fly_ash_class_F",
+            "group": "fly_ash_f",
+            "sg": 2.3,
+            "solid_content": null
+           }
+          ]
+         },
+         "comparability_groups": [
+          "comp_cube50",
+          "comp_cube_other",
+          "comp_prism40",
+          "comp_cyl_small",
+          "comp_prism_other",
+          "comp_cube100",
+          "comp_cube70",
+          "comp_cyl_standard"
+         ],
+         "curing_presets": [
+          "수중 양생 (20 °C)",
+          "습윤 양생 (20 °C, RH 95 %)",
+          "밀봉 양생 (20 °C)",
+          "상온 공기 중",
+          "증기/고온 양생 (60 °C)"
+         ],
+         "targets": [
+          {
+           "quantity": "compressive_strength",
+           "name_ko": "압축강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flexural_strength",
+           "name_ko": "휨강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d",
+            "comparability_group"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "flow_table_spread",
+           "name_ko": "플로우(테이블)",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "name_ko": "미니슬럼프 플로우",
+           "unit": "mm",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "initial_setting_time",
+           "name_ko": "초결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "final_setting_time",
+           "name_ko": "종결시간",
+           "unit": "min",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "porosity_total",
+           "name_ko": "총공극률",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "dynamic_yield_stress",
+           "name_ko": "동적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "unit": "Pa.s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "unit": "Pa",
+           "requires_age": false,
+           "covariates": [
+            "rest_time_s"
+           ],
+           "tier": 1
+          },
+          {
+           "quantity": "structuration_rate_athix",
+           "name_ko": "구조화속도 Athix",
+           "unit": "Pa/s",
+           "requires_age": false,
+           "covariates": [],
+           "tier": 1
+          },
+          {
+           "quantity": "water_absorption",
+           "name_ko": "흡수율",
+           "unit": "%",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "drying_shrinkage",
+           "name_ko": "건조수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "autogenous_shrinkage",
+           "name_ko": "자기수축",
+           "unit": "microstrain",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "cumulative_heat",
+           "name_ko": "누적수화열",
+           "unit": "J/g binder",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "elastic_modulus",
+           "name_ko": "탄성계수",
+           "unit": "GPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "splitting_tensile_strength",
+           "name_ko": "쪼갬인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "direct_tensile_strength",
+           "name_ko": "직접인장강도",
+           "unit": "MPa",
+           "requires_age": true,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "hardened_density",
+           "name_ko": "경화 밀도",
+           "unit": "kg/m3",
+           "requires_age": false,
+           "covariates": [
+            "age_d"
+           ],
+           "tier": 2
+          },
+          {
+           "quantity": "shear_stress_at_rate",
+           "name_ko": "전단응력(유동곡선 점)",
+           "unit": "Pa",
+           "note": "conditions.shear_rate_1s 필요"
+          },
+          {
+           "quantity": "static_yield_stress_at_rest",
+           "name_ko": "정적항복응력(휴지시간 지정)",
+           "unit": "Pa",
+           "note": "conditions.rest_time_s 필요"
+          }
+         ],
+         "mix_dict_example": {
+          "system_type": "mortar",
+          "w_b": 0.35,
+          "s_b": 1.5,
+          "binder": {
+           "portland_cement": 0.85,
+           "silica_fume": 0.15
+          },
+          "admixtures_pct": {
+           "superplasticiser_pce": 0.5,
+           "vma_cellulose": 0.2
+          },
+          "fibres_vol_pct": {},
+          "nano_pct": {},
+          "conditions": {
+           "age_d": 28,
+           "comparability_group": "comp_cube50",
+           "curing": "습윤 양생 (20 °C, RH 95 %)",
+           "rest_time_s": 0,
+           "is_3dcp": true
+          },
+          "name": "example"
+         },
+         "conventions": "binder: 결합재(powder) 질량분율 합 1; s_b: 잔골재/결합재 질량비(모르타르); admixtures_pct: 결합재 질량 대비 % (제품 투입량); fibres_vol_pct: 혼합물 부피 %; nano_pct: 결합재 대비 %; activators: {class: {amount(결합재 대비 질량비), molarity}}",
+         "_elapsed_s": 0.02
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "design_mix",
+       "input": {
+        "name": "Low-carbon grout paste",
+        "targets": [
+         {
+          "quantity": "mini_slump_flow_diameter",
+          "kind": "ge",
+          "lo": 200,
+          "unit": "mm",
+          "p_min": 0.35
+         },
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 30,
+          "unit": "MPa",
+          "age_d": 7,
+          "comparability_group": "comp_cube50",
+          "p_min": 0.65
+         }
+        ],
+        "space": {
+         "system_type": "paste",
+         "w_b": [
+          0.3,
+          0.5
+         ],
+         "binder": {
+          "portland_cement": {
+           "lo": 0.5,
+           "hi": 1,
+           "required": true
+          },
+          "fly_ash_class_F": {
+           "lo": 0,
+           "hi": 0.5
+          }
+         },
+         "max_binder_components": 2,
+         "fixed_conditions": {
+          "age_d": 7,
+          "comparability_group": "comp_cube50",
+          "curing": "moist"
+         }
+        },
+        "objectives": [
+         "co2"
+        ],
+        "top_n": 5,
+        "n_literature": 5
+       },
+       "t": 13.89,
+       "result": {
+        "data": {
+         "name": "Low-carbon grout paste",
+         "diagnostics": {
+          "n_sampled": 8192,
+          "n_feasible": 3361,
+          "relaxation": null,
+          "p_min_used": null,
+          "t_total_s": 44.0,
+          "fallback_highest_P": null
+         },
+         "warnings": [],
+         "models": {
+          "mini_slump_flow_diameter": {
+           "weak": true,
+           "n_train": 1563,
+           "r2_log": -0.178238
+          },
+          "compressive_strength": {
+           "weak": false,
+           "n_train": 47125,
+           "r2_log": 0.44929
+          }
+         },
+         "candidates": [
+          {
+           "rank": 1,
+           "mix": "portland_cement 0.74 / fly_ash_class_F 0.26; w/b 0.347",
+           "p_feasible": 0.277,
+           "p_min_targets": 0.425,
+           "ad_max": 0.12,
+           "predictions": {
+            "mini_slump_flow_diameter": {
+             "q50": 184.809946,
+             "q10": 91.50171,
+             "q90": 287.990739,
+             "unit": "mm",
+             "p": 0.43,
+             "weak": true
+            },
+            "compressive_strength": {
+             "q50": 34.803289,
+             "q10": 19.05666,
+             "q90": 55.507556,
+             "unit": "MPa",
+             "p": 0.65,
+             "weak": false
+            }
+           },
+           "objectives": {
+            "powder_kg_m3": 1410.391,
+            "cost_per_kg_powder": 0.099,
+            "co2_per_kg_powder": 0.631,
+            "cost_per_m3": 140.323,
+            "co2_per_m3": 890.146,
+            "clinker_fraction": 0.739,
+            "co2_per_mpa": 46.71,
+            "cost_per_mpa": 7.363
+           },
+           "analogue_doi": "10.1016/j.conbuildmat.2026.145392",
+           "mix_json": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\cand_01.json"
+          },
+          {
+           "rank": 2,
+           "mix": "portland_cement 0.71 / fly_ash_class_F 0.29; w/b 0.301",
+           "p_feasible": 0.289,
+           "p_min_targets": 0.444,
+           "ad_max": 0.14,
+           "predictions": {
+            "mini_slump_flow_diameter": {
+             "q50": 189.379666,
+             "q10": 91.844969,
+             "q90": 285.345705,
+             "unit": "mm",
+             "p": 0.44,
+             "weak": true
+            },
+            "compressive_strength": {
+             "q50": 34.708782,
+             "q10": 19.094816,
+             "q90": 56.695688,
+             "unit": "MPa",
+             "p": 0.65,
+             "weak": false
+            }
+           },
+           "objectives": {
+            "powder_kg_m3": 1501.918,
+            "cost_per_kg_powder": 0.097,
+            "co2_per_kg_powder": 0.609,
+            "cost_per_m3": 146.193,
+            "co2_per_m3": 914.622,
+            "clinker_fraction": 0.713,
+            "co2_per_mpa": 47.899,
+            "cost_per_mpa": 7.656
+           },
+           "analogue_doi": "10.3390/ma13153367",
+           "mix_json": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\cand_02.json"
+          },
+          {
+           "rank": 3,
+           "mix": "portland_cement 0.50 / fly_ash_class_F 0.50; w/b 0.388",
+           "p_feasible": 0.176,
+           "p_min_targets": 0.406,
+           "ad_max": 0.24,
+           "predictions": {
+            "mini_slump_flow_diameter": {
+             "q50": 179.060016,
+             "q10": 90.648848,
+             "q90": 292.292965,
+             "unit": "mm",
+             "p": 0.41,
+             "weak": true
+            },
+            "compressive_strength": {
+             "q50": 26.025064,
+             "q10": 16.552239,
+             "q90": 56.709422,
+             "unit": "MPa",
+             "p": 0.43,
+             "weak": false
+            }
+           },
+           "objectives": {
+            "powder_kg_m3": 1283.331,
+            "cost_per_kg_powder": 0.081,
+            "co2_per_kg_powder": 0.433,
+            "cost_per_m3": 103.479,
+            "co2_per_m3": 555.286,
+            "clinker_fraction": 0.503,
+            "co2_per_mpa": 33.547,
+            "cost_per_mpa": 6.252
+           },
+           "analogue_doi": "10.1016/j.jclepro.2019.118566",
+           "mix_json": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\cand_03.json"
+          }
+         ],
+         "literature": [
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.cscm.2025.e04588",
+           "mix": "OM",
+           "year": 2025,
+           "is_3dcp": 0,
+           "composition": "opc 0.45 / ggbfs 0.40 / ash_other 0.12 / metakaolin 0.03; w/b 0.31; sp_pce 0.15%"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.conbuildmat.2026.147837",
+           "mix": "S1",
+           "year": 2026,
+           "is_3dcp": 0,
+           "composition": "other_powder 0.50 / ggbfs 0.34 / fly_ash_f 0.08 / silica_fume 0.08; w/b 0.22; sp_pce 1.00%"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.3389/fmats.2021.712551",
+           "mix": "M1",
+           "year": 2021,
+           "is_3dcp": 0,
+           "composition": "opc 0.85 / fly_ash_f 0.15; w/b 0.30; sp_pce 0.50%"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.1016/j.conbuildmat.2026.147837",
+           "mix": "S4",
+           "year": 2026,
+           "is_3dcp": 0,
+           "composition": "other_powder 0.50 / ggbfs 0.34 / fly_ash_f 0.08 / silica_fume 0.08; w/b 0.22; sp_pce 1.00%"
+          },
+          {
+           "tier": "exact",
+           "doi": "10.3389/fmats.2021.712551",
+           "mix": "M10",
+           "year": 2021,
+           "is_3dcp": 0,
+           "composition": "opc 0.55 / fly_ash_f 0.30 / ggbfs 0.15; w/b 0.30; sp_pce 0.50%"
+          }
+         ],
+         "targets": [
+          {
+           "quantity": "mini_slump_flow_diameter",
+           "kind": "ge",
+           "lo": 200.0,
+           "hi": null,
+           "p_min": 0.35
+          },
+          {
+           "quantity": "compressive_strength",
+           "kind": "ge",
+           "lo": 30.0,
+           "hi": null,
+           "p_min": 0.65
+          }
+         ],
+         "note": "P는 타깃별 만족 확률의 곱(독립 가정). 유변 타깃 모델은 weak이므로 후보는 방향 제시, 문헌 배합이 1차 근거.",
+         "_elapsed_s": 46.27
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\result.json",
+          "kind": "json",
+          "title": "result (Low-carbon grout paste)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\report.md",
+          "kind": "markdown",
+          "title": "report (Low-carbon grout paste)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\candidates.csv",
+          "kind": "table",
+          "title": "candidates (Low-carbon grout paste)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\literature.csv",
+          "kind": "table",
+          "title": "literature (Low-carbon grout paste)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\pareto.png",
+          "kind": "image",
+          "title": "pareto (Low-carbon grout paste)"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013804-3ed5\\design_Low-carbon grout paste\\parallel_coords.png",
+          "kind": "image",
+          "title": "parallel (Low-carbon grout paste)"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 46.29,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 155820,
+      "output_tokens": 819,
+      "cache_read_input_tokens": 118272
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 67.2
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:38:04"
+}

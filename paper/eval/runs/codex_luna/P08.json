@@ -1,0 +1,183 @@
+{
+ "id": "P08",
+ "group": "predict",
+ "provider": "codex_luna",
+ "backend": "codex",
+ "model": "gpt-6-luna",
+ "sessions": [
+  {
+   "session_id": "20261017-013516-78ce",
+   "turns": [
+    {
+     "user": "Predict the 28-day compressive strength of an OPC mortar, w/b 0.45, s/b 2.5, no admixtures.",
+     "text": "I’ll check the prediction tool’s required mix format and defaults, then run the 28-day mortar prediction.\nPredicted 28-day compressive strength: **34.2 MPa [20.8, 65.7]** (q50 [q10, q90]).\n\nI used OPC as 100% Portland cement, no admixtures, and the model’s default `comp_cube50` specimen group. The prediction is within the model’s training range. It is a literature-based estimate; verify the mix experimentally.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.45,
+         "s_b": 2.5,
+         "binder": {
+          "portland_cement": 1
+         },
+         "admixtures_pct": {},
+         "conditions": {
+          "age_d": 28
+         }
+        },
+        "targets": [
+         "compressive_strength"
+        ]
+       },
+       "t": 6.42,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "compressive_strength",
+           "name_ko": "압축강도",
+           "q10": 20.830917,
+           "q50": 34.214125,
+           "q90": 65.727036,
+           "unit": "MPa",
+           "model": "compressive_strength",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 47125,
+           "cv_r2": 0.533254
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013516-78ce\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 0
+         },
+         "_elapsed_s": 1.87
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013516-78ce\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013516-78ce\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.88,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 85934,
+      "output_tokens": 240,
+      "cache_read_input_tokens": 66688
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 11.3
+    },
+    {
+     "user": "And if I lower w/b to 0.30 and add 0.8 % PCE, keeping everything else the same?",
+     "text": "I’ll run the same 28-day compressive-strength prediction with w/b 0.30 and PCE at 0.8% of binder.\nWith w/b reduced to **0.30** and **0.8% PCE** added, the predicted 28-day compressive strength is **51.2 MPa [28.9, 94.0]** (q50 [q10, q90]).\n\nOther inputs stayed the same: OPC mortar, s/b 2.5, 28 days, and the default `comp_cube50` specimen group. The prediction is within the training range. Experimental verification is still needed.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.3,
+         "s_b": 2.5,
+         "binder": {
+          "portland_cement": 1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.8
+         },
+         "conditions": {
+          "age_d": 28
+         }
+        },
+        "targets": [
+         "compressive_strength"
+        ]
+       },
+       "t": 4.79,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "compressive_strength",
+           "name_ko": "압축강도",
+           "q10": 28.905077,
+           "q50": 51.188966,
+           "q90": 94.018683,
+           "unit": "MPa",
+           "model": "compressive_strength",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 47125,
+           "cv_r2": 0.533254
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013516-78ce\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 0
+         },
+         "_elapsed_s": 1.84
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013516-78ce\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-013516-78ce\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 1.86,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 151015,
+      "output_tokens": 474,
+      "cache_read_input_tokens": 130304
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 9.5
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:35:16"
+}

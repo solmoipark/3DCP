@@ -1,0 +1,1517 @@
+{
+ "id": "L04",
+ "group": "retrieve",
+ "provider": "codex",
+ "model": "",
+ "sessions": [
+  {
+   "session_id": "20261016-170706-9e91",
+   "turns": [
+    {
+     "user": "I need published mortars with drying shrinkage no more than 600 microstrain at 28 days and compressive strength of at least 50 MPa.",
+     "text": "I’ll search the literature database for mortars meeting both limits and check the reported test ages.\nThe strict age check narrowed the results, and some retrieved entries have an expansion-versus-shrinkage sign issue. I’m checking the source notes before listing the qualifying mortars.\n**GOS50 and J3 meet both limits in the literature database; CA120 is a conditional match because of a reported-unit ambiguity.** I assumed the compressive-strength requirement also applies at 28 days.\n\nThese are published UHPC mixtures classified as mortars in the database—not demonstrated printable mixes.\n\n| Published mix | Drying shrinkage at 28 d (microstrain) | Compressive strength at 28 d (MPa) | Composition / source |\n|---|---:|---:|---|\n| **GOS50** | **574** | **120.03** | Portland cement, silica fume, waste glass and oyster-shell powders; w/b 0.18. [Paper](https://doi.org/10.1016/j.jobe.2024.109833) |\n| **J3** | **411** | **109.4** | Portland-cement UHPC mortar from a study of shrinkage-reducing and expansive admixtures; w/b 0.20. [Paper](https://doi.org/10.1155/2017/6384859) |\n| **CA120 — conditional** | **203*** | **89** | Portland cement, calcium aluminate cement, silica fume and fly-ash microspheres; w/b 0.18. [Paper](https://doi.org/10.1016/j.jobe.2024.111672) |\n\n*CA120’s database extraction interprets an apparent unit typo as microstrain. Verify the original shrinkage units before selecting it.*\n\nThe values above are extracted published measurements, not predictions. Shrinkage exposure conditions and the age reference should be checked against your intended protocol; specimen geometry and curing were not standardized across this search. No curing or specimen defaults were imposed.\n\n[Download extracted mix compositions (CSV)](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170706-9e91/sql_1792138076.csv>) · [Measurement values and source notes (CSV)](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-170706-9e91/sql_1792138067.csv>)\n\nAny selected mix needs experimental verification with your materials and curing conditions.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_schema",
+       "input": {
+        "db": "master"
+       },
+       "t": 14.16,
+       "result": {
+        "data": {
+         "db": "master",
+         "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\..\\pastemortar_extraction_package_v1.2.2\\master\\master.db",
+         "tables": [
+          {
+           "table": "curve_points",
+           "n_rows": 155211,
+           "hint": null
+          },
+          {
+           "table": "curves",
+           "n_rows": 25721,
+           "hint": "curve_uid, mix_uid, x_quantity, y_quantity, x_unit, y_unit; curve_points: curve_uid, x_canonical, y_canonical"
+          },
+          {
+           "table": "material_chemistry",
+           "n_rows": 59690,
+           "hint": null
+          },
+          {
+           "table": "material_physical",
+           "n_rows": 18431,
+           "hint": null
+          },
+          {
+           "table": "material_psd_points",
+           "n_rows": 13108,
+           "hint": null
+          },
+          {
+           "table": "materials",
+           "n_rows": 21676,
+           "hint": "material_uid, paper_uid, material_class, name_in_paper"
+          },
+          {
+           "table": "measurements",
+           "n_rows": 236199,
+           "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …"
+          },
+          {
+           "table": "mix_components",
+           "n_rows": 145530,
+           "hint": "mix_uid, material_uid, material_class, role, dosage_reported, basis_reported, unit_reported …"
+          },
+          {
+           "table": "mixes",
+           "n_rows": 29626,
+           "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …"
+          },
+          {
+           "table": "mixing_protocols",
+           "n_rows": 3299,
+           "hint": null
+          },
+          {
+           "table": "mixing_steps",
+           "n_rows": 7151,
+           "hint": null
+          },
+          {
+           "table": "papers",
+           "n_rows": 3274,
+           "hint": "paper_uid(=DOI), title, year, journal, is_3dcp_study('1'/'0'), n_mixes …"
+          },
+          {
+           "table": "qa_exceptions",
+           "n_rows": 2046,
+           "hint": null
+          },
+          {
+           "table": "search_log",
+           "n_rows": 3274,
+           "hint": null
+          },
+          {
+           "table": "test_protocols",
+           "n_rows": 37440,
+           "hint": null
+          },
+          {
+           "table": "tests",
+           "n_rows": 15525,
+           "hint": "test_uid, paper_uid, quantity, method_name, rest_time_s, comparability_group …"
+          },
+          {
+           "table": "unmapped_terms",
+           "n_rows": 16593,
+           "hint": null
+          }
+         ],
+         "notes": [
+          "master.db: 모든 컬럼 TEXT, ''=결측, fig_only='1'은 그림에서 읽은 값",
+          "join keys: paper_uid, mix_uid, test_uid",
+          "print_process.db: 논문 저자 판정 기반 라벨; stack_to_failure=1이면 collapsed여도 printable 가능"
+         ],
+         "_elapsed_s": 0.19
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.21,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "retrieve_literature",
+       "input": {
+        "system_type": "mortar",
+        "prefer_3dcp": false,
+        "n": 10,
+        "targets": [
+         {
+          "quantity": "drying_shrinkage",
+          "kind": "le",
+          "hi": 600,
+          "age_d": 28,
+          "unit": "microstrain"
+         },
+         {
+          "quantity": "compressive_strength",
+          "kind": "ge",
+          "lo": 50,
+          "age_d": 28,
+          "unit": "MPa"
+         }
+        ]
+       },
+       "t": 14.38,
+       "result": {
+        "data": {
+         "n_hits": 10,
+         "tiers": {
+          "exact": 10,
+          "near": 0
+         },
+         "hits": [
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1007/s41062-023-01334-z",
+           "title": "Sustainable application of industrial side streams as alternative fine aggregates for cement mortar",
+           "year": 2024,
+           "is_3dcp": 0,
+           "mix": "M2",
+           "system_type": "mortar",
+           "composition": "slag_other 0.71 / opc 0.29; w/b 0.15; s/b 0.18",
+           "measured": [
+            "compressive_strength=74MPa@28d",
+            "drying_shrinkage=10microstrain@2d",
+            "drying_shrinkage=20microstrain@3d",
+            "drying_shrinkage=88microstrain@7d",
+            "drying_shrinkage=100microstrain@14d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.cemconcomp.2017.12.001",
+           "title": "Validation of statistical models",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "EX-6",
+           "system_type": "mortar",
+           "composition": "opc 0.85 / csa 0.15; w/b 0.40; s/b 2.60",
+           "measured": [
+            "compressive_strength=45MPa@7d",
+            "compressive_strength=65MPa@28d",
+            "compressive_strength=70MPa@90d",
+            "drying_shrinkage=328microstrain@3d",
+            "drying_shrinkage=150microstrain@28d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2018.09.069",
+           "title": "Influence of RAP aggregates on strength, durability and porosity of cement mortar",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "CM",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.44; s/b 3.00",
+           "measured": [
+            "drying_shrinkage=60microstrain@14d",
+            "drying_shrinkage=250microstrain@21d",
+            "drying_shrinkage=330microstrain@28d",
+            "compressive_strength=39MPa@7d",
+            "compressive_strength=43MPa@14d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 1.0,
+           "doi": "10.1016/j.conbuildmat.2019.117353",
+           "title": "Effects of metakaolin on properties and microstructure of magnesium phosphate cement",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "M15",
+           "system_type": "mortar",
+           "composition": "magnesia 0.64 / other_powder 0.25 / metakaolin 0.11; w/b 0.20; s/b 1.00; sp_other 0.12%, retarder 3.82%",
+           "measured": [
+            "compressive_strength=27.5MPa@0.042d",
+            "drying_shrinkage=0.168microstrain@0.042d",
+            "drying_shrinkage=0.5microstrain@0.125d",
+            "drying_shrinkage=1microstrain@0.25d",
+            "drying_shrinkage=2microstrain@0.5d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.6,
+           "doi": "10.1007/s41062-023-01334-z",
+           "title": "Sustainable application of industrial side streams as alternative fine aggregates for cement mortar",
+           "year": 2024,
+           "is_3dcp": 0,
+           "mix": "M3",
+           "system_type": "mortar",
+           "composition": "slag_other 0.71 / opc 0.29; w/b 0.15; s/b 0.18",
+           "measured": [
+            "drying_shrinkage=8.5microstrain@2d",
+            "drying_shrinkage=17microstrain@3d",
+            "drying_shrinkage=65microstrain@7d",
+            "drying_shrinkage=95microstrain@14d",
+            "drying_shrinkage=106microstrain@21d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.6,
+           "doi": "10.1016/j.cemconcomp.2017.12.001",
+           "title": "Validation of statistical models",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "EX-L-0",
+           "system_type": "mortar",
+           "composition": "opc 0.85 / csa 0.15; w/b 0.40; s/b 2.60; sp_pce 0.72%",
+           "measured": [
+            "compressive_strength=46MPa@7d",
+            "compressive_strength=59MPa@28d",
+            "compressive_strength=65MPa@90d",
+            "drying_shrinkage=115microstrain@3d",
+            "drying_shrinkage=222microstrain@28d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.6,
+           "doi": "10.1016/j.conbuildmat.2019.117353",
+           "title": "Effects of metakaolin on properties and microstructure of magnesium phosphate cement",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "M30",
+           "system_type": "mortar",
+           "composition": "magnesia 0.53 / other_powder 0.25 / metakaolin 0.23; w/b 0.20; s/b 1.00; sp_other 0.22%, retarder 3.15%",
+           "measured": [
+            "compressive_strength=29.5MPa@0.042d",
+            "compressive_strength=65.9MPa@28d",
+            "drying_shrinkage=0.147microstrain@0.042d",
+            "drying_shrinkage=0.438microstrain@0.125d",
+            "drying_shrinkage=0.875microstrain@0.25d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.36,
+           "doi": "10.1007/s41062-023-01334-z",
+           "title": "Sustainable application of industrial side streams as alternative fine aggregates for cement mortar",
+           "year": 2024,
+           "is_3dcp": 0,
+           "mix": "M4",
+           "system_type": "mortar",
+           "composition": "slag_other 0.71 / opc 0.29; w/b 0.15; s/b 0.18",
+           "measured": [
+            "drying_shrinkage=6microstrain@2d",
+            "drying_shrinkage=12microstrain@3d",
+            "drying_shrinkage=42microstrain@7d",
+            "drying_shrinkage=80microstrain@14d",
+            "drying_shrinkage=79microstrain@21d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.36,
+           "doi": "10.1016/j.cemconcomp.2017.12.001",
+           "title": "Validation of statistical models",
+           "year": 2018,
+           "is_3dcp": 0,
+           "mix": "EX-L-6",
+           "system_type": "mortar",
+           "composition": "opc 0.85 / csa 0.15; w/b 0.40; s/b 2.60",
+           "measured": [
+            "compressive_strength=49MPa@7d",
+            "compressive_strength=69MPa@28d",
+            "compressive_strength=74MPa@90d",
+            "drying_shrinkage=435microstrain@3d",
+            "drying_shrinkage=125microstrain@28d"
+           ]
+          },
+          {
+           "tier": "exact",
+           "score": 0.36,
+           "doi": "10.1016/j.conbuildmat.2019.117353",
+           "title": "Effects of metakaolin on properties and microstructure of magnesium phosphate cement",
+           "year": 2020,
+           "is_3dcp": 0,
+           "mix": "M45",
+           "system_type": "mortar",
+           "composition": "magnesia 0.41 / metakaolin 0.34 / other_powder 0.25; w/b 0.20; s/b 1.00; sp_other 0.35%, retarder 2.48%",
+           "measured": [
+            "drying_shrinkage=0.168microstrain@0.042d",
+            "drying_shrinkage=0.5microstrain@0.125d",
+            "drying_shrinkage=1microstrain@0.25d",
+            "drying_shrinkage=2microstrain@0.5d",
+            "drying_shrinkage=4microstrain@1d"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170706-9e91\\literature.csv",
+         "_elapsed_s": 2.29
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170706-9e91\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.3,
+       "is_error": false
+      },
+      {
+       "id": "item_3",
+       "name": "describe_schema",
+       "input": {
+        "table": "measurements"
+       },
+       "t": 20.18,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "measurements",
+         "n_rows": 236199,
+         "columns": [
+          {
+           "name": "age_norm_d",
+           "type": "TEXT"
+          },
+          {
+           "name": "age_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "age_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "condition_note",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "conversion_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "derivation_formula",
+           "type": "TEXT"
+          },
+          {
+           "name": "derived_from_obs_uids",
+           "type": "TEXT"
+          },
+          {
+           "name": "digitisation_uncertainty_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "extraction_confidence",
+           "type": "TEXT"
+          },
+          {
+           "name": "fig_only",
+           "type": "TEXT"
+          },
+          {
+           "name": "mapping_status",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "obs_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "proposed_quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "provenance",
+           "type": "TEXT"
+          },
+          {
+           "name": "quantity",
+           "type": "TEXT"
+          },
+          {
+           "name": "quantity_family",
+           "type": "TEXT"
+          },
+          {
+           "name": "replicate_n",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_norm_s",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_unit",
+           "type": "TEXT"
+          },
+          {
+           "name": "rest_time_value",
+           "type": "TEXT"
+          },
+          {
+           "name": "semantic_transform",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_panel",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "term_as_printed",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "uncertainty",
+           "type": "TEXT"
+          },
+          {
+           "name": "uncertainty_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "unit_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "unit_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_canonical",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_kind",
+           "type": "TEXT"
+          },
+          {
+           "name": "value_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "age_norm_d": "28",
+           "age_unit": "d",
+           "age_value": "28",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": null,
+           "obs_uid": "10.1002/adfm.202509259::M1::T1::001",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.12",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "23.4",
+           "value_kind": "reported",
+           "value_reported": "23.4",
+           "wave": "26"
+          },
+          {
+           "age_norm_d": "90",
+           "age_unit": "d",
+           "age_value": "90",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "notes": "Peak strength; DE mix continues to gain strength beyond 28 days unlike the two control mixes.",
+           "obs_uid": "10.1002/adfm.202509259::M1::T1::002",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength (peak)",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.57",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "30.5",
+           "value_kind": "reported",
+           "value_reported": "30.5",
+           "wave": "26"
+          },
+          {
+           "age_norm_d": "28",
+           "age_unit": "d",
+           "age_value": "28",
+           "basis": null,
+           "condition_note": null,
+           "conversion_check": "pass",
+           "conversion_id": null,
+           "derivation_formula": null,
+           "derived_from_obs_uids": null,
+           "digitisation_uncertainty_pct": null,
+           "extraction_confidence": "high",
+           "fig_only": "0",
+           "mapping_status": "mapped",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "notes": "Strength plateaus at 28 days for this control (does not continue rising like M1).",
+           "obs_uid": "10.1002/adfm.202509259::M2::T1::001",
+           "paper_uid": "10.1002/adfm.202509259",
+           "proposed_quantity": null,
+           "provenance": "primary",
+           "quantity": "compressive_strength",
+           "quantity_family": "mechanical",
+           "replicate_n": null,
+           "rest_time_norm_s": null,
+           "rest_time_unit": null,
+           "rest_time_value": null,
+           "semantic_transform": null,
+           "source_locator": "Section 2.1 Biomineral-Infused Concrete",
+           "source_panel": null,
+           "source_ref": "2.1",
+           "source_type": "text",
+           "term_as_printed": "compressive strength",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "uncertainty": "0.69",
+           "uncertainty_type": "std_dev",
+           "unit_canonical": "MPa",
+           "unit_reported": "MPa",
+           "value_canonical": "13.4",
+           "value_kind": "reported",
+           "value_reported": "13.4",
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, test_uid, quantity, value_canonical, unit_canonical, age_norm_d, condition_note, fig_only …",
+         "_elapsed_s": 0.09
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.1,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "describe_schema",
+       "input": {
+        "table": "tests"
+       },
+       "t": 20.28,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "tests",
+         "n_rows": 15525,
+         "columns": [
+          {
+           "name": "comparability_group",
+           "type": "TEXT"
+          },
+          {
+           "name": "geometry",
+           "type": "TEXT"
+          },
+          {
+           "name": "instrument",
+           "type": "TEXT"
+          },
+          {
+           "name": "method_name",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "protocol_completeness",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "standard",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_family",
+           "type": "TEXT"
+          },
+          {
+           "name": "test_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "comparability_group": "comp_cube50",
+           "geometry": "5x5x5 cm cube",
+           "instrument": "Instron 4206 mechanical tester",
+           "method_name": "compression_cube_50mm",
+           "notes": null,
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_completeness": "complete",
+           "source_locator": "Section 4 Experimental Section, Mechanical Testing",
+           "source_ref": "4",
+           "source_type": "text",
+           "standard": "ASTM C109",
+           "test_family": "mechanical",
+           "test_uid": "10.1002/adfm.202509259::T1",
+           "wave": "26"
+          },
+          {
+           "comparability_group": "other",
+           "geometry": null,
+           "instrument": null,
+           "method_name": "other",
+           "notes": "U-13 merge: four distinct 'other'-only routes merged into one test - (a) CO2 uptake by TGA after pre-hydration and CO2-environment curing (Section 2.4-2.5); (b) BET surface area of hardened, (de)carbonated samples (Section 2.4); (c) buildability by continuous single-wall-cylinder printing to failure (Section 2.2); (d) interfacial bonding strength ratio by 3-point bending of printed vs cast cubes (Section 2.2). Sub-method stated per observation in condition_note; all four proposed separately in unmapped_terms.",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_completeness": "partial_reported",
+           "source_locator": "Section 2.4 CO2 Sequestration and Carbonation Mechanism",
+           "source_ref": "2.4",
+           "source_type": "text",
+           "standard": null,
+           "test_family": "other",
+           "test_uid": "10.1002/adfm.202509259::T2",
+           "wave": "26"
+          },
+          {
+           "comparability_group": "flex_3pt",
+           "geometry": "prism, 12x12x40 mm, ground flat surfaces",
+           "instrument": "MTS Insight 10 (10 kN capacity)",
+           "method_name": "flexure_three_point",
+           "notes": "Modulus of rupture (MOR) and specific MOR (MOR / relative density) for printed prisms at 0, 45, 90 degree filament orientation vs cast controls.",
+           "paper_uid": "10.1002/adma.201802123",
+           "protocol_completeness": "partial_reported",
+           "source_locator": "Experimental Section: Characterization",
+           "source_ref": "Char",
+           "source_type": "text",
+           "standard": null,
+           "test_family": "mechanical",
+           "test_uid": "10.1002/adma.201802123::T1",
+           "wave": "26"
+          }
+         ],
+         "hint": "test_uid, paper_uid, quantity, method_name, rest_time_s, comparability_group …",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "describe_schema",
+       "input": {
+        "table": "mixes"
+       },
+       "t": 20.3,
+       "result": {
+        "data": {
+         "db": "master",
+         "table": "mixes",
+         "n_rows": 29626,
+         "columns": [
+          {
+           "name": "binder_total_basis_check",
+           "type": "TEXT"
+          },
+          {
+           "name": "binder_total_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_regime",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_rh_pct",
+           "type": "TEXT"
+          },
+          {
+           "name": "curing_temp_C",
+           "type": "TEXT"
+          },
+          {
+           "name": "fresh_density_kg_m3",
+           "type": "TEXT"
+          },
+          {
+           "name": "is_control_mix",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "liquid_solid_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_id",
+           "type": "TEXT"
+          },
+          {
+           "name": "mix_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "name_in_paper",
+           "type": "TEXT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "protocol_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_basis",
+           "type": "TEXT"
+          },
+          {
+           "name": "sand_binder_ratio",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_locator",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_ref",
+           "type": "TEXT"
+          },
+          {
+           "name": "source_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "system_type",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_b_source",
+           "type": "TEXT"
+          },
+          {
+           "name": "w_c_reported",
+           "type": "TEXT"
+          },
+          {
+           "name": "wave",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "1700",
+           "is_control_mix": "0",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M1",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "name_in_paper": "DE-infused concrete (DE/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": "2100",
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M2",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "name_in_paper": "Cement-only control (DE/binder = 0)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          },
+          {
+           "binder_total_basis_check": "volumetric_not_reported",
+           "binder_total_kg_m3": null,
+           "curing_regime": "24 h at room temperature (23 C) in mould, then fully immersed in saturated limewater at 23 C to the desired curing age",
+           "curing_rh_pct": null,
+           "curing_temp_C": "23",
+           "fresh_density_kg_m3": null,
+           "is_control_mix": "1",
+           "liquid_solid_basis": null,
+           "liquid_solid_ratio": null,
+           "mix_basis": "ratio_to_binder",
+           "mix_id": "M3",
+           "mix_uid": "10.1002/adfm.202509259::M3",
+           "name_in_paper": "Silica-fume control (SF/binder = 0.3)",
+           "notes": "All ratios are weight ratios to the combined binder (cement + DE, or cement + SF for the SF control); no kg/m3 batch quantities are printed in the main text (only in inaccessible SI Tables S1-S2).",
+           "paper_uid": "10.1002/adfm.202509259",
+           "protocol_uid": "10.1002/adfm.202509259::MP1",
+           "sand_binder_basis": "mass",
+           "sand_binder_ratio": "2.0",
+           "source_locator": "Section 4 Experimental Section, Material Composition and Preparation",
+           "source_ref": "4",
+           "source_type": "text",
+           "system_type": "mortar",
+           "w_b_reported": "0.87",
+           "w_b_source": "stated",
+           "w_c_reported": null,
+           "wave": "26"
+          }
+         ],
+         "hint": "mix_uid, paper_uid, mix_name, system_type(paste/mortar), w_b_reported, sand_binder_ratio, binder_total_kg_m3 …",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_6",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT m.paper_uid, m.mix_uid, m.name_in_paper, m.w_b_reported, m.sand_binder_ratio, s.value_canonical AS shrinkage_microstrain, c.value_canonical AS strength_MPa, s.condition_note AS shrinkage_condition, s.source_locator AS shrinkage_source, s.fig_only AS shrinkage_fig, c.source_locator AS strength_source, c.fig_only AS strength_fig, t.geometry, m.curing_regime FROM mixes m JOIN measurements s ON s.mix_uid=m.mix_uid JOIN measurements c ON c.mix_uid=m.mix_uid LEFT JOIN tests t ON t.test_uid=c.test_uid WHERE m.system_type='mortar' AND s.quantity='drying_shrinkage' AND c.quantity='compressive_strength' AND CAST(NULLIF(s.age_norm_d,'') AS REAL)=28 AND CAST(NULLIF(c.age_norm_d,'') AS REAL)=28 AND s.unit_canonical='microstrain' AND c.unit_canonical='MPa' AND CAST(NULLIF(s.value_canonical,'') AS REAL) BETWEEN 0 AND 600 AND CAST(NULLIF(c.value_canonical,'') AS REAL)>=50 ORDER BY m.paper_uid,m.name_in_paper",
+        "max_rows": 200
+       },
+       "t": 28.71,
+       "result": {
+        "data": {
+         "n_rows": 5,
+         "columns": [
+          "paper_uid",
+          "mix_uid",
+          "name_in_paper",
+          "w_b_reported",
+          "sand_binder_ratio",
+          "shrinkage_microstrain",
+          "strength_MPa",
+          "shrinkage_condition",
+          "shrinkage_source",
+          "shrinkage_fig",
+          "strength_source",
+          "strength_fig",
+          "geometry",
+          "curing_regime"
+         ],
+         "rows": [
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2017.12.001",
+           "mix_uid": "10.1016/j.cemconcomp.2017.12.001::M14",
+           "name_in_paper": "EX-S-6",
+           "w_b_reported": "0.4",
+           "sand_binder_ratio": "2.6",
+           "shrinkage_microstrain": "192.0",
+           "strength_MPa": "63.0",
+           "shrinkage_condition": "Paper's own sign convention: positive = expansion, negative = shrinkage (Fig. 9 caption).",
+           "shrinkage_source": "Table 4",
+           "shrinkage_fig": "0",
+           "strength_source": "Table 4",
+           "strength_fig": "0",
+           "geometry": null,
+           "curing_regime": "6-day moist curing then air-dry 23+/-1C/50+/-3%RH"
+          },
+          {
+           "paper_uid": "10.1016/j.cemconcomp.2017.12.001",
+           "mix_uid": "10.1016/j.cemconcomp.2017.12.001::M16",
+           "name_in_paper": "EX-S-L-6",
+           "w_b_reported": "0.4",
+           "sand_binder_ratio": "2.6",
+           "shrinkage_microstrain": "129.0",
+           "strength_MPa": "65.0",
+           "shrinkage_condition": "Paper's own sign convention: positive = expansion, negative = shrinkage (Fig. 9 caption).",
+           "shrinkage_source": "Table 4",
+           "shrinkage_fig": "0",
+           "strength_source": "Table 4",
+           "strength_fig": "0",
+           "geometry": null,
+           "curing_regime": "6-day moist curing then air-dry 23+/-1C/50+/-3%RH"
+          },
+          {
+           "paper_uid": "10.1016/j.jobe.2024.109833",
+           "mix_uid": "10.1016/j.jobe.2024.109833::M6",
+           "name_in_paper": "GOS50",
+           "w_b_reported": "0.18",
+           "sand_binder_ratio": null,
+           "shrinkage_microstrain": "574.0",
+           "strength_MPa": "120.03",
+           "shrinkage_condition": null,
+           "shrinkage_source": "Section 3.3 Dry shrinkage",
+           "shrinkage_fig": "0",
+           "strength_source": "Section 3.2 Compressive strength",
+           "strength_fig": "0",
+           "geometry": "40 x 40 x 160 mm prism",
+           "curing_regime": "demoulded, standard curing room 20+-2 C, RH>95%"
+          },
+          {
+           "paper_uid": "10.1016/j.jobe.2024.111672",
+           "mix_uid": "10.1016/j.jobe.2024.111672::M7",
+           "name_in_paper": "CA120",
+           "w_b_reported": "0.18",
+           "sand_binder_ratio": "1.0",
+           "shrinkage_microstrain": "203.0",
+           "strength_MPa": "89.0",
+           "shrinkage_condition": null,
+           "shrinkage_source": "Section 3.4 Drying shrinkage",
+           "shrinkage_fig": "0",
+           "strength_source": "Section 3.3 Mechanical properties",
+           "strength_fig": "0",
+           "geometry": "40x40x160 mm prism, half-prisms tested",
+           "curing_regime": "24 h standard curing box, demoulded, then 25+/-2 C, 98+/-2% RH."
+          },
+          {
+           "paper_uid": "10.1155/2017/6384859",
+           "mix_uid": "10.1155/2017/6384859::M4",
+           "name_in_paper": "J3",
+           "w_b_reported": "0.2",
+           "sand_binder_ratio": null,
+           "shrinkage_microstrain": "411.0",
+           "strength_MPa": "109.4",
+           "shrinkage_condition": null,
+           "shrinkage_source": "Section 3.4 Drying Shrinkage",
+           "shrinkage_fig": "0",
+           "strength_source": "Section 3.2 Compressive Strength",
+           "strength_fig": "0",
+           "geometry": null,
+           "curing_regime": null
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170706-9e91\\sql_1792138055.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.22,
+         "_elapsed_s": 0.22
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.23,
+       "is_error": false
+      },
+      {
+       "id": "item_8",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT p.* FROM papers p WHERE paper_uid IN ('10.1016/j.jobe.2024.109833','10.1016/j.jobe.2024.111672','10.1155/2017/6384859')",
+        "max_rows": 3
+       },
+       "t": 41.14,
+       "result": {
+        "data": {
+         "text": "{\"n_rows\": 3, \"columns\": [\"audit_topics_covered\", \"authors\", \"binder_system_tag\", \"doc_type\", \"doi\", \"extraction_confidence_overall\", \"extraction_date\", \"extraction_notes\", \"figure_scalar_presence_status\", \"figure_series_count_evidence\", \"figure_series_status\", \"is_3dcp_study\", \"journal\", \"language\", \"materials_status\", \"metadata_status\", \"mix_count_evidence\", \"mixes_status\", \"n_figure_series_extracted\", \"n_figure_series_reported\", \"n_mixes_extracted\", \"n_mixes_reported\", \"n_outcomes_extracted\", \"n_outcomes_reported\", \"n_unmapped_numeric\", \"oa_status\", \"outcome_count_evidence\", \"paper_uid\", \"protocols_status\", \"qa_status\", \"retrieval_route\", \"screening_exclusion_reason\", \"screening_status\", \"search_query_block\", \"system_types_present\", \"tabulated_outcomes_status\", \"title\", \"unmapped_review_status\", \"vocab_version\", \"year\", \"wave\"], \"rows\": [{\"audit_topics_covered\": \"T1;T2;T3;T4;T5;T6;T7;T8;T9\", \"authors\": \"Li Z.; Zhan J.; Wang Y.; He Z.; Xie Y.\", \"binder_system_tag\": \"portland_glass_shell_uhpc\", \"doc_type\": \"journal_article\", \"doi\": \"10.1016/j.jobe.2024.109833\", \"extraction_confidence_overall\": \"medium\", \"extraction_date\": \"2026-09-01\", \"extraction_notes\": \"T1 Scope and mixes: six ultra-high-performance-concrete mixtures replace zero to fifty weight percent cement with a fixed two-to-one glass-powder-to-oyster-shell-powder blend called GOS, at a constant water-to-binder ratio and constant steel-fibre and superplasticiser dosage (Table 2). T2 Multi-route quantities: compressive strength, fluidity, drying shrinkage, pore volume and the CO2/cost coefficients are each measured by a single route in this paper, so no cross-route reconciliation was needed anywhere in this record. T3 Ambiguities worth quoting: the pore-structure running text attributes its curves to BET even though the corresponding figure is captioned as pore-size distribution normally associated with mercury intrusion, so the mip method was used as the nearest fit with the BET wording preserved verbatim in the test notes. T4 No outright numeric contradiction was found between text, tables and figures for any extracted value; the 28-day compressive strength and its stated percent increase for GOS20 are mutually consistent with the printed control value. T5 Figure-only items without printed numbers include fluidity for three of six mixes, three-day and twenty-eight-day compressive strength for the remaining mixes not covered by text, cumulative pore volume for three of six mixes, and the cost coefficient for five of six mixes, all held as presence rows with deliberately blank values. T6 Series digitisation: the particle size distribution, XRD, TG/DTG and pore-size-distribution curves were not digitised in this pass, since only caption text was reviewed here, so the four reported series across Figs. 1, 9, 10 and 11 stay counted as reported but not extracted. T7 Schema gaps: no vocabulary quantity exists for the CO2-intensity or cost coefficients normalised by strength, so both were proposed via unmapped_terms reusing the pending LCA family spelling; oyster shell powder has no matching material class and was proposed separately; the qualitative TG/DTG peak discussion in Section 3.6 carries no printed numeric values and was not forced into a measurements row. T8 No extracted numeric value fell outside its plausibility bound; the reported compressive strengths all sit comfortably above one hundred and twenty MPa, consistent with the paper's own UHPC classification claim. T9 Coverage caveats: materials_status is partial because the oyster shell powder's oxide sum has no printed loss-on-ignition to reconcile against; figure_series_status is not_digitised per topic six; every remaining coverage field reconciles to its own row counts.\", \"figure_scalar_presence_status\": \"complete\", \"figure_series_count_evidence\": \"Fig. 1; Fig. 9; Fig. 10; Fig. 11\", \"figure_series_status\": \"not_digitised\", \"is_3dcp_study\": \"0\", \"journal\": \"Journal of Building Engineering\", \"language\": \"en\", \"ma"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.04,
+       "is_error": false
+      },
+      {
+       "id": "item_9",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT m.name_in_paper, s.quantity, s.value_reported, s.unit_reported, s.value_canonical, s.age_value, s.age_unit, s.notes, s.condition_note, s.semantic_transform, s.source_locator FROM measurements s JOIN mixes m ON m.mix_uid=s.mix_uid WHERE s.mix_uid IN ('10.1016/j.jobe.2024.109833::M6','10.1016/j.jobe.2024.111672::M7','10.1155/2017/6384859::M4') AND s.quantity IN ('drying_shrinkage','compressive_strength') AND CAST(NULLIF(s.age_norm_d,'') AS REAL)=28",
+        "max_rows": 20
+       },
+       "t": 41.19,
+       "result": {
+        "data": {
+         "n_rows": 6,
+         "columns": [
+          "name_in_paper",
+          "quantity",
+          "value_reported",
+          "unit_reported",
+          "value_canonical",
+          "age_value",
+          "age_unit",
+          "notes",
+          "condition_note",
+          "semantic_transform",
+          "source_locator"
+         ],
+         "rows": [
+          {
+           "name_in_paper": "GOS50",
+           "quantity": "compressive_strength",
+           "value_reported": "120.03",
+           "unit_reported": "MPa",
+           "value_canonical": "120.03",
+           "age_value": "28",
+           "age_unit": "d",
+           "notes": null,
+           "condition_note": null,
+           "semantic_transform": null,
+           "source_locator": "Section 3.2 Compressive strength"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "quantity": "drying_shrinkage",
+           "value_reported": "574",
+           "unit_reported": "um/m",
+           "value_canonical": "574.0",
+           "age_value": "28",
+           "age_unit": "d",
+           "notes": null,
+           "condition_note": null,
+           "semantic_transform": null,
+           "source_locator": "Section 3.3 Dry shrinkage"
+          },
+          {
+           "name_in_paper": "CA120",
+           "quantity": "compressive_strength",
+           "value_reported": "89",
+           "unit_reported": "MPa",
+           "value_canonical": "89.0",
+           "age_value": "28",
+           "age_unit": "d",
+           "notes": null,
+           "condition_note": null,
+           "semantic_transform": null,
+           "source_locator": "Section 3.3 Mechanical properties"
+          },
+          {
+           "name_in_paper": "CA120",
+           "quantity": "drying_shrinkage",
+           "value_reported": "203",
+           "unit_reported": "microstrain",
+           "value_canonical": "203.0",
+           "age_value": "28",
+           "age_unit": "d",
+           "notes": "Printed as '×10^-6 μm/m'; interpreted as microstrain (x10^-6 m/m) since um/m as printed would be a further 10^-6 factor smaller than intended, a likely unit typo, verbatim value kept.",
+           "condition_note": null,
+           "semantic_transform": null,
+           "source_locator": "Section 3.4 Drying shrinkage"
+          },
+          {
+           "name_in_paper": "J3",
+           "quantity": "compressive_strength",
+           "value_reported": "109.4",
+           "unit_reported": "MPa",
+           "value_canonical": "109.4",
+           "age_value": "28",
+           "age_unit": "d",
+           "notes": null,
+           "condition_note": null,
+           "semantic_transform": null,
+           "source_locator": "Section 3.2 Compressive Strength"
+          },
+          {
+           "name_in_paper": "J3",
+           "quantity": "drying_shrinkage",
+           "value_reported": "411",
+           "unit_reported": "microstrain",
+           "value_canonical": "411.0",
+           "age_value": "28",
+           "age_unit": "d",
+           "notes": "Paper's own sign convention: shrinkage stored positive (contraction).",
+           "condition_note": null,
+           "semantic_transform": null,
+           "source_locator": "Section 3.4 Drying Shrinkage"
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170706-9e91\\sql_1792138067.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.12,
+         "_elapsed_s": 0.13
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.14,
+       "is_error": false
+      },
+      {
+       "id": "item_10",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT m.name_in_paper, m.notes, c.* FROM mixes m JOIN mix_components c ON c.mix_uid=m.mix_uid WHERE m.mix_uid IN ('10.1016/j.jobe.2024.109833::M6','10.1016/j.jobe.2024.111672::M7','10.1155/2017/6384859::M4')",
+        "max_rows": 50
+       },
+       "t": 41.32,
+       "result": {
+        "data": {
+         "text": "{\"n_rows\": 23, \"columns\": [\"name_in_paper\", \"notes\", \"basis_reported\", \"component_uid\", \"conversion_check\", \"conversion_id\", \"dosage_kg_m3\", \"dosage_reported\", \"mass_frac_of_binder\", \"material_uid\", \"mix_uid\", \"notes:1\", \"paper_uid\", \"role\", \"source_locator\", \"source_ref\", \"source_type\", \"unit_reported\", \"wave\"], \"rows\": [{\"name_in_paper\": \"GOS50\", \"notes\": \"Total binder (PC+SF+GP+OSP) held at 1000 kg/m3; GP:OSP fixed 2:1 mass ratio within GOS. Specimens 40x40x160 mm (mechanical); 25x25x280 mm (shrinkage).\", \"basis_reported\": \"kg_m3\", \"component_uid\": \"10.1016/j.jobe.2024.109833::M6::C1\", \"conversion_check\": null, \"conversion_id\": null, \"dosage_kg_m3\": \"450\", \"dosage_reported\": \"450\", \"mass_frac_of_binder\": null, \"material_uid\": \"10.1016/j.jobe.2024.109833::MAT1\", \"mix_uid\": \"10.1016/j.jobe.2024.109833::M6\", \"notes:1\": null, \"paper_uid\": \"10.1016/j.jobe.2024.109833\", \"role\": \"binder\", \"source_locator\": \"Table 2\", \"source_ref\": \"2\", \"source_type\": \"table\", \"unit_reported\": \"kg/m3\", \"wave\": \"10\"}, {\"name_in_paper\": \"GOS50\", \"notes\": \"Total binder (PC+SF+GP+OSP) held at 1000 kg/m3; GP:OSP fixed 2:1 mass ratio within GOS. Specimens 40x40x160 mm (mechanical); 25x25x280 mm (shrinkage).\", \"basis_reported\": \"kg_m3\", \"component_uid\": \"10.1016/j.jobe.2024.109833::M6::C2\", \"conversion_check\": null, \"conversion_id\": null, \"dosage_kg_m3\": \"100\", \"dosage_reported\": \"100\", \"mass_frac_of_binder\": null, \"material_uid\": \"10.1016/j.jobe.2024.109833::MAT2\", \"mix_uid\": \"10.1016/j.jobe.2024.109833::M6\", \"notes:1\": null, \"paper_uid\": \"10.1016/j.jobe.2024.109833\", \"role\": \"scm\", \"source_locator\": \"Table 2\", \"source_ref\": \"2\", \"source_type\": \"table\", \"unit_reported\": \"kg/m3\", \"wave\": \"10\"}, {\"name_in_paper\": \"GOS50\", \"notes\": \"Total binder (PC+SF+GP+OSP) held at 1000 kg/m3; GP:OSP fixed 2:1 mass ratio within GOS. Specimens 40x40x160 mm (mechanical); 25x25x280 mm (shrinkage).\", \"basis_reported\": \"kg_m3\", \"component_uid\": \"10.1016/j.jobe.2024.109833::M6::C3\", \"conversion_check\": null, \"conversion_id\": null, \"dosage_kg_m3\": \"300\", \"dosage_reported\": \"300\", \"mass_frac_of_binder\": null, \"material_uid\": \"10.1016/j.jobe.2024.109833::MAT3\", \"mix_uid\": \"10.1016/j.jobe.2024.109833::M6\", \"notes:1\": null, \"paper_uid\": \"10.1016/j.jobe.2024.109833\", \"role\": \"scm\", \"source_locator\": \"Table 2\", \"source_ref\": \"2\", \"source_type\": \"table\", \"unit_reported\": \"kg/m3\", \"wave\": \"10\"}, {\"name_in_paper\": \"GOS50\", \"notes\": \"Total binder (PC+SF+GP+OSP) held at 1000 kg/m3; GP:OSP fixed 2:1 mass ratio within GOS. Specimens 40x40x160 mm (mechanical); 25x25x280 mm (shrinkage).\", \"basis_reported\": \"kg_m3\", \"component_uid\": \"10.1016/j.jobe.2024.109833::M6::C4\", \"conversion_check\": null, \"conversion_id\": null, \"dosage_kg_m3\": \"150\", \"dosage_reported\": \"150\", \"mass_frac_of_binder\": null, \"material_uid\": \"10.1016/j.jobe.2024.109833::MAT4\", \"mix_uid\": \"10.1016/j.jobe.2024.109833::M6\", \"notes:1\": null, \"paper_uid\": \"10.1016/j.jobe.2024.109833\", \"role\": \"filler\", \"source_locator\": \"Table 2\", \"source_ref\": \"2\", \"source_type\": \"table\", \"unit_reported\": \"kg/m3\", \"wave\": \"10\"}, {\"name_in_paper\": \"GOS50\", \"notes\": \"Total binder (PC+SF+GP+OSP) held at 1000 kg/m3; GP:OSP fixed 2:1 mass ratio within GOS. Specimens 40x40x160 mm (mechanical); 25x25x280 mm (shrinkage).\", \"basis_reported\": \"kg_m3\", \"component_uid\": \"10.1016/j.jobe.2024.109833::M6::C5\", \"conversion_check\": null, \"conversion_id\": null, \"dosage_kg_m3\": \"1000\", \"dosage_reported\": \"1000\", \"mass_frac_of_binder\": null, \"material_uid\": \"10.1016/j.jobe.2024.109833::MAT5\", \"mix_uid\": \"10.1016/j.jobe.2024.109833::M6\", \"notes:1\": null, \"paper_uid\": \"10.1016/j.jobe.2024.109833\", \"role\": \"fine_aggregate\", \"source_locator\": \"Table 2\", \"source_ref\": \"2\", \"source_type\": \"table\", \"unit_reported\": \"kg/m3\", \"wave\": \"10\"}, {\"name_in_paper\": \"GOS50\", \"notes\": \"Total binder (PC+SF+GP+OSP) held at 1000 kg/m3; GP:OSP fixed 2:1 mass ratio within GOS. Specimens 40x40x160 mm (mechanical); 25x25x280 mm (shrinkage).\", \"basis_reported\": \"kg_m3\", \"component_uid\": \"10"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.26,
+       "is_error": false
+      },
+      {
+       "id": "item_11",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT doi,title,year,is_3dcp_study FROM papers WHERE paper_uid IN ('10.1016/j.jobe.2024.109833','10.1016/j.jobe.2024.111672','10.1155/2017/6384859')",
+        "max_rows": 3
+       },
+       "t": 49.65,
+       "result": {
+        "data": {
+         "n_rows": 3,
+         "columns": [
+          "doi",
+          "title",
+          "year",
+          "is_3dcp_study"
+         ],
+         "rows": [
+          {
+           "doi": "10.1016/j.jobe.2024.109833",
+           "title": "Eco-friendly UHPC incorporating waste glass powder and oyster shell powder: mechanical properties, shrinkage and environmental-economic benefits",
+           "year": "2024",
+           "is_3dcp_study": "0"
+          },
+          {
+           "doi": "10.1016/j.jobe.2024.111672",
+           "title": "Effect of calcium aluminate cement on setting time, mechanical properties and shrinkage of UHPC containing OPC",
+           "year": "2024",
+           "is_3dcp_study": "0"
+          },
+          {
+           "doi": "10.1155/2017/6384859",
+           "title": "Effects of Shrinkage Reducing Agent and Expansive Admixture on the Volume Deformation of Ultrahigh Performance Concrete",
+           "year": "2017",
+           "is_3dcp_study": "0"
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170706-9e91\\sql_1792138076.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.01,
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_12",
+       "name": "sql_query",
+       "input": {
+        "sql": "SELECT m.name_in_paper, a.name_in_paper AS material, c.dosage_reported, c.unit_reported FROM mixes m JOIN mix_components c ON c.mix_uid=m.mix_uid JOIN materials a ON a.material_uid=c.material_uid WHERE m.mix_uid IN ('10.1016/j.jobe.2024.109833::M6','10.1016/j.jobe.2024.111672::M7','10.1155/2017/6384859::M4')",
+        "max_rows": 30
+       },
+       "t": 49.68,
+       "result": {
+        "data": {
+         "n_rows": 23,
+         "columns": [
+          "name_in_paper",
+          "material",
+          "dosage_reported",
+          "unit_reported"
+         ],
+         "rows": [
+          {
+           "name_in_paper": "GOS50",
+           "material": "SF",
+           "dosage_reported": "100",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "material": "ISO standard sand",
+           "dosage_reported": "1000",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "material": "Copper-plated steel fibre",
+           "dosage_reported": "144",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "material": "SP",
+           "dosage_reported": "15",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "material": "OSP (oyster shell powder)",
+           "dosage_reported": "150",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "material": "Tap water",
+           "dosage_reported": "180",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "material": "GP",
+           "dosage_reported": "300",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "GOS50",
+           "material": "PC",
+           "dosage_reported": "450",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "CA-50 calcium aluminate cement (CAC)",
+           "dosage_reported": "120",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "Fly ash microsphere (FAM/FA)",
+           "dosage_reported": "150",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "Quartz sand (QS), 0.45-0.9 mm",
+           "dosage_reported": "1540",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "Copper-coated micro-filament steel fiber",
+           "dosage_reported": "22",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "Mixing water",
+           "dosage_reported": "275.4",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "Polycarboxylic ether superplasticizer (SP) + defoamer",
+           "dosage_reported": "30.8",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "Silica fume (SF)",
+           "dosage_reported": "380",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "CA120",
+           "material": "P.II 42.5 ordinary Portland cement (OPC)",
+           "dosage_reported": "880",
+           "unit_reported": "kg/m3"
+          },
+          {
+           "name_in_paper": "J3",
+           "material": "Antifoaming admixture (AF)",
+           "dosage_reported": "0.5",
+           "unit_reported": "parts_per_100_cement"
+          },
+          {
+           "name_in_paper": "J3",
+           "material": "Polycarboxylate-based superplasticizer (SP)",
+           "dosage_reported": "1.8",
+           "unit_reported": "parts_per_100_cement"
+          },
+          {
+           "name_in_paper": "J3",
+           "material": "Ordinary Portland cement, grade 52.5",
+           "dosage_reported": "100",
+           "unit_reported": "parts_per_100_cement"
+          },
+          {
+           "name_in_paper": "J3",
+           "material": "Silica sand (SS), coarse + fine blend",
+           "dosage_reported": "110",
+           "unit_reported": "parts_per_100_cement"
+          }
+         ],
+         "truncated": true,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170706-9e91\\sql_1792138076.csv",
+         "db": "master",
+         "row_limit_hit": false,
+         "elapsed_s": 0.16,
+         "_elapsed_s": 0.16
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170706-9e91\\sql_1792138076.csv",
+          "kind": "table",
+          "title": "SQL 결과"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.17,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 255442,
+      "output_tokens": 1625,
+      "cache_read_input_tokens": 221312
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 69.3
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:07:06"
+}

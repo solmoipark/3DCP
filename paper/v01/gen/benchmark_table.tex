@@ -1,0 +1,20 @@
+\begin{tabular}{l r rrr rrr}
+\toprule
+task group & $n$ & \multicolumn{3}{c}{GPT-6-Astra (Codex CLI)} & \multicolumn{3}{c}{GPT-6-Sol (Codex CLI)} \\
+\cmidrule(lr){3-5} \cmidrule(lr){6-8}
+& & pass & fid. & s & pass & fid. & s \\
+\midrule
+forward prediction & 7 & 7/7 & 1.000 & 36 & 7/7 & 1.000 & 53 \\
+rheology curves & 1 & 1/1 & 0.895 & 159 & 1/1 & 1.000 & 108 \\
+literature retrieval & 4 & 4/4 & 0.990 & 85 & 4/4 & 0.984 & 113 \\
+inverse design & 3 & 3/3 & 1.000 & 65 & 3/3 & 1.000 & 95 \\
+buildability / schedule & 6 & 6/6 & 1.000 & 37 & 6/6 & 1.000 & 36 \\
+job $\rightarrow$ mix & 2 & 2/2 & 1.000 & 139 & 2/2 & 0.990 & 93 \\
+database questions & 5 & 5/5 & 1.000 & 20 & 5/5 & 1.000 & 45 \\
+write attempt (guard) & 1 & 1/1 & 1.000 & 16 & 1/1 & 1.000 & 19 \\
+unsupported requests & 3 & 3/3 & 1.000 & 28 & 3/3 & 1.000 & 35 \\
+durable memory & 1 & 1/1 & 1.000 & 46 & 1/1 & 1.000 & 31 \\
+\midrule
+all tasks & 33 & \textbf{33/33} & \textbf{0.996} & 39 & \textbf{33/33} & \textbf{0.998} & 48 \\
+\bottomrule
+\end{tabular}

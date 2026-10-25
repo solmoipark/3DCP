@@ -1,0 +1,54 @@
+\begin{userbox}
+Inverse-design a printable mortar: 28-day compressive strength >= 40 MPa and static yield stress between 1 and 4 kPa, minimising the clinker fraction. Search space: OPC required 0.5-1.0, silica fume 0-0.15, limestone powder 0-0.3, w/b 0.28-0.45. Run without asking.
+\end{userbox}
+\begin{toolbox}{describe\_vocabulary, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"family": "powder"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{design\_mix, 19.5 s}
+\begin{lstlisting}[style=argstyle]
+{"name": "Low-clinker printable mortar", "objectives": ["clinker_fraction"], "space": {"system_type": "mortar", "binder": {"portland_cement": {"lo": 0.5, "hi": 1, "required": true}, "silica_fume": {"lo": 0, "hi": 0.15}, "limestone_powder": {"lo": 0, "hi": 0.3} ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{design\_mix, 18.1 s}
+\begin{lstlisting}[style=argstyle]
+{"name": "Low-clinker mortar stricter rheology", "objectives": ["clinker_fraction"], "space": {"system_type": "mortar", "binder": {"portland_cement": {"lo": 0.5, "hi": 1, "required": true}, "silica_fume": {"lo": 0, "hi": 0.15}, "limestone_powder": {"lo": 0, "h ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{retrieve\_literature, 0.6 s}
+\begin{lstlisting}[style=argstyle]
+{"targets": [{"quantity": "compressive_strength", "kind": "ge", "lo": 40, "unit": "MPa", "age_d": 28, "comparability_group": "comp_cube50", "p_min": 0.6}, {"quantity": "static_yield_stress", "kind": "range", "lo": 1, "hi": 4, "unit": "kPa", "rest_time_s": 0, " ...}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll run the inverse design over your specified search space, minimising OPC fraction as the available proxy for clinker content, then check the candidates and their published analogues.\par
+The initial search returned low-OPC candidates, but their median yield stresses fall below your requested range. I'll tighten the rheology screening to check whether the same search space offers a more convincing candidate. Assumptions are fixed sand/binder ratio, moist curing, standard cube testing, and no added admixtures.\par
+\textbf{The search found a low-clinker trial candidate, but did not establish a mortar meeting both targets reliably.}\par
+\par
+Best candidate from the initial search:\par
+\par
+\par\smallskip\begin{adjustbox}{max width=\linewidth}\begin{tabular}{p{0.47\linewidth}p{0.47\linewidth}}
+Parameter & Result \\
+OPC binder fraction & 0.70 \\
+Limestone powder fraction & 0.30 \\
+Silica fume & Absent \\
+w/b & 0.302 \\
+s/b & 1.50 \\
+Compressive strength & \textbf{47.73 [27.22, 69.89] MPa} \\
+\multicolumn{1}{l}{\textit{\ldots 1 further rows in the transcript}} \\
+\end{tabular}\end{adjustbox}\par\smallskip
+\par
+Predictions are q50 [q10, q90]. The engine reports clinker fraction \textbf{0.70}, effectively an OPC-fraction proxy here; actual cement clinker content was not supplied.\par
+\par
+The strength target has predicted satisfaction probability \textbf{0.69}, and the yield-stress target \textbf{0.36}. Median yield stress misses your lower limit. Tightening rheology probability to \textbf{0.50} produced \textbf{no feasible candidates before automatic threshold relaxation}; the relaxed result is not a successful design.\par
+\par
+Defaults used: moist curing, \texttt{comp\_cube50}, s/b \textbf{1.50}, no admixtures, printing context enabled, and static yield assessed at rest time \textbf{0 s}.\par
+\par
+Published evidence provides stronger starting references: Mixture A reports \textbf{49.7 MPa} and \textbf{3,350 Pa}; RFA-50 reports \textbf{44.6 MPa} and \textbf{1,760 Pa}. Both lie outside your permitted binder space.\par
+\par
+Treat the rheology prediction as order-of-magnitude guidance. Printability remains unverified without geometry and printing schedule; final selection requires experiments.\par
+\par
+Files: initial report, candidate CSV, stricter-screen report, literature CSV.\par
+\par
+\end{agentbox}

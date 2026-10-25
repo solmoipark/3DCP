@@ -1,0 +1,680 @@
+{
+ "id": "B05",
+ "group": "buildability",
+ "provider": "codex",
+ "model": "",
+ "sessions": [
+  {
+   "session_id": "20261016-171341-c074",
+   "turns": [
+    {
+     "user": "Show me published prints similar to an 800 mm high wall printed with a 25 mm nozzle and 15 mm layers.",
+     "text": "I’ll look for published wall prints with similar height, nozzle size, and layer height, and highlight any differences.\nThe similarity tool requires a layer cycle time or wall length, which you haven’t specified. I’ll query the published print records directly using the dimensions you gave.\nThe closest retrieved match uses **the same nozzle diameter and layer height**, but the printed wall is shorter. No exact match to all your dimensions appeared in the retrieved records.\n\n| Published print / mix | Height (mm) | Nozzle diameter (mm) | Layer height (mm) | Reported outcome |\n|---|---:|---:|---:|---|\n| [RBA-3DPC Mix 2—cavity-wall façade](https://doi.org/10.1016/j.clema.2022.100090) | 390 | 25 | 15 | Printable |\n| [RBA-3DPC and PCM-3DPC façade sections](https://doi.org/10.1016/j.jclepro.2023.136247) | 390 | 25 | 15 | Both printable |\n| [Printed concrete wall—Table 1 mix](https://doi.org/10.1016/j.cscm.2024.e02892) | 800 | 15 | 10 | Printable |\n| [ISTON wall mix](https://doi.org/10.1016/j.conbuildmat.2024.136574) | 600 | 50 | 15 | Printable |\n| [H-3 wall buildability test](https://doi.org/10.1016/j.conbuildmat.2025.141735) | 730 | 20 | 10 | Collapsed during a stack-to-failure test |\n\n**Best process analogue:** the RBA-3DPC façade used a print speed of **60 mm/s**, a layer path of **5,032 mm**, and a reported layer cycle of **84 s**. Its cavity-wall geometry matters when comparing stability with your wall.\n\nThe H-3 result is a failure-height reference, not a successful wall demonstration. These database-extracted published results do not establish your wall’s buildability; wall geometry, material behaviour, and printing schedule still require verification.\n\nI interpreted your nozzle size as a circular diameter; no mix or schedule defaults were assumed.\n\nRetrieved height-comparison records: [CSV](</C:/Users/User/3D Printing Concrete Prediction/artifacts/reports/agent/20261016-171341-c074/sql_1792138463.csv>).\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "similar_prints",
+       "input": {
+        "job": {
+         "object_type": "wall",
+         "target_height_mm": 800,
+         "nozzle_d_mm": 25,
+         "layer_height_mm": 15
+        },
+        "k": 6
+       },
+       "t": 12.6,
+       "result": {
+        "data": {
+         "error": "ValueError: give layer_cycle_time_s, or path_length_mm / footprint_mm so it can be computed from the print speed",
+         "traceback_tail": "Traceback (most recent call last):\n  File \"C:\\Users\\User\\3D Printing Concrete Prediction\\pmpredict\\agent\\tools\\registry.py\", line 126, in call_tool\n    res = spec.fn(args, ctx)\n          ^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\3D Printing Concrete Prediction\\pmpredict\\agent\\tools\\build_tools.py\", line 149, in similar_prints\n    an = B.similar_prints(job, mat, rt.cfg, k=int(args.get(\"k\", 8)), cal=rt.cal)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\3D Printing Concrete Prediction\\pmpredict\\buildability.py\", line 503, in similar_prints\n    job, _ = job.resolve(cal if cal is not None else load_calibration(cfg))\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\User\\3D Printing Concrete Prediction\\pmpredict\\buildability.py\", line 143, in resolve\n    raise ValueError(\"give layer_cycle_time_s, or path_length_mm / footprint_mm so it can be computed from the print speed\")\nValueError: give layer_cycle_time_s, or path_length_mm / footprint_mm so it can be computed from the print speed\n"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": true
+       },
+       "elapsed_s": 0.02,
+       "is_error": true
+      },
+      {
+       "id": "item_3",
+       "name": "describe_schema",
+       "input": {
+        "db": "print_process"
+       },
+       "t": 17.42,
+       "result": {
+        "data": {
+         "db": "print_process",
+         "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\data\\print_process.db",
+         "tables": [
+          {
+           "table": "label_files",
+           "n_rows": 1014,
+           "hint": null
+          },
+          {
+           "table": "print_runs",
+           "n_rows": 7420,
+           "hint": "paper_uid, run_id, mix_uid, object, layer_height_mm, print_speed_mm_s, layer_cycle_time_s, n_layers_achieved, height_achieved_mm, stack_to_failure, outcome, failure_mode, printability_label, label_basis, confidence, open_time_min"
+          },
+          {
+           "table": "printers",
+           "n_rows": 1014,
+           "hint": "paper_uid, system, pump, nozzle_shape, nozzle_d_mm, nozzle_w_mm, nozzle_h_mm"
+          },
+          {
+           "table": "rheology_protocols",
+           "n_rows": 1507,
+           "hint": "paper_uid, test_uid, quantity, protocol_class, rest_time_s, preshear, shear_rate_s1, device"
+          }
+         ],
+         "notes": [
+          "master.db: 모든 컬럼 TEXT, ''=결측, fig_only='1'은 그림에서 읽은 값",
+          "join keys: paper_uid, mix_uid, test_uid",
+          "print_process.db: 논문 저자 판정 기반 라벨; stack_to_failure=1이면 collapsed여도 printable 가능"
+         ],
+         "_elapsed_s": 0.0
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.01,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "describe_schema",
+       "input": {
+        "db": "print_process",
+        "table": "print_runs"
+       },
+       "t": 24.0,
+       "result": {
+        "data": {
+         "db": "print_process",
+         "table": "print_runs",
+         "n_rows": 7420,
+         "columns": [
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "run_id",
+           "type": ""
+          },
+          {
+           "name": "mix_uid",
+           "type": ""
+          },
+          {
+           "name": "mix_name_in_paper",
+           "type": ""
+          },
+          {
+           "name": "object",
+           "type": ""
+          },
+          {
+           "name": "layer_height_mm",
+           "type": ""
+          },
+          {
+           "name": "layer_width_mm",
+           "type": ""
+          },
+          {
+           "name": "print_speed_mm_s",
+           "type": ""
+          },
+          {
+           "name": "layer_cycle_time_s",
+           "type": ""
+          },
+          {
+           "name": "n_layers_target",
+           "type": ""
+          },
+          {
+           "name": "n_layers_achieved",
+           "type": ""
+          },
+          {
+           "name": "height_achieved_mm",
+           "type": ""
+          },
+          {
+           "name": "start_time_after_mixing_min",
+           "type": ""
+          },
+          {
+           "name": "stack_to_failure",
+           "type": ""
+          },
+          {
+           "name": "nozzle_d_mm",
+           "type": ""
+          },
+          {
+           "name": "nozzle_w_mm",
+           "type": ""
+          },
+          {
+           "name": "nozzle_h_mm",
+           "type": ""
+          },
+          {
+           "name": "extrusion_pressure_kPa",
+           "type": ""
+          },
+          {
+           "name": "flow_rate_L_min",
+           "type": ""
+          },
+          {
+           "name": "source_discrepancy",
+           "type": ""
+          },
+          {
+           "name": "outcome",
+           "type": ""
+          },
+          {
+           "name": "failure_mode",
+           "type": ""
+          },
+          {
+           "name": "failure_layer",
+           "type": ""
+          },
+          {
+           "name": "open_time_min",
+           "type": ""
+          },
+          {
+           "name": "printability_label",
+           "type": ""
+          },
+          {
+           "name": "label_basis",
+           "type": ""
+          },
+          {
+           "name": "quote",
+           "type": ""
+          },
+          {
+           "name": "source_locator",
+           "type": ""
+          },
+          {
+           "name": "confidence",
+           "type": ""
+          }
+         ],
+         "sample": [
+          {
+           "paper_uid": "10.1002/adfm.202509259",
+           "run_id": "R1",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "mix_name_in_paper": "DE-infused concrete (DE/binder = 0.3)",
+           "object": "hollow cylinder",
+           "layer_height_mm": 1.8,
+           "layer_width_mm": 4.8,
+           "print_speed_mm_s": null,
+           "layer_cycle_time_s": null,
+           "n_layers_target": 111.0,
+           "n_layers_achieved": 111.0,
+           "height_achieved_mm": 200.0,
+           "start_time_after_mixing_min": null,
+           "stack_to_failure": null,
+           "nozzle_d_mm": null,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "extrusion_pressure_kPa": null,
+           "flow_rate_L_min": null,
+           "source_discrepancy": null,
+           "outcome": "printable",
+           "failure_mode": "none",
+           "failure_layer": null,
+           "open_time_min": 3.0,
+           "printability_label": "printable",
+           "label_basis": "author_statement",
+           "quote": "The material buildability was characterized by printing a 10 cm diameter cylinder structure with a 4.8 mm line width and a 1.8 mm layer height, continuously printing to 111 layers (equivalent to 200 mm) or until failure. ... The DE-infused concrete sustains stacking up to 111 layers till exhausting the ink, reaching an aspect ratio of 42, while the control ink fails after 43 layers due to uneven drying and high density.",
+           "source_locator": "Section 2.2 Mechanical and 3D Printing Performance (Fig. 3a); Experimental Section, Printing Characterization",
+           "confidence": "high"
+          },
+          {
+           "paper_uid": "10.1002/adfm.202509259",
+           "run_id": "R2",
+           "mix_uid": "10.1002/adfm.202509259::M2",
+           "mix_name_in_paper": "Cement-only control (DE/binder = 0)",
+           "object": "hollow cylinder",
+           "layer_height_mm": 1.8,
+           "layer_width_mm": 4.8,
+           "print_speed_mm_s": null,
+           "layer_cycle_time_s": null,
+           "n_layers_target": null,
+           "n_layers_achieved": 43.0,
+           "height_achieved_mm": null,
+           "start_time_after_mixing_min": null,
+           "stack_to_failure": null,
+           "nozzle_d_mm": null,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "extrusion_pressure_kPa": null,
+           "flow_rate_L_min": null,
+           "source_discrepancy": null,
+           "outcome": "collapsed",
+           "failure_mode": "other",
+           "failure_layer": 43.0,
+           "open_time_min": 3.0,
+           "printability_label": "non_printable",
+           "label_basis": "author_statement",
+           "quote": "the control ink fails after 43 layers due to uneven drying and high density (Figure 3a; Movie S1, Supporting Information). In fact, the exposed lower layers experience early hydration reactions, leading to shrinkage, cracks, and structural instability.",
+           "source_locator": "Section 2.2 Mechanical and 3D Printing Performance (Fig. 3a,b)",
+           "confidence": "high"
+          },
+          {
+           "paper_uid": "10.1002/adfm.202509259",
+           "run_id": "R3",
+           "mix_uid": "10.1002/adfm.202509259::M1",
+           "mix_name_in_paper": "DE-infused concrete (DE/binder = 0.3)",
+           "object": "free-form",
+           "layer_height_mm": null,
+           "layer_width_mm": null,
+           "print_speed_mm_s": null,
+           "layer_cycle_time_s": null,
+           "n_layers_target": null,
+           "n_layers_achieved": null,
+           "height_achieved_mm": null,
+           "start_time_after_mixing_min": null,
+           "stack_to_failure": null,
+           "nozzle_d_mm": null,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "extrusion_pressure_kPa": null,
+           "flow_rate_L_min": null,
+           "source_discrepancy": null,
+           "outcome": "printable",
+           "failure_mode": "none",
+           "failure_layer": null,
+           "open_time_min": null,
+           "printability_label": "printable",
+           "label_basis": "photo_only",
+           "quote": "j,k) Two 3D printed TPMS-based structures using DE-infused concrete.",
+           "source_locator": "Figure 4 caption (panels j,k)",
+           "confidence": "medium"
+          }
+         ],
+         "hint": "paper_uid, run_id, mix_uid, object, layer_height_mm, print_speed_mm_s, layer_cycle_time_s, n_layers_achieved, height_achieved_mm, stack_to_failure, outcome, failure_mode, printability_label, label_basis, confidence, open_time_min",
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_5",
+       "name": "describe_schema",
+       "input": {
+        "db": "print_process",
+        "table": "printers"
+       },
+       "t": 24.02,
+       "result": {
+        "data": {
+         "db": "print_process",
+         "table": "printers",
+         "n_rows": 1014,
+         "columns": [
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "system",
+           "type": ""
+          },
+          {
+           "name": "pump",
+           "type": ""
+          },
+          {
+           "name": "hose_length_m",
+           "type": ""
+          },
+          {
+           "name": "nozzle_shape",
+           "type": ""
+          },
+          {
+           "name": "nozzle_d_mm",
+           "type": ""
+          },
+          {
+           "name": "nozzle_w_mm",
+           "type": ""
+          },
+          {
+           "name": "nozzle_h_mm",
+           "type": ""
+          },
+          {
+           "name": "source_locator",
+           "type": ""
+          }
+         ],
+         "sample": [
+          {
+           "paper_uid": "10.1002/adfm.202509259",
+           "system": "gantry",
+           "pump": "piston",
+           "hose_length_m": null,
+           "nozzle_shape": "circular",
+           "nozzle_d_mm": 4.8,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "source_locator": "Experimental Section, 3D Printing / Printing Characterization"
+          },
+          {
+           "paper_uid": "10.1002/adma.201802123",
+           "system": "gantry",
+           "pump": "piston",
+           "hose_length_m": null,
+           "nozzle_shape": "circular",
+           "nozzle_d_mm": 1.36,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "source_locator": "Experimental Section: 3D Printing"
+          },
+          {
+           "paper_uid": "10.1002/cend.202100024",
+           "system": "unknown",
+           "pump": "unknown",
+           "hose_length_m": null,
+           "nozzle_shape": "unknown",
+           "nozzle_d_mm": null,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "source_locator": "No printer described anywhere in the paper"
+          }
+         ],
+         "hint": "paper_uid, system, pump, nozzle_shape, nozzle_d_mm, nozzle_w_mm, nozzle_h_mm",
+         "_elapsed_s": 0.0
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.01,
+       "is_error": false
+      },
+      {
+       "id": "item_6",
+       "name": "describe_schema",
+       "input": {
+        "db": "print_process",
+        "table": "label_files"
+       },
+       "t": 24.04,
+       "result": {
+        "data": {
+         "db": "print_process",
+         "table": "label_files",
+         "n_rows": 1014,
+         "columns": [
+          {
+           "name": "paper_uid",
+           "type": "TEXT"
+          },
+          {
+           "name": "file",
+           "type": "TEXT"
+          },
+          {
+           "name": "n_runs",
+           "type": "INT"
+          },
+          {
+           "name": "n_protocols",
+           "type": "INT"
+          },
+          {
+           "name": "n_figures_checked",
+           "type": "INT"
+          },
+          {
+           "name": "notes",
+           "type": "TEXT"
+          },
+          {
+           "name": "status",
+           "type": "TEXT"
+          }
+         ],
+         "sample": [
+          {
+           "paper_uid": "10.1002/adfm.202509259",
+           "file": "10.1002_adfm.202509259.json",
+           "n_runs": 5,
+           "n_protocols": 2,
+           "n_figures_checked": 0,
+           "notes": "Buildability test (R1/R2) and single-filament nozzle-diameter test (R4/R5) matched to test_uid T2 (merged 'other' family test covering buildability, CO2 uptake, BET and interfacial bending; see record unmapped_terms UM3). Rheology thixotropy (3-step shear rate 0.1/100/0.1 s-1) and shear-thinning sweep (0.1-150 s-1) protocols are described only qualitatively in the paper (percent recovery, relative stiffness) and are NOT captured as a test row in the record (extraction_notes T6: figure series not digitised) - both rheology_protocols rows carry test_uid: null. shear_rate_s1 left null for the flow-curve-fit sweep because it spans a range (0.1-150 s-1), not a single stated rate. No print speed (mm/s) or layer cycle time is stated anywhere in the accessible text. R4/R5 (single-filament nozzle test) report a nozzle-diameter range (2-21 mm) rather than a single run setting; run-level nozzle diameter fields are not part of this schema (only printer.nozzle_d_mm, set to the 4.8 mm nozzle used for the main structures) so the range is described in the quote instead. No units required conversion.",
+           "status": "PASS"
+          },
+          {
+           "paper_uid": "10.1002/adma.201802123",
+           "file": "10.1002_adma.201802123.json",
+           "n_runs": 6,
+           "n_protocols": 0,
+           "n_figures_checked": 3,
+           "notes": "No rheology (yield-stress/viscosity/Athix) test protocol reported; ink flow properties are only described qualitatively ('proper flow properties... shape holding'), no instrument/protocol named, so rheology_protocols is empty and matches the record's test list (flexural only). print_speed_mm_s converted from 250 mm/min to mm/s by /60 (=4.17). Pitch angle for the smallest Bouligand category is given as psi=2 degrees in the introductory list of architectures but as psi=8 degrees in the Results paragraph reporting pitch angles studied (8,15,30,45,90); likely an OCR/typo discrepancy in the source text, both values are quoted verbatim, neither is treated as authoritative. No print failures, buildability tests, or stack-to-failure trials are reported anywhere in the paper; all printed architectures proceed directly to post-cure mechanical testing, so all runs are labelled printable on the general author statement that these elements were 'achieved by 3D-printing'. The figures directory for this paper contains only manuscript text page scans (page_01..page_41.png); no distinct figure graphics with captions were found in the 3 pages sampled (pp. 2, 17, 18), so figures did not add information beyond the body text.",
+           "status": "PASS"
+          },
+          {
+           "paper_uid": "10.1002/cend.202100024",
+           "file": "10.1002_cend.202100024.json",
+           "n_runs": 0,
+           "n_protocols": 0,
+           "n_figures_checked": 0,
+           "notes": "No printing experiment reported: the paper investigates carbon-fiber-tape reinforcement 'for' 3D concrete printing but the four-point-bending test specimens (series 1-4) were cast in moulds per DIN EN 12390-2 ('The production and storage of the test specimens is carried out according to the standard DIN EN 12390-2'), not additively manufactured; no printer, nozzle, or print settings are mentioned anywhere in the text. The record's only test (T1, flexure_four_point) is a hardened-concrete mechanical test, not a fresh-state rheology test, so rheology_protocols is empty; no yield-stress/viscosity/Athix test is reported for the fine-grained concrete mix either.",
+           "status": "PASS"
+          }
+         ],
+         "hint": null,
+         "_elapsed_s": 0.0
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.01,
+       "is_error": false
+      },
+      {
+       "id": "item_7",
+       "name": "sql_query",
+       "input": {
+        "db": "print_process",
+        "sql": "SELECT r.paper_uid,r.run_id,r.mix_name_in_paper,r.object,r.height_achieved_mm,COALESCE(NULLIF(r.nozzle_d_mm,''),NULLIF(p.nozzle_d_mm,'')) AS nozzle_d_mm,r.layer_height_mm,r.outcome,r.printability_label,r.stack_to_failure,r.source_locator,r.quote,r.source_discrepancy FROM print_runs r LEFT JOIN printers p ON r.paper_uid=p.paper_uid WHERE LOWER(r.object) LIKE '%wall%' AND CAST(r.height_achieved_mm AS REAL)>0 AND CAST(r.layer_height_mm AS REAL)>0 AND CAST(COALESCE(NULLIF(r.nozzle_d_mm,''),NULLIF(p.nozzle_d_mm,'')) AS REAL)>0 ORDER BY ABS(CAST(r.height_achieved_mm AS REAL)-800)/800.0 + ABS(CAST(COALESCE(NULLIF(r.nozzle_d_mm,''),NULLIF(p.nozzle_d_mm,'')) AS REAL)-25)/25.0 + ABS(CAST(r.layer_height_mm AS REAL)-15)/15.0 LIMIT 10",
+        "max_rows": 10
+       },
+       "t": 33.99,
+       "result": {
+        "data": {
+         "text": "{\"n_rows\": 10, \"columns\": [\"paper_uid\", \"run_id\", \"mix_name_in_paper\", \"object\", \"height_achieved_mm\", \"nozzle_d_mm\", \"layer_height_mm\", \"outcome\", \"printability_label\", \"stack_to_failure\", \"source_locator\", \"quote\", \"source_discrepancy\"], \"rows\": [{\"paper_uid\": \"10.1016/j.clema.2022.100090\", \"run_id\": \"R3\", \"mix_name_in_paper\": \"RBA-3DPC Mix 2\", \"object\": \"straight wall\", \"height_achieved_mm\": 390, \"nozzle_d_mm\": 25, \"layer_height_mm\": 15, \"outcome\": \"printable\", \"printability_label\": \"printable\", \"stack_to_failure\": 0.0, \"source_locator\": \"Section 3 Printed RBA-3DPC Facade section; Section 5 Conclusions; Fig. 13; Fig. 14\", \"quote\": \"'After performing fresh state and mechanical tests on the RBA-3DPC mix, a cavity wall facade section with 26 layers of height 15 mm, layer width 30 mm, and a total height of 390 mm was printed as proof of concept, and to be used in future thermal tests. The print speed was set to 60 mm/s and the path length was 5032 mm/layer, so the time to print each layer was 84 s.' 'Good printability and reasonable surface finish of RBA-3DPC was proven by printing a 390-mm high facade section.'\", \"source_discrepancy\": null}, {\"paper_uid\": \"10.1016/j.jclepro.2023.136247\", \"run_id\": \"R1\", \"mix_name_in_paper\": \"RBA-3DPC Mix\", \"object\": \"straight wall\", \"height_achieved_mm\": 390, \"nozzle_d_mm\": 25, \"layer_height_mm\": 15, \"outcome\": \"printable\", \"printability_label\": \"printable\", \"stack_to_failure\": 0.0, \"source_locator\": \"Section 3.1 3D printing of façade sections\", \"quote\": \"The cavity wall façade sections were printed with a gantry type 3D printer at Stellenbosch University. The 3D printer has a 25 mm diameter nozzle, three translational degrees of freedom and a build volume of about 1 m 3 . 26 layers, each of height 15 mm and layer width 35 mm were printed, giving a total height of 390 mm. A print speed of 60 mm/s was used, and the path length of each layer was 5032 mm. The total length and width of the printed sections were 1025 mm and 255 mm respectively.\", \"source_discrepancy\": null}, {\"paper_uid\": \"10.1016/j.jclepro.2023.136247\", \"run_id\": \"R2\", \"mix_name_in_paper\": \"PCM-3DPC Mix\", \"object\": \"straight wall\", \"height_achieved_mm\": 390, \"nozzle_d_mm\": 25, \"layer_height_mm\": 15, \"outcome\": \"printable\", \"printability_label\": \"printable\", \"stack_to_failure\": 0.0, \"source_locator\": \"Section 3.1 3D printing of façade sections\", \"quote\": \"The cavity wall façade sections were printed with a gantry type 3D printer at Stellenbosch University. The 3D printer has a 25 mm diameter nozzle, three translational degrees of freedom and a build volume of about 1 m 3 . 26 layers, each of height 15 mm and layer width 35 mm were printed, giving a total height of 390 mm. A print speed of 60 mm/s was used, and the path length of each layer was 5032 mm. The total length and width of the printed sections were 1025 mm and 255 mm respectively. (Section 2.2: \\\"the superplasticiser content in the PCM-3DPC mix being increased from 1% to 1.3% by binder mass for acceptable printability\\\".)\", \"source_discrepancy\": null}, {\"paper_uid\": \"10.1016/j.cemconcomp.2022.104424\", \"run_id\": \"R7\", \"mix_name_in_paper\": \"L 30-LWA (wall prints, 30 min-2 h after mixing, 15 min intervals, 3 trials/time)\", \"object\": \"straight wall\", \"height_achieved_mm\": 465, \"nozzle_d_mm\": 20, \"layer_height_mm\": 15, \"outcome\": \"collapsed\", \"printability_label\": \"non_printable\", \"stack_to_failure\": null, \"source_locator\": \"Section 4.3; Fig. 16(a)\", \"quote\": \"'The maximum experimental print height attained for the wall sections for ... L 30-LWA mixture[] w[as] ... 465 mm.' 'the failure heights of the L 30-LWA mixture shown in 16(a) follows the buckling/crippling failure curve with time.'\", \"source_discrepancy\": null}, {\"paper_uid\": \"10.1016/j.conbuildmat.2025.141735\", \"run_id\": \"R6\", \"mix_name_in_paper\": \"H-3\", \"object\": \"straight wall\", \"height_achieved_mm\": 730, \"nozzle_d_mm\": 20, \"layer_height_mm\": 10, \"outcome\": \"collapsed\", \"printability_label\": \"printable\", \"stack_to_fai"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      },
+      {
+       "id": "item_8",
+       "name": "sql_query",
+       "input": {
+        "db": "print_process",
+        "sql": "SELECT r.paper_uid,r.run_id,r.mix_name_in_paper,r.height_achieved_mm,COALESCE(NULLIF(r.nozzle_d_mm,''),NULLIF(p.nozzle_d_mm,'')) AS nozzle_d_mm,COALESCE(NULLIF(r.nozzle_w_mm,''),NULLIF(p.nozzle_w_mm,'')) AS nozzle_w_mm,COALESCE(NULLIF(r.nozzle_h_mm,''),NULLIF(p.nozzle_h_mm,'')) AS nozzle_h_mm,r.layer_height_mm,r.outcome,r.stack_to_failure,r.source_locator FROM print_runs r LEFT JOIN printers p ON r.paper_uid=p.paper_uid WHERE LOWER(r.object) LIKE '%wall%' AND CAST(r.height_achieved_mm AS REAL) BETWEEN 600 AND 1000 AND CAST(r.layer_height_mm AS REAL)>0 ORDER BY ABS(CAST(r.height_achieved_mm AS REAL)-800)/800.0+ABS(CAST(r.layer_height_mm AS REAL)-15)/15.0 LIMIT 8",
+        "max_rows": 8
+       },
+       "t": 41.32,
+       "result": {
+        "data": {
+         "n_rows": 8,
+         "columns": [
+          "paper_uid",
+          "run_id",
+          "mix_name_in_paper",
+          "height_achieved_mm",
+          "nozzle_d_mm",
+          "nozzle_w_mm",
+          "nozzle_h_mm",
+          "layer_height_mm",
+          "outcome",
+          "stack_to_failure",
+          "source_locator"
+         ],
+         "rows": [
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2024.136574",
+           "run_id": "R2",
+           "mix_name_in_paper": "3DPC (ISTON wall mix)",
+           "height_achieved_mm": 600,
+           "nozzle_d_mm": 50.0,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 15,
+           "outcome": "printable",
+           "stack_to_failure": 0,
+           "source_locator": "Section 2.2 Printing process; Section 2.3 Sample preparation; Fig. 2; Fig. 5"
+          },
+          {
+           "paper_uid": "10.1016/j.cscm.2024.e02892",
+           "run_id": "R1",
+           "mix_name_in_paper": "3D printed concrete mix (Table 1)",
+           "height_achieved_mm": 800,
+           "nozzle_d_mm": 15.0,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 10,
+           "outcome": "printable",
+           "stack_to_failure": 0,
+           "source_locator": "Section 2.1 Mix proportion; Section 2.4 Construction procedure; Table 4; Fig. 6"
+          },
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2025.141735",
+           "run_id": "R6",
+           "mix_name_in_paper": "H-3",
+           "height_achieved_mm": 730,
+           "nozzle_d_mm": 20.0,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 10,
+           "outcome": "collapsed",
+           "stack_to_failure": 1,
+           "source_locator": "Section 4.2.2 Effect of cellulose ether; Section 3.2 Printability (IV Buildability test)"
+          },
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2026.146167",
+           "run_id": "R2",
+           "mix_name_in_paper": "3DPC",
+           "height_achieved_mm": 600,
+           "nozzle_d_mm": 40.0,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 18,
+           "outcome": "printable",
+           "stack_to_failure": 0,
+           "source_locator": "Section 2.1 Material properties; Section 2.3 Compression-shear testing protocol for 3DPRC composite units; Fig. 2"
+          },
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2025.141735",
+           "run_id": "R5",
+           "mix_name_in_paper": "H-2",
+           "height_achieved_mm": 632,
+           "nozzle_d_mm": 20.0,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 10,
+           "outcome": "collapsed",
+           "stack_to_failure": 1,
+           "source_locator": "Section 4.2.2 Effect of cellulose ether; Section 3.2 Printability (IV Buildability test, cumulative layers monitored until critical instability)"
+          },
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2025.141735",
+           "run_id": "R9",
+           "mix_name_in_paper": "R-1",
+           "height_achieved_mm": 632,
+           "nozzle_d_mm": 20.0,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 10,
+           "outcome": "collapsed",
+           "stack_to_failure": 1,
+           "source_locator": "Section 4.2.3 Effect of superplasticizer; Section 3.2 Printability (IV Buildability test)"
+          },
+          {
+           "paper_uid": "10.1016/j.conbuildmat.2022.126551",
+           "run_id": "R7",
+           "mix_name_in_paper": "A20",
+           "height_achieved_mm": 600,
+           "nozzle_d_mm": 18.0,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 10,
+           "outcome": "printable",
+           "stack_to_failure": 0,
+           "source_locator": "Section 3.6 Application for 3D printed AG-incorporated concrete; Fig. 19"
+          },
+          {
+           "paper_uid": "10.1016/j.jobe.2026.115999",
+           "run_id": "R1",
+           "mix_name_in_paper": "ready-to-use dry printable mortar (HeidelbergMaterials) -- panel CC_1.50",
+           "height_achieved_mm": 600,
+           "nozzle_d_mm": null,
+           "nozzle_w_mm": null,
+           "nozzle_h_mm": null,
+           "layer_height_mm": 10,
+           "outcome": "printable",
+           "stack_to_failure": 0,
+           "source_locator": "Section 2.3 3D Printing procedure; Section 2.4.2 Panels characteristics (Table 1, Fig. 2a, Fig. 4)"
+          }
+         ],
+         "truncated": false,
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-171341-c074\\sql_1792138463.csv",
+         "db": "print_process",
+         "row_limit_hit": false,
+         "elapsed_s": 0.01,
+         "_elapsed_s": 0.01
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.02,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 226024,
+      "output_tokens": 1231,
+      "cache_read_input_tokens": 204544
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 60.1
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:13:41"
+}

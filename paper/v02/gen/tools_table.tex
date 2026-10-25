@@ -1,0 +1,22 @@
+\begin{tabular}{@{}lp{0.8cm}p{4.9cm}p{5.4cm}@{}}
+\toprule
+tool & kind & purpose & inputs \\
+\midrule
+\texttt{retrieve\_literature} & read & published mixes near target values & \texttt{targets}, \texttt{system\_type}, \texttt{prefer\_3dcp}, \texttt{n} \\
+\texttt{design\_mix} & slow & inverse mix design (Sobol $\rightarrow$ screening $\rightarrow$ DE) & \texttt{targets}, \texttt{space}, \texttt{objectives}, \texttt{budget}, \texttt{top\_n}, \texttt{n\_literature}, \texttt{name} \\
+\texttt{build\_mix\_spec} & read & validate a mix description & \texttt{mix} \\
+\texttt{predict\_properties} & read & properties with 80\,\% intervals & \texttt{mix}, \texttt{targets} \\
+\texttt{flow\_curve} & read & Bingham flow curve + measured analogues & \texttt{mix}, \texttt{max\_rate\_1s}, \texttt{n\_analogues}, \texttt{log\_y} \\
+\texttt{structuration\_curve} & read & $\tau_s(t)$ + measured analogues & \texttt{mix}, \texttt{max\_rest\_min}, \texttt{n\_analogues} \\
+\texttt{assess\_buildability} & read & verdict, schedule window, similar prints & \texttt{job}, \texttt{material}, \texttt{mix}, \texttt{rho\_kg\_m3}, \texttt{E\_over\_tau}, \texttt{n\_similar} \\
+\texttt{print\_schedule} & read & layer cycle-time / speed window & \texttt{job}, \texttt{material}, \texttt{mix} \\
+\texttt{similar\_prints} & read & nearest published print runs & \texttt{job}, \texttt{material}, \texttt{k} \\
+\texttt{design\_for\_print\_job} & slow & job $\rightarrow$ required rheology $\rightarrow$ mixes $\rightarrow$ re-assessment & \texttt{job}, \texttt{space}, \texttt{extra\_targets}, \texttt{budget}, \texttt{rho\_kg\_m3} \\
+\texttt{remember} & write & durable note injected into future prompts & \texttt{note}, \texttt{kind} \\
+\texttt{list\_models} & read & predictable targets and model quality & \texttt{variant} \\
+\texttt{describe\_vocabulary} & read & material classes, specimen groups, curing presets & \texttt{family}, \texttt{query} \\
+\texttt{save\_report} & write & markdown / xlsx report of a session & \texttt{title}, \texttt{markdown}, \texttt{tables}, \texttt{include\_artifacts}, \texttt{format} \\
+\texttt{describe\_schema} & read & tables, columns, samples of the databases & \texttt{db}, \texttt{table} \\
+\texttt{sql\_query} & read & read-only SELECT (authorizer-guarded) & \texttt{sql}, \texttt{db}, \texttt{max\_rows} \\
+\bottomrule
+\end{tabular}

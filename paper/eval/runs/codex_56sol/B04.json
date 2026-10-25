@@ -1,0 +1,75 @@
+{
+ "id": "B04",
+ "group": "buildability",
+ "provider": "codex_56sol",
+ "backend": "codex",
+ "model": "gpt-5.6-sol",
+ "sessions": [
+  {
+   "session_id": "20261017-014907-e7c0",
+   "turns": [
+    {
+     "user": "Is my 3DCP mortar (w/b 0.30, s/b 1.5, 90 % OPC + 10 % silica fume, 0.6 % PCE, 0.2 % cellulose VMA) buildable for a 400 mm high, 1 m long single-filament wall printed with a 30 mm nozzle at 40 mm/s?",
+     "text": "I’ll evaluate the wall with the physical buildability checks first—plastic collapse, free-wall buckling, and open time—then treat any empirical collapse probability as secondary. I’ll state any geometric or process defaults the calculator must assume.\nNo. The assessment classifies this wall as **non-printable**, governed primarily by plastic collapse.\n\n- Assumed layer geometry: 15 mm high × 35.53 mm wide\n- Required layers: 27\n- Current layer cycle: 25 s\n- Plastic-collapse limit: approximately layer 4, or 59 mm height\n- Free-wall buckling: expected around layer 6\n- Empirical collapse probability: 0.925, secondary to the physical checks\n\nThe weak rheology models estimate:\n\n- Static yield stress: 645 Pa [28, 6,568 Pa]\n- Structuration rate, Athix: 0.586 Pa/s [0.024, 14.518 Pa/s]\n\nThese are order-of-magnitude estimates. At the current 25 s cycle, the calculation requires either approximately 6,830 Pa initial static yield stress or 9.75 Pa/s Athix. The estimated values are substantially lower.\n\nPublished analogues provide supporting evidence: the two closest runs using a 30 mm nozzle and 15 mm layers collapsed at 311 and 339 mm. Those were hollow cylinders, which are generally more stable than a straight, single-filament wall.\n\nPotential adjustments:\n\n- Increase the layer cycle to at least 416 s through dwell time or lower speed. The calculated speed window is 0.83–2.40 mm/s, but feasibility depends on the material’s unreported open time.\n- Increase static yield stress/structuration using more VMA or an accelerator.\n- Reduce w/b.\n- Use multiple filaments, bracing, or a closed path to mitigate buckling.\n- Provide measured static yield stress, Athix, density, and open time for a more defensible assessment.\n\nDefaults were 15 mm layer height, 35.53 mm width, zero dwell, density 2,100 kg/m³, \\(E/\\tau=25\\), and safety factor 1.5. No open-time limit was available.\n\nFiles created:\n\n- [Assessment report](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-014907-e7c0\\assessment_400 mm x 1 m single-filament wall.md>)\n- [Cycle-time figure](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-014907-e7c0\\cycle_sweep_400 mm x 1 m single-filament wall.png>)\n- [Cycle-time data](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-014907-e7c0\\cycle_sweep_400 mm x 1 m single-filament wall.csv>)\n- [Similar-print data](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261017-014907-e7c0\\similar_prints_400 mm x 1 m single-filament wall.csv>)\n\nThe prediction reflects correlations in published data; confirm the final mix with rheometry and a staged wall-printing trial.\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "assess_buildability",
+       "input": {
+        "mix": {
+         "name": "User 3DCP mortar",
+         "system_type": "mortar",
+         "w_b": 0.3,
+         "s_b": 1.5,
+         "binder": {
+          "portland_cement": 0.9,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.6,
+          "vma_cellulose": 0.2
+         },
+         "conditions": {
+          "is_3dcp": true
+         }
+        },
+        "job": {
+         "name": "400 mm x 1 m single-filament wall",
+         "object_type": "wall",
+         "target_height_mm": 400,
+         "footprint_mm": 1000,
+         "nozzle_d_mm": 30,
+         "print_speed_mm_s": 40,
+         "wall_filaments": 1,
+         "check_buckling": true
+        },
+        "n_similar": 5
+       },
+       "t": 11.99,
+       "result": {
+        "data": {
+         "text": "{\"job\": {\"name\": \"400 mm x 1 m single-filament wall\", \"object_type\": \"wall\", \"target_height_mm\": 400, \"nozzle_eq_mm\": 30.0, \"layer_height_mm\": 15.0, \"layer_width_mm\": 35.53, \"n_layers\": 27, \"layer_cycle_time_s\": 25.0, \"print_speed_mm_s\": 40, \"open_time_min\": null, \"safety_factor\": 1.5}, \"material\": {\"tau_s0_Pa\": 645.403535, \"tau_s0_band\": [28.044698, 6567.694215], \"athix_Pa_s\": 0.585914, \"athix_band\": [0.023558, 14.517888], \"rho_kg_m3\": 2100.0, \"E_over_tau\": 25.0, \"source\": \"pmpredict (static_yield_stress, structuration_rate_athix)\"}, \"verdict\": {\"label\": \"non_printable\", \"governing\": \"plastic_collapse\", \"reasons\": [\"plastic collapse expected at layer 4 of 27 (H_max 59 mm < 400 mm)\", \"self-weight buckling of a free straight wall expected at layer 6 (thickness 36 mm, E = 25 x tau_s; closed or braced paths are stiffer: set check_buckling false or add wall_filaments)\"], \"n_target\": 27, \"layer_height_mm\": 15.0, \"layer_cycle_time_s\": 25.0, \"print_time_min\": 11.25, \"tau_s0_Pa\": 645.403535, \"athix_Pa_s\": 0.585914, \"tau_s_end_Pa\": 1040.895243, \"n_max_plastic\": 3.941106, \"n_max_plastic_sf\": 2.551335, \"n_max_buckling\": 6.0, \"H_max_mm\": 59.116583, \"margin\": 0.145967, \"R_static\": 7.463652, \"p_collapse_empirical\": 0.924658, \"p_stable_physics\": 0.299, \"tau0_required_Pa\": 6830.108976, \"athix_required_Pa_s\": 9.74844, \"min_cycle_time_s\": 415.950387, \"critical_cycle_time_s\": 304.498617, \"open_time_ok\": null, \"extrudability\": {\"static_yield_stress\": {\"value\": 645.403535, \"p10\": 358.84, \"p50\": 1462.1, \"p90\": 3985.1, \"scope\": \"nozzle 30-60 mm\", \"status\": \"inside\"}, \"dynamic_yield_stress\": {\"value\": 296.953708, \"p10\": 74.84, \"p50\": 138.9, \"p90\": 608.8, \"scope\": \"nozzle 30-60 mm\", \"status\": \"inside\"}, \"plastic_viscosity\": {\"value\": 8.992769, \"p10\": 7.5, \"p50\": 8.15, \"p90\": 24.181, \"scope\": \"nozzle 30-60 mm\", \"status\": \"inside\"}}, \"defaults_used\": [\"layer_height_mm = 15.0 (0.5 x nozzle, printable median)\", \"layer_width_mm = 35.53 (1.2 x nozzle, printable median)\", \"layer_cycle_time_s = 25.0 (path 1000 mm / 40 mm/s + dwell 0 s)\"], \"warnings\": []}, \"schedule\": {\"n_layers\": 27, \"layer_height_mm\": 15.0, \"t_c_min_s\": 415.950387, \"t_c_min_no_sf_s\": 263.701078, \"t_c_max_s\": 1200.0, \"t_c_max_basis\": \"p90 layer cycle time of printable runs (1200 s); give open_time_min for a hard bound\", \"t_c_current_s\": 25.0, \"t_c_recommended_s\": 499.140464, \"feasible\": true, \"print_time_recommended_min\": 224.613209, \"critical_cycle_time_s\": 304.498617, \"tau0_required_at_current_Pa\": 6830.108976, \"athix_required_at_current_Pa_s\": 9.74844, \"defaults_used\": [\"layer_height_mm = 15.0 (0.5 x nozzle, printable median)\", \"layer_width_mm = 35.53 (1.2 x nozzle, printable median)\", \"layer_cycle_time_s = 25.0 (path 1000 mm / 40 mm/s + dwell 0 s)\"], \"speed\": {\"v_min_mm_s\": 0.833333, \"v_max_mm_s\": 2.404133, \"current_mm_s\": 40, \"v_recommended_mm_s\": 2.003444}}, \"similar_prints\": [{\"paper_uid\": \"10.1016/j.conbuildmat.2022.128808\", \"mix_name_in_paper\": \"MK10\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 30.0, \"layer_height_mm\": 15.0, \"layer_cycle_time_s\": null, \"print_speed_mm_s\": 50.0, \"n_layers_achieved\": 23.0, \"H_mm\": 339.0, \"stack_to_failure\": 1, \"outcome\": \"collapsed\", \"failure_mode\": \"other\", \"printability_label\": \"printable\", \"static_yield_stress\": 697.9, \"structuration_rate_athix\": null, \"R\": 5.777423, \"distance\": 0.079482}, {\"paper_uid\": \"10.1016/j.conbuildmat.2022.128808\", \"mix_name_in_paper\": \"MK5\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 30.0, \"layer_height_mm\": 15.0, \"layer_cycle_time_s\": null, \"print_speed_mm_s\": 50.0, \"n_layers_achieved\": 21.0, \"H_mm\": 311.0, \"stack_to_failure\": 1, \"outcome\": \"collapsed\", \"failure_mode\": \"other\", \"printability_label\": \"printable\", \"static_yield_stress\": 445.12, \"structuration_rate_athix\": null, \"R\": 8.31019, \"distance\": 0.194889}, {\"paper_uid\": \"10.1016/j.conbuildmat.2022.127614\", \"mix_name_in_paper\": \"M1 (GU binder) - Group I printing trial (500 mm dia x 500 mm height hollow cylinder)\", \"object\": \"hollow cylinder\", \"noz_eq_mm\": 20.0, \"layer_h"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.03,
+       "is_error": false
+      }
+     ],
+     "errors": [],
+     "usage": {
+      "input_tokens": 88048,
+      "output_tokens": 1865,
+      "cache_read_input_tokens": 72064
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 32.5
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-17T01:49:07"
+}

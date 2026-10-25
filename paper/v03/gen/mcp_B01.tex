@@ -1,0 +1,46 @@
+\begin{mcpbox}{Tool request (client $\rightarrow$ server)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "tool": "assess_buildability",
+ "arguments": {
+  "job": {
+   "object_type": "wall",
+   "target_height_mm": 600,
+   "footprint_mm": 1500,
+   "wall_filaments": 2,
+   "nozzle_d_mm": 25,
+   "print_speed_mm_s": 50,
+   "open_time_min": 60
+  },
+  "material": {
+   "tau_s0_Pa": 3000,
+   "athix_Pa_s": 1
+  }
+ }
+}
+\end{lstlisting}
+\end{mcpbox}
+\begin{mcpbox}{Tool response (server $\rightarrow$ client, digest)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "summary": "non_printable (elastic_buckling); n_max 33.83144070382251 /  48",
+ "verdict": {
+  "label": "non_printable",
+  "governing": "elastic_buckling",
+  "reasons": [
+   "plastic collapse expected at layer 34 of 48 (H_max 423 mm < 600 mm)",
+   "self-weight buckling of a free straight wall expected at layer 17 (thickness ..."
+  ],
+  "n_target": 48,
+  "layer_height_mm": 12.5,
+  "layer_cycle_time_s": 60.0,
+  "print_time_min": 48.0,
+  "tau_s0_Pa": 3000.0,
+  "athix_Pa_s": 1.0,
+  "tau_s_end_Pa": 5880.0,
+  "n_max_plastic": 33.8314,
+  "n_max_plastic_sf": 18.4035
+ }
+}
+\end{lstlisting}
+\end{mcpbox}

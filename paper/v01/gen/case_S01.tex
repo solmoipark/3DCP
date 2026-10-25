@@ -1,0 +1,20 @@
+\begin{userbox}
+How many 3DCP papers are in the literature database?
+\end{userbox}
+\begin{toolbox}{describe\_schema, 0.1 s}
+\begin{lstlisting}[style=argstyle]
+{"db": "master"}
+\end{lstlisting}
+\end{toolbox}
+\begin{toolbox}{sql\_query, 0.0 s}
+\begin{lstlisting}[style=argstyle]
+{"db": "master", "sql": "SELECT COUNT(DISTINCT NULLIF(paper_uid, '')) AS n_3dcp_papers FROM papers WHERE is_3dcp_study = '1'"}
+\end{lstlisting}
+\end{toolbox}
+\begin{agentbox}
+I'll check the database schema and count the 3DCP papers.\par
+The literature database contains \textbf{1,176 distinct 3DCP papers}, identified by \texttt{is\_3dcp\_study = '1'} in \texttt{master.db}.\par
+\par
+Query result CSV\par
+\par
+\end{agentbox}

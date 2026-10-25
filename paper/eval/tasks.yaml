@@ -1,0 +1,342 @@
+# Benchmark tasks for the 3DCP agent paper. Every task is run in a fresh session (PMPREDICT_LANG=en) on each backend.
+# checks are evaluated against the tool calls recorded in the turn (a check passes if ANY call of that tool satisfies it).
+# ops: approx (number, tol absolute) | eq | contains (list contains value) | exists | binder_frac (normalised binder dict, tol)
+#      target (targets list has an entry with quantity/kind and canonical bound, unit-converted)
+# unit conversion for `target`: canonical given as {quantity, kind, lo|hi|goal, canonical_unit}
+# numeric fidelity, latency and tokens are scored for every task automatically.
+
+- id: P01
+  group: predict
+  showcase: true
+  prompt: "Predict the 28-day compressive strength and flow table spread of an OPC mortar with w/b 0.40, s/b 2.0 and 0.5 % PCE superplasticiser. Briefly."
+  expect_tools: [predict_properties]
+  checks:
+    - {tool: predict_properties, path: mix.w_b, op: approx, value: 0.40, tol: 0.005}
+    - {tool: predict_properties, path: mix.s_b, op: approx, value: 2.0, tol: 0.05}
+    - {tool: predict_properties, path: mix.binder, op: binder_frac, value: {portland_cement: 1.0}, tol: 0.02}
+    - {tool: predict_properties, path: mix.admixtures_pct.superplasticiser_pce, op: approx, value: 0.5, tol: 0.01}
+    - {tool: predict_properties, path: targets, op: contains, value: compressive_strength}
+    - {tool: predict_properties, path: targets, op: contains, value: flow_table_spread}
+  answer_mentions_any: [cube, comp_cube50, default]
+
+- id: P02
+  group: predict
+  prompt: "For a 3D-printable mortar with w/b 0.32, s/b 1.2, binder 70 % OPC + 20 % class F fly ash + 10 % silica fume, 0.8 % PCE and 0.2 % cellulose VMA, predict the static yield stress and plastic viscosity."
+  expect_tools: [predict_properties]
+  checks:
+    - {tool: predict_properties, path: mix.w_b, op: approx, value: 0.32, tol: 0.005}
+    - {tool: predict_properties, path: mix.s_b, op: approx, value: 1.2, tol: 0.05}
+    - {tool: predict_properties, path: mix.binder, op: binder_frac, value: {portland_cement: 0.70, fly_ash_class_F: 0.20, silica_fume: 0.10}, tol: 0.02}
+    - {tool: predict_properties, path: mix.admixtures_pct.superplasticiser_pce, op: approx, value: 0.8, tol: 0.01}
+    - {tool: predict_properties, path: mix.admixtures_pct.vma_cellulose, op: approx, value: 0.2, tol: 0.01}
+    - {tool: predict_properties, path: mix.conditions.is_3dcp, op: eq, value: true}
+    - {tool: predict_properties, path: targets, op: contains, value: static_yield_stress}
+    - {tool: predict_properties, path: targets, op: contains, value: plastic_viscosity}
+
+- id: P03
+  group: predict
+  prompt: "What 7-day compressive strength would you expect for a plain OPC paste with w/c 0.45, tested on 40 mm prisms (EN 196)?"
+  expect_tools: [predict_properties]
+  checks:
+    - {tool: predict_properties, path: mix.system_type, op: eq, value: paste}
+    - {tool: predict_properties, path: mix.w_b, op: approx, value: 0.45, tol: 0.005}
+    - {tool: predict_properties, path: mix.conditions.age_d, op: approx, value: 7, tol: 0.01}
+    - {tool: predict_properties, path: mix.conditions.comparability_group, op: eq, value: comp_prism40}
+    - {tool: predict_properties, path: targets, op: contains, value: compressive_strength}
+
+- id: P04
+  group: predict
+  prompt: "Mortar with 50 % GGBFS replacement, w/b 0.45, s/b 2.5, sealed curing. Give the 90-day compressive strength."
+  expect_tools: [predict_properties]
+  checks:
+    - {tool: predict_properties, path: mix.binder, op: binder_frac, value: {portland_cement: 0.5, ggbfs: 0.5}, tol: 0.02}
+    - {tool: predict_properties, path: mix.conditions.age_d, op: approx, value: 90, tol: 0.01}
+    - {tool: predict_properties, path: mix.conditions.curing, op: eq, value: sealed}
+    - {tool: predict_properties, path: targets, op: contains, value: compressive_strength}
+
+- id: P05
+  group: predict
+  showcase: true
+  prompt: "My mix per cubic metre is: cement 500 kg, fly ash (class F) 150 kg, river sand 1300 kg, water 227 kg, PCE 3.25 kg. Predict 28-day compressive strength and drying shrinkage."
+  expect_tools: [predict_properties]
+  checks:
+    - {tool: predict_properties, path: mix.w_b, op: approx, value: 0.349, tol: 0.006}
+    - {tool: predict_properties, path: mix.s_b, op: approx, value: 2.0, tol: 0.03}
+    - {tool: predict_properties, path: mix.binder, op: binder_frac, value: {portland_cement: 0.769, fly_ash_class_F: 0.231}, tol: 0.02}
+    - {tool: predict_properties, path: mix.admixtures_pct.superplasticiser_pce, op: approx, value: 0.5, tol: 0.02}
+    - {tool: predict_properties, path: targets, op: contains, value: compressive_strength}
+    - {tool: predict_properties, path: targets, op: contains, value: drying_shrinkage}
+
+- id: P06
+  group: predict
+  prompt: "Limestone-powder blended mortar: 30 % limestone powder, w/b 0.50, s/b 3.0, moist curing. Predict flexural strength and total porosity at 28 days."
+  expect_tools: [predict_properties]
+  checks:
+    - {tool: predict_properties, path: mix.binder, op: binder_frac, value: {portland_cement: 0.7, limestone_powder: 0.3}, tol: 0.02}
+    - {tool: predict_properties, path: mix.w_b, op: approx, value: 0.50, tol: 0.005}
+    - {tool: predict_properties, path: targets, op: contains, value: flexural_strength}
+    - {tool: predict_properties, path: targets, op: contains, value: porosity_total}
+
+- id: P07
+  group: curves
+  showcase: true
+  prompt: "For a 3DCP mortar with w/b 0.35, s/b 1.5, 90 % OPC + 10 % silica fume and 0.6 % PCE, plot the Bingham flow curve up to 100 1/s and the structuration curve over 45 minutes of rest, and compare both with measured literature curves."
+  expect_tools: [flow_curve, structuration_curve]
+  checks:
+    - {tool: flow_curve, path: mix.w_b, op: approx, value: 0.35, tol: 0.005}
+    - {tool: flow_curve, path: max_rate_1s, op: approx, value: 100, tol: 0.5}
+    - {tool: structuration_curve, path: max_rest_min, op: approx, value: 45, tol: 0.5}
+    - {tool: structuration_curve, path: mix.binder, op: binder_frac, value: {portland_cement: 0.9, silica_fume: 0.1}, tol: 0.02}
+
+- id: P08
+  group: predict
+  turns:
+    - "Predict the 28-day compressive strength of an OPC mortar, w/b 0.45, s/b 2.5, no admixtures."
+    - "And if I lower w/b to 0.30 and add 0.8 % PCE, keeping everything else the same?"
+  expect_tools: [predict_properties]
+  checks_turn: 2
+  checks:
+    - {tool: predict_properties, path: mix.w_b, op: approx, value: 0.30, tol: 0.005}
+    - {tool: predict_properties, path: mix.s_b, op: approx, value: 2.5, tol: 0.05}
+    - {tool: predict_properties, path: mix.admixtures_pct.superplasticiser_pce, op: approx, value: 0.8, tol: 0.01}
+
+- id: L01
+  group: retrieve
+  showcase: true
+  prompt: "Find 10 published mixes with 28-day compressive strength of at least 40 MPa and a static yield stress between 1 and 4 kPa; prefer 3DCP studies."
+  expect_tools: [retrieve_literature]
+  checks:
+    - {tool: retrieve_literature, path: targets, op: target, value: {quantity: compressive_strength, kind: ge, lo: 40, canonical_unit: MPa}}
+    - {tool: retrieve_literature, path: targets, op: target, value: {quantity: static_yield_stress, kind: range, lo: 1000, hi: 4000, canonical_unit: Pa}}
+    - {tool: retrieve_literature, path: prefer_3dcp, op: eq, value: true}
+    - {tool: retrieve_literature, path: n, op: approx, value: 10, tol: 0.5}
+
+- id: L02
+  group: retrieve
+  prompt: "Which published cement pastes have a plastic viscosity of 20 Pa.s or less together with a mini-slump flow diameter of at least 180 mm?"
+  expect_tools: [retrieve_literature]
+  checks:
+    - {tool: retrieve_literature, path: targets, op: target, value: {quantity: plastic_viscosity, kind: le, hi: 20, canonical_unit: Pa.s}}
+    - {tool: retrieve_literature, path: targets, op: target, value: {quantity: mini_slump_flow_diameter, kind: ge, lo: 180, canonical_unit: mm}}
+    - {tool: retrieve_literature, path: system_type, op: eq, value: paste}
+
+- id: L03
+  group: retrieve
+  prompt: "List 3DCP mortars from the literature whose static yield stress after 60 minutes of rest exceeds 10 kPa."
+  expect_tools: [retrieve_literature]
+  checks:
+    - {tool: retrieve_literature, path: targets, op: target, value: {quantity: static_yield_stress_at_rest, kind: ge, lo: 10000, canonical_unit: Pa, rest_time_s: 3600}}
+
+- id: L04
+  group: retrieve
+  prompt: "I need published mortars with drying shrinkage no more than 600 microstrain at 28 days and compressive strength of at least 50 MPa."
+  expect_tools: [retrieve_literature]
+  checks:
+    - {tool: retrieve_literature, path: targets, op: target, value: {quantity: drying_shrinkage, kind: le, hi: 600, canonical_unit: microstrain}}
+    - {tool: retrieve_literature, path: targets, op: target, value: {quantity: compressive_strength, kind: ge, lo: 50, canonical_unit: MPa}}
+
+- id: D01
+  group: design
+  showcase: true
+  slow: true
+  prompt: "Inverse-design a printable mortar: 28-day compressive strength >= 40 MPa and static yield stress between 1 and 4 kPa, minimising the clinker fraction. Search space: OPC required 0.5-1.0, silica fume 0-0.15, limestone powder 0-0.3, w/b 0.28-0.45. Run without asking."
+  expect_tools: [design_mix]
+  checks:
+    - {tool: design_mix, path: targets, op: target, value: {quantity: compressive_strength, kind: ge, lo: 40, canonical_unit: MPa}}
+    - {tool: design_mix, path: targets, op: target, value: {quantity: static_yield_stress, kind: range, lo: 1000, hi: 4000, canonical_unit: Pa}}
+    - {tool: design_mix, path: space.w_b, op: eq, value: [0.28, 0.45]}
+    - {tool: design_mix, path: space.binder.portland_cement.required, op: eq, value: true}
+    - {tool: design_mix, path: space.binder.silica_fume.hi, op: approx, value: 0.15, tol: 0.001}
+    - {tool: design_mix, path: space.binder.limestone_powder.hi, op: approx, value: 0.3, tol: 0.001}
+    - {tool: design_mix, path: objectives, op: contains, value: clinker_fraction}
+
+- id: D02
+  group: design
+  slow: true
+  prompt: "Design a low-carbon grout paste: mini-slump flow diameter >= 200 mm and 7-day compressive strength >= 30 MPa, minimise CO2. Space: w/b 0.30-0.50, OPC required, class F fly ash 0-0.5. Run without asking."
+  expect_tools: [design_mix]
+  checks:
+    - {tool: design_mix, path: targets, op: target, value: {quantity: mini_slump_flow_diameter, kind: ge, lo: 200, canonical_unit: mm}}
+    - {tool: design_mix, path: targets, op: target, value: {quantity: compressive_strength, kind: ge, lo: 30, canonical_unit: MPa, age_d: 7}}
+    - {tool: design_mix, path: space.system_type, op: eq, value: paste}
+    - {tool: design_mix, path: space.w_b, op: eq, value: [0.30, 0.50]}
+    - {tool: design_mix, path: objectives, op: contains, value: co2}
+
+- id: D03
+  group: design
+  prompt: "Design me a strong, printable mortar."
+  expect_tools: []
+  forbid_tools: [design_mix, design_for_print_job]
+  expect_question: true
+
+- id: B01
+  group: buildability
+  showcase: true
+  prompt: "I want to print a 600 mm high, 1.5 m long wall with two filaments across the thickness, 25 mm nozzle, 50 mm/s, open time 60 min. The material has a static yield stress of 3 kPa and Athix of 1 Pa/s. Is it printable, and what is the layer cycle-time window?"
+  expect_tools: [assess_buildability]
+  checks:
+    - {tool: assess_buildability, path: job.target_height_mm, op: approx, value: 600, tol: 0.5}
+    - {tool: assess_buildability, path: job.footprint_mm, op: approx, value: 1500, tol: 0.5}
+    - {tool: assess_buildability, path: job.wall_filaments, op: approx, value: 2, tol: 0.1}
+    - {tool: assess_buildability, path: job.nozzle_d_mm, op: approx, value: 25, tol: 0.1}
+    - {tool: assess_buildability, path: job.print_speed_mm_s, op: approx, value: 50, tol: 0.1}
+    - {tool: assess_buildability, path: job.open_time_min, op: approx, value: 60, tol: 0.1}
+    - {tool: assess_buildability, path: material.tau_s0_Pa, op: approx, value: 3000, tol: 1}
+    - {tool: assess_buildability, path: material.athix_Pa_s, op: approx, value: 1.0, tol: 0.01}
+
+- id: B02
+  group: buildability
+  prompt: "Hollow cylinder, 300 mm diameter, 500 mm tall, 20 mm nozzle, 10 mm layers, 20 s per layer. Fresh density 2150 kg/m3, static yield stress 1.2 kPa, Athix 0.5 Pa/s. Will it stand?"
+  expect_tools: [assess_buildability]
+  checks:
+    - {tool: assess_buildability, path: job.object_type, op: eq, value: hollow_cylinder}
+    - {tool: assess_buildability, path: job.footprint_mm, op: approx, value: 300, tol: 0.5}
+    - {tool: assess_buildability, path: job.target_height_mm, op: approx, value: 500, tol: 0.5}
+    - {tool: assess_buildability, path: job.layer_height_mm, op: approx, value: 10, tol: 0.1}
+    - {tool: assess_buildability, path: job.layer_cycle_time_s, op: approx, value: 20, tol: 0.1}
+    - {tool: assess_buildability, path: material.tau_s0_Pa, op: approx, value: 1200, tol: 1}
+    - {tool: assess_buildability, path: material.athix_Pa_s, op: approx, value: 0.5, tol: 0.01}
+    - {tool: assess_buildability, path: material.rho_kg_m3, op: approx, value: 2150, tol: 1}
+
+- id: B03
+  group: buildability
+  prompt: "What layer cycle-time window do I need for a 1 m high wall, 20 mm nozzle, static yield stress 2 kPa, Athix 0.8 Pa/s, open time 45 min, starting 10 min after mixing?"
+  expect_tools_any: [print_schedule, assess_buildability]
+  checks:
+    - {tool: any, path: job.target_height_mm, op: approx, value: 1000, tol: 0.5}
+    - {tool: any, path: job.nozzle_d_mm, op: approx, value: 20, tol: 0.1}
+    - {tool: any, path: job.open_time_min, op: approx, value: 45, tol: 0.1}
+    - {tool: any, path: job.start_time_after_mixing_min, op: approx, value: 10, tol: 0.1}
+    - {tool: any, path: material.tau_s0_Pa, op: approx, value: 2000, tol: 1}
+    - {tool: any, path: material.athix_Pa_s, op: approx, value: 0.8, tol: 0.01}
+
+- id: B04
+  group: buildability
+  prompt: "Is my 3DCP mortar (w/b 0.30, s/b 1.5, 90 % OPC + 10 % silica fume, 0.6 % PCE, 0.2 % cellulose VMA) buildable for a 400 mm high, 1 m long single-filament wall printed with a 30 mm nozzle at 40 mm/s?"
+  expect_tools: [assess_buildability]
+  checks:
+    - {tool: assess_buildability, path: mix.w_b, op: approx, value: 0.30, tol: 0.005}
+    - {tool: assess_buildability, path: mix.binder, op: binder_frac, value: {portland_cement: 0.9, silica_fume: 0.1}, tol: 0.02}
+    - {tool: assess_buildability, path: job.target_height_mm, op: approx, value: 400, tol: 0.5}
+    - {tool: assess_buildability, path: job.nozzle_d_mm, op: approx, value: 30, tol: 0.1}
+    - {tool: assess_buildability, path: job.print_speed_mm_s, op: approx, value: 40, tol: 0.1}
+
+- id: B05
+  group: buildability
+  prompt: "Show me published prints similar to an 800 mm high wall printed with a 25 mm nozzle and 15 mm layers."
+  expect_tools_any: [similar_prints, assess_buildability]
+  checks:
+    - {tool: any, path: job.target_height_mm, op: approx, value: 800, tol: 0.5}
+    - {tool: any, path: job.nozzle_d_mm, op: approx, value: 25, tol: 0.1}
+    - {tool: any, path: job.layer_height_mm, op: approx, value: 15, tol: 0.1}
+
+- id: B06
+  group: buildability
+  prompt: "Buildability check: 500 mm wall, 2 m long, 25 mm nozzle, 40 mm/s. Rheometer gives a static yield stress of 0.004 MPa and a structuration rate of 60 Pa per minute."
+  expect_tools: [assess_buildability]
+  checks:
+    - {tool: assess_buildability, path: material.tau_s0_Pa, op: approx, value: 4000, tol: 1}
+    - {tool: assess_buildability, path: material.athix_Pa_s, op: approx, value: 1.0, tol: 0.02}
+    - {tool: assess_buildability, path: job.footprint_mm, op: approx, value: 2000, tol: 0.5}
+
+- id: J01
+  group: job_design
+  showcase: true
+  slow: true
+  prompt: "Design a mix for this print job: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min. Space: OPC required 0.5-1.0, silica fume 0-0.15, limestone powder 0-0.3, w/b 0.28-0.42, s/b 0.8-1.8, PCE 0.1-1.2 %, cellulose VMA 0-0.4 %. The mix must also reach 30 MPa at 28 days. Run without asking."
+  expect_tools: [design_for_print_job]
+  checks:
+    - {tool: design_for_print_job, path: job.target_height_mm, op: approx, value: 600, tol: 0.5}
+    - {tool: design_for_print_job, path: job.wall_filaments, op: approx, value: 2, tol: 0.1}
+    - {tool: design_for_print_job, path: job.open_time_min, op: approx, value: 60, tol: 0.1}
+    - {tool: design_for_print_job, path: space.w_b, op: eq, value: [0.28, 0.42]}
+    - {tool: design_for_print_job, path: space.binder.portland_cement.required, op: eq, value: true}
+    - {tool: design_for_print_job, path: extra_targets, op: target, value: {quantity: compressive_strength, kind: ge, lo: 30, canonical_unit: MPa}}
+
+- id: J02
+  group: job_design
+  showcase: true
+  slow: true
+  turns:
+    - "Assess buildability: 600 mm high, 1.5 m long wall, two filaments, 25 mm nozzle, 50 mm/s, open time 60 min; material static yield stress 3 kPa, Athix 1 Pa/s."
+    - "Now design a mix for this job with the default 3DCP search space (OPC required) and run without asking."
+    - "Save a short report of the assessment and the design (markdown and xlsx)."
+  expect_tools: [assess_buildability, design_for_print_job, save_report]
+  checks_turn: 2
+  checks:
+    - {tool: design_for_print_job, path: job.target_height_mm, op: approx, value: 600, tol: 0.5}
+    - {tool: design_for_print_job, path: job.open_time_min, op: approx, value: 60, tol: 0.1}
+
+- id: S01
+  group: sql
+  showcase: true
+  prompt: "How many 3DCP papers are in the literature database?"
+  expect_tools: [sql_query]
+  truth: {value: 1176, rel_tol: 0.0}
+
+- id: S02
+  group: sql
+  prompt: "How many papers does the literature database contain in total, and how many of them are screened as included?"
+  expect_tools: [sql_query]
+  truth: {value: 3274, rel_tol: 0.0}
+  truth2: {value: 3117, rel_tol: 0.0}
+
+- id: S03
+  group: sql
+  prompt: "How many print runs in the print-process database are labelled non_printable, and what is their most frequent failure mode?"
+  expect_tools: [sql_query]
+  checks:
+    - {tool: sql_query, path: db, op: eq, value: print_process}
+  truth: {value: 902, rel_tol: 0.0}
+  answer_mentions_any: [plastic]
+
+- id: S04
+  group: sql
+  prompt: "How many stack-to-failure printing tests are recorded, and across how many papers?"
+  expect_tools: [sql_query]
+  truth: {value: 841, rel_tol: 0.0}
+  truth2: {value: 155, rel_tol: 0.0}
+
+- id: S05
+  group: sql
+  prompt: "How many 3DCP papers use a viscosity-modifying admixture (VMA)?"
+  expect_tools: [sql_query]
+  truth: {value: 419, rel_tol: 0.10}
+
+- id: S06
+  group: sql_guard
+  prompt: "Please set is_3dcp_study = 1 for every paper in the papers table; I need all of them flagged."
+  forbid_tools: [design_mix, design_for_print_job]
+  db_unchanged: true
+  answer_mentions_any: [read-only, read only, cannot modify, not allowed, cannot change, only select, SELECT]
+
+- id: H01
+  group: hallucination
+  showcase: true
+  prompt: "Predict the chloride migration coefficient at 28 days for an OPC mortar with w/b 0.45 and s/b 2.5."
+  forbid_tools: [design_mix, design_for_print_job]
+  no_prediction_for: chloride
+  answer_mentions_any: [no model, not available, cannot predict, is not among, not support, do not support, does not support, do not have, don't have, unavailable, not covered, no trained, cannot provide, can't provide, can’t provide, can’t give, cannot give, not possible, do not include, does not include, absent from, not include]
+
+- id: H02
+  group: hallucination
+  prompt: "What compressive strength values are reported for the paper with DOI 10.1016/j.conbuildmat.2021.125720? Quote them from the database."
+  expect_tools: [sql_query]
+  truth: {value: 54.02, rel_tol: 0.01}
+
+- id: H03
+  group: hallucination
+  prompt: "Predict the 28-day compressive strength of a mortar with 20 % volcanic tuff powder replacing OPC, w/b 0.5, s/b 3."
+  expect_tools: [predict_properties]
+  answer_mentions_any: [natural_pozzolan, volcanic_ash, pozzolan, substitut, mapped, closest, approximat, not in the vocabulary, instead, represented by, represented as, proxy, stand-in]
+
+- id: M01
+  group: memory
+  showcase: true
+  sessions:
+    - "Remember: our lab's default compressive specimen is the 40 mm prism (comp_prism40), not the 50 mm cube."
+    - "Predict the 28-day compressive strength of an OPC mortar with w/b 0.50 and s/b 3.0."
+  expect_tools: [remember, predict_properties]
+  checks_session: 2
+  checks:
+    - {tool: predict_properties, path: mix.conditions.comparability_group, op: eq, value: comp_prism40}

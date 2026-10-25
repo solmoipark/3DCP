@@ -1,0 +1,274 @@
+{
+ "id": "P02",
+ "group": "predict",
+ "provider": "codex_sol",
+ "backend": "codex",
+ "model": "gpt-6-sol",
+ "sessions": [
+  {
+   "session_id": "20261016-170908-63fa",
+   "turns": [
+    {
+     "user": "For a 3D-printable mortar with w/b 0.32, s/b 1.2, binder 70 % OPC + 20 % class F fly ash + 10 % silica fume, 0.8 % PCE and 0.2 % cellulose VMA, predict the static yield stress and plastic viscosity.",
+     "text": "I’ll run the mortar through the prediction models and report the prediction intervals and model reliability.\nThe prediction intervals are wide, and the tool reports negative cross validation R² for both selected models. I’m checking measured literature mixes to put those estimates in context.\nFor the specified 3D-printable mortar, the model predicts:\n\n| Property | Median [10th, 90th percentile] |\n|---|---:|\n| Static yield stress, immediately after mixing | **855 [67, 5,016] Pa** |\n| Plastic viscosity | **7.11 [0.89, 27.07] Pa·s** |\n\nTreat these as **order-of-magnitude guidance**. The selected models reported negative cross validation R² for these predictions. As measured context, a database search found a different 3DCP mortar with **859 Pa** static yield stress and **7.65 Pa·s** plastic viscosity; its composition differs substantially from yours. These estimates do not establish that your mortar is printable. Measure its fresh rheology and verify it in a print trial.\n\nThe prediction used your stated proportions, treated PCE and VMA percentages as percentages of binder mass, and set rest time to zero. The tool also applied its default age of 28 days and cube specimen group, though neither defines these fresh-state results. No training-range violations were reported.\n\nFiles: [prediction CSV](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\predictions_agent_mix.csv>) · [prediction figure](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\predictions_agent_mix.png>) · [literature matches](<C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\literature.csv>)\n",
+     "calls": [
+      {
+       "id": "item_1",
+       "name": "describe_vocabulary",
+       "input": {
+        "family": "all"
+       },
+       "t": 38.8,
+       "result": {
+        "data": {
+         "text": "{\"classes\": {\"powder\": [{\"material_class\": \"anhydrite\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"basalt_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"belite_calcium_sulfoaluminate\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"belite_rich_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"biochar\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"bottom_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"calcined_clay\", \"group\": \"calcined_clay\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"calcium_aluminate_cement\", \"group\": \"cac\", \"sg\": 3.2, \"solid_content\": null}, {\"material_class\": \"calcium_hydroxide\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"calcium_sulfate_hemihydrate\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"calcium_sulfoaluminate_cement\", \"group\": \"csa\", \"sg\": 2.85, \"solid_content\": null}, {\"material_class\": \"carbide_slag\", \"group\": \"lime\", \"sg\": 2.24, \"solid_content\": null}, {\"material_class\": \"carbon_black\", \"group\": \"other_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"ceramic_waste_powder\", \"group\": \"recycled_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"coal_gangue\", \"group\": \"industrial_residue\", \"sg\": 2.8, \"solid_content\": null}, {\"material_class\": \"copper_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"diatomaceous_earth\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"dolomite_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"expansive_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"ferronickel_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_C\", \"group\": \"fly_ash_c\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"fly_ash_class_F\", \"group\": \"fly_ash_f\", \"sg\": 2.3, \"solid_content\": null}, {\"material_class\": \"ggbfs\", \"group\": \"ggbfs\", \"sg\": 2.9, \"solid_content\": null}, {\"material_class\": \"glass_powder\", \"group\": \"glass_powder\", \"sg\": 2.5, \"solid_content\": null}, {\"material_class\": \"granite_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"gypsum\", \"group\": \"gypsum_sulfate\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"ladle_furnace_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"limestone_powder\", \"group\": \"limestone_powder\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"magnesium_oxychloride_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"magnesium_phosphate_cement\", \"group\": \"cement_other\", \"sg\": 3.0, \"solid_content\": null}, {\"material_class\": \"marble_powder\", \"group\": \"inert_filler_other\", \"sg\": 2.7, \"solid_content\": null}, {\"material_class\": \"metakaolin\", \"group\": \"metakaolin\", \"sg\": 2.6, \"solid_content\": null}, {\"material_class\": \"municipal_solid_waste_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"natural_pozzolan\", \"group\": \"natural_pozzolan\", \"sg\": 2.4, \"solid_content\": null}, {\"material_class\": \"oil_well_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"palm_oil_fuel_ash\", \"group\": \"ash_other\", \"sg\": 2.2, \"solid_content\": null}, {\"material_class\": \"phosphorus_slag\", \"group\": \"slag_other\", \"sg\": 3.3, \"solid_content\": null}, {\"material_class\": \"portland_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_composite_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"portland_limestone_cement\", \"group\": \"opc\", \"sg\": 3.15, \"solid_content\": null}, {\"material_class\": \"quartz_powder\", \"group\": \"quartz_powder"
+        },
+        "artifacts": [],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.03,
+       "is_error": false
+      },
+      {
+       "id": "item_2",
+       "name": "predict_properties",
+       "input": {
+        "mix": {
+         "system_type": "mortar",
+         "w_b": 0.32,
+         "s_b": 1.2,
+         "binder": {
+          "portland_cement": 0.7,
+          "fly_ash_class_F": 0.2,
+          "silica_fume": 0.1
+         },
+         "admixtures_pct": {
+          "superplasticiser_pce": 0.8,
+          "vma_cellulose": 0.2
+         },
+         "conditions": {
+          "is_3dcp": true,
+          "rest_time_s": 0
+         }
+        },
+        "targets": [
+         "static_yield_stress",
+         "plastic_viscosity"
+        ]
+       },
+       "t": 50.3,
+       "result": {
+        "data": {
+         "mix": "agent_mix",
+         "predictions": [
+          {
+           "target": "static_yield_stress",
+           "name_ko": "정적항복응력",
+           "q10": 66.928022,
+           "q50": 855.179782,
+           "q90": 5015.751695,
+           "unit": "Pa",
+           "model": "static_yield_stress",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 1728,
+           "cv_r2": -0.043676
+          },
+          {
+           "target": "plastic_viscosity",
+           "name_ko": "소성점도",
+           "q10": 0.889653,
+           "q50": 7.108217,
+           "q90": 27.072058,
+           "unit": "Pa.s",
+           "model": "plastic_viscosity",
+           "weak_model": false,
+           "n_range_violations": 0,
+           "range_violations": [],
+           "n_train": 1817,
+           "cv_r2": -0.004687
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\predictions_agent_mix.csv",
+         "conditions": {
+          "age_d": 28.0,
+          "comparability_group": "comp_cube50",
+          "rest_time_s": 0.0,
+          "is_3dcp": 1
+         },
+         "_elapsed_s": 2.4
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\predictions_agent_mix.csv",
+          "kind": "table",
+          "title": "예측 agent_mix"
+         },
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\predictions_agent_mix.png",
+          "kind": "image",
+          "title": "예측구간 agent_mix"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 2.41,
+       "is_error": false
+      },
+      {
+       "id": "item_4",
+       "name": "retrieve_literature",
+       "input": {
+        "targets": [
+         {
+          "quantity": "static_yield_stress",
+          "kind": "goal",
+          "goal": 855.179782,
+          "unit": "Pa"
+         },
+         {
+          "quantity": "plastic_viscosity",
+          "kind": "goal",
+          "goal": 7.108217,
+          "unit": "Pa.s"
+         }
+        ],
+        "system_type": "mortar",
+        "prefer_3dcp": true,
+        "n": 5
+       },
+       "t": 61.72,
+       "result": {
+        "data": {
+         "n_hits": 5,
+         "tiers": {
+          "exact": 0,
+          "near": 5
+         },
+         "hits": [
+          {
+           "tier": "near",
+           "score": 1.14,
+           "doi": "10.1016/j.cemconcomp.2024.105446",
+           "title": "A spray-based 3D concrete printing parameter design model and hydration mechanism of S-3D printed concrete",
+           "year": 2024,
+           "is_3dcp": 1,
+           "mix": "S-3D printed concrete (V70A8D60) / cast counterpart",
+           "system_type": "mortar",
+           "composition": "fly_ash_f 0.50 / silica_fume 0.50; w/b 0.35; s/b 0.60; fibre 0.62 vol%",
+           "measured": [
+            "plastic_viscosity=7.65Pa.s",
+            "static_yield_stress=859Pa"
+           ]
+          },
+          {
+           "tier": "near",
+           "score": 1.128,
+           "doi": "10.1016/j.mtsust.2026.101398",
+           "title": "Fibre reinforcement in 3D printable low-carbon cementitious composites: fresh, mechanical, shrinkage and fire performanc",
+           "year": 2026,
+           "is_3dcp": 1,
+           "mix": "M0PE",
+           "system_type": "mortar",
+           "composition": "ggbfs 0.60 / opc 0.30 / silica_fume 0.10; w/b 0.25; s/b 0.36; sp_pce 0.41%, vma 0.66%",
+           "measured": [
+            "plastic_viscosity=6.5Pa.s",
+            "static_yield_stress=894Pa"
+           ]
+          },
+          {
+           "tier": "near",
+           "score": 1.128,
+           "doi": "10.1016/j.cscm.2025.e04718",
+           "title": "An integrated experimental study and 3-D smooth particle hydrodynamics modelling of 3D concrete printing",
+           "year": 2025,
+           "is_3dcp": 1,
+           "mix": "3DCP mortar mix",
+           "system_type": "mortar",
+           "composition": "ggbfs 0.60 / opc 0.30 / silica_fume 0.10; w/b 0.25; s/b 0.36",
+           "measured": [
+            "plastic_viscosity=6.5Pa.s",
+            "static_yield_stress=894Pa"
+           ]
+          },
+          {
+           "tier": "near",
+           "score": 1.045,
+           "doi": "10.21809/rilemtechlett.2021.142",
+           "title": "Numerical simulation of multi-layer 3D concrete printing",
+           "year": 2021,
+           "is_3dcp": 1,
+           "mix": "3DCP mortar",
+           "system_type": "mortar",
+           "composition": "opc 0.55 / limestone_powder 0.45; w/b 0.39; sp_other 0.10%, vma 0.10%, retarder 0.50%",
+           "measured": [
+            "plastic_viscosity=7.5Pa.s",
+            "static_yield_stress=630Pa"
+           ]
+          },
+          {
+           "tier": "near",
+           "score": 1.037,
+           "doi": "10.1016/j.conbuildmat.2026.147813",
+           "title": "Mechanical behavior and thermal stability of 3D-printed green mortar reinforced with recycled carbon fibers and fully re",
+           "year": 2026,
+           "is_3dcp": 1,
+           "mix": "2 vol% RCF",
+           "system_type": "mortar",
+           "composition": "opc 1.00; w/b 0.30; s/b 1.00; sp_pce 0.18%, vma 0.15%, retarder 0.07%; fibre 1.71 vol%",
+           "measured": [
+            "static_yield_stress=771Pa",
+            "plastic_viscosity=5.65Pa.s"
+           ]
+          }
+         ],
+         "warnings": [],
+         "csv": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\literature.csv",
+         "_elapsed_s": 0.31
+        },
+        "artifacts": [
+         {
+          "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\artifacts\\reports\\agent\\20261016-170908-63fa\\literature.csv",
+          "kind": "table",
+          "title": "문헌 검색"
+         }
+        ],
+        "summary": "",
+        "is_error": false
+       },
+       "elapsed_s": 0.32,
+       "is_error": false
+      }
+     ],
+     "errors": [
+      {
+       "message": "Reconnecting... 2/5 (unexpected status 503 Service Unavailable: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists.)",
+       "recoverable": true
+      },
+      {
+       "message": "Reconnecting... 3/5 (unexpected status 503 Service Unavailable: An error occurred while processing your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists.)",
+       "recoverable": true
+      },
+      {
+       "message": "Reconnecting... 4/5 (exceeded retry limit, last status: 429 Too Many Requests)",
+       "recoverable": true
+      }
+     ],
+     "usage": {
+      "input_tokens": 152116,
+      "output_tokens": 1016,
+      "cache_read_input_tokens": 130048
+     },
+     "cost_usd": null,
+     "stop_reason": "success",
+     "wall_s": 78.7
+    }
+   ]
+  }
+ ],
+ "started": "2026-10-16T17:09:08"
+}

@@ -1,0 +1,21 @@
+\begin{mcpbox}{Tool request (client $\rightarrow$ server)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "tool": "remember",
+ "arguments": {
+  "kind": "preference",
+  "note": "The lab's default compressive specimen is the 40 mm prism (comp_prism40), not the 50 mm cube (comp_cube50). Use comp_prism40 whenever the user does not specify a compressive specimen."
+ }
+}
+\end{lstlisting}
+\end{mcpbox}
+\begin{mcpbox}{Tool response (server $\rightarrow$ client, digest)}
+\begin{lstlisting}[style=jsonstyle]
+{
+ "saved": "- [2026-10-16] (preference) The lab's default compressive specimen is the 40 ...",
+ "n_notes": 1,
+ "path": "C:\\Users\\User\\3D Printing Concrete Prediction\\paper\\eval\\home_codex\\notes.md",
+ "_elapsed_s": 0.01
+}
+\end{lstlisting}
+\end{mcpbox}
